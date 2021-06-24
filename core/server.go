@@ -43,5 +43,5 @@ func RunWindowsServer()  {
 	}
 
 	routers.Run()
-	fmt.Println("------服务启动-------")
+	fmt.Println("--------服务启动-------")
 }
