@@ -3,9 +3,9 @@ package core
 import (
 	"flag"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"go_server/conf"
 	"go_server/docs"
+	alog "go_server/log"
 	"go_server/models"
 	"go_server/routers"
 )
@@ -29,7 +29,7 @@ func RunWindowsServer()  {
 	//解析配置文件
 	flag.Parse()
 	conf.Init(*config) //根据配置文件初始化配置
-	fmt.Println("服务器启动...")
+	alog.MyLogger.Info("服务器启动...")
 	models.Init()
 
 	if conf.Swag != nil {
@@ -39,9 +39,11 @@ func RunWindowsServer()  {
 		if conf.ServerSetting.HTTPS {
 			scheme = "https"
 		}
-		logrus.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------",scheme,conf.Swag.Host,conf.ServerSetting.BasePath,))
+		alog.MyLogger.Debug(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------",scheme,conf.Swag.Host,conf.ServerSetting.BasePath,))
 	}
 
+	alog.MyLogger.Info("--------服务启动-------")
+
 	routers.Run()
-	fmt.Println("--------服务启动-------")
+
 }
