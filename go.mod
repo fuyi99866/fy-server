@@ -7,10 +7,12 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/casbin/casbin v1.9.1
 	github.com/casbin/gorm-adapter v1.0.0
+	github.com/casbin/xorm-adapter v1.0.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eclipse/paho.mqtt.golang v1.3.5
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-ini/ini v1.62.0
+	github.com/go-xorm/xorm v0.7.9 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/jinzhu/gorm v1.9.16
 	github.com/sirupsen/logrus v1.8.1

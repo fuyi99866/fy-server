@@ -29,8 +29,7 @@ func RunWindowsServer()  {
 	//解析配置文件
 	flag.Parse()
 	conf.Init(*config) //根据配置文件初始化配置
-	alog.MyLogger.Info("服务器启动...")
-	models.Init()
+	models.Init() //初始化数据库
 
 	if conf.Swag != nil {
 		docs.SwaggerInfo.Host = conf.Swag.Host

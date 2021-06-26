@@ -53,11 +53,19 @@ func Run() {
 			user.POST("",v1.AddUser)
 		}
 
+		policy := group1.Group("policy")
+		{
+			policy.POST("",v1.AddPolicy)
+			policy.DELETE("",v1.DeletePolicy)
+			policy.GET("",v1.GetPolicy)
+		}
+
 		product := group1.Group("product")
 		{
 			product.GET("",v1.GetProducts)
 		}
 	}
+
 
 	//3、监听端口，默认是8080
 	//Run("里面不指定端口就默认为8080")

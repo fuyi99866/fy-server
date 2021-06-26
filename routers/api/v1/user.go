@@ -156,7 +156,7 @@ func AddUser(c *gin.Context) {
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Infoln("AddUser param error")
+		logrus.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -170,6 +170,7 @@ func AddUser(c *gin.Context) {
 	_, _err := models.AddUser(menu)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		logrus.Error("AddUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)

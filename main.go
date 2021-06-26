@@ -10,7 +10,7 @@ func main() {
 	//global.GVA_LOG = core. //初始化zap日志库
     //global.GVA_DB = initialize.Gorm() // gorm连接数据库
 	//初始化日志库
-	alog.Init()
+	alog.Init() //初始化日志库
 	core.RunWindowsServer()
 
 

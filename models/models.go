@@ -6,6 +6,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/sirupsen/logrus"
 	"go_server/conf"
+	"go_server/routers/casbin/enforcer"
 )
 
 var db *gorm.DB
@@ -60,6 +61,13 @@ type UserLogin struct {
 	Password string `json:"password"`
 }
 
+//用户权限
+type UserPolicy struct {
+	Username string `json:"username"`
+	URL      string `json:"url"`
+	Type     string `json:"type"`
+}
+
 func Init() {
 	//连接数据库
 	var err error
@@ -90,8 +98,14 @@ func Init() {
 			"username": "admin",
 			"password": "123456",
 		}
-		AddUser(data)//添加的管理员账号不允许修改
+		AddUser(data) //添加的管理员账号不允许修改
 	}
+
+	//给管理员赋予改变访问权限的权限
+	e := enforcer.EnforcerTool()
+	e.AddPolicy("admin","/policy","GET")
+	e.AddPolicy("admin","/policy","POST")
+	e.AddPolicy("admin","/policy","DELETE")
 }
 
 //自动创建数据表

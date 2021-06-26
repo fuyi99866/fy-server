@@ -12,6 +12,15 @@ definitions:
           40003 账号密码错误
         type: string
     type: object
+  models.UserPolicy:
+    properties:
+      type:
+        type: string
+      url:
+        type: string
+      username:
+        type: string
+    type: object
   models.UserRegister:
     properties:
       company_id:
@@ -89,6 +98,78 @@ paths:
       summary: 登录获取登录token 信息
       tags:
       - 鉴权
+  /policy:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserPolicy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除访问权限
+      tags:
+      - 访问权限
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取所有用户权限
+      tags:
+      - 访问权限
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserPolicy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 增加访问权限
+      tags:
+      - 访问权限
   /user:
     get:
       consumes:
