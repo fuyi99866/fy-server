@@ -68,6 +68,12 @@ type UserPolicy struct {
 	Type     string `json:"type"`
 }
 
+type Authority struct {
+	AuthorityId     string         `json:"authorityId" gorm:"not null;unique;primary_key;comment:角色ID;size:90"`
+	AuthorityName   string         `json:"authorityName" gorm:"comment:角色名"`
+	ParentId        string         `json:"parentId" gorm:"comment:父角色ID"`
+}
+
 func Init() {
 	//连接数据库
 	var err error
@@ -110,5 +116,5 @@ func Init() {
 
 //自动创建数据表
 func migration() {
-	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{})
+	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{}).AutoMigrate(&Authority{})
 }

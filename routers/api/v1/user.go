@@ -1,7 +1,6 @@
 package v1
 
 import (
-
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -50,11 +49,11 @@ func Auth(c *gin.Context) {
 
 	//有效性验证
 	valid := validation.Validation{}
-	valid.AlphaNumeric(reqInfo.Username,"username").Message("非法用户名")
-	valid.Required(reqInfo.Username,"User").Message("用户名不能为空")
-	valid.MinSize(reqInfo.Username,1,"User").Message("用户名最短为1位")
-	valid.MaxSize(reqInfo.Password,100,"username").Message("最长为100字符")
-	valid.MaxSize(reqInfo.Password,100,"password").Message("最长为100字符")
+	valid.AlphaNumeric(reqInfo.Username, "username").Message("非法用户名")
+	valid.Required(reqInfo.Username, "User").Message("用户名不能为空")
+	valid.MinSize(reqInfo.Username, 1, "User").Message("用户名最短为1位")
+	valid.MaxSize(reqInfo.Password, 100, "username").Message("最长为100字符")
+	valid.MaxSize(reqInfo.Password, 100, "password").Message("最长为100字符")
 	valid.Required(reqInfo.Password, "Pwd").Message("密码不能为空")
 	valid.MinSize(reqInfo.Password, 6, "Pwd").Message("密码最短为6位")
 	//检测用户的账号密码，看能否正常登录
@@ -130,6 +129,7 @@ func Auth(c *gin.Context) {
 // @Router /user  [GET]
 // @Security ApiKeyAuth
 func GetUsers(c *gin.Context) {
+	//分页显示所有用户
 	appG := utils.Gin{C: c}
 	user, err := models.GetAllUser()
 	if err != nil {
@@ -171,6 +171,91 @@ func AddUser(c *gin.Context) {
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
 		logrus.Error("AddUser error")
+		return
+	} else {
+		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+	}
+}
+
+// @Summary   更新用户信息
+// @Tags   用户
+// @Accept json
+// @Produce  json
+// @Param   body  body   models.UserRegister   true "body"
+// @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
+// @Failure 400 {object} utils.Response
+// @Router /user/update  [POST]
+// @Security ApiKeyAuth
+func UpdateUser(c *gin.Context) {
+	logrus.Info("UpdateUser")
+	appG := utils.Gin{C: c}
+	var reqInfo models.UserRegister
+	err := c.ShouldBindJSON(&reqInfo)
+	if err != nil {
+		logrus.Info("AddUser param error")
+		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		return
+	}
+
+	_err := models.UpdateUser(reqInfo)
+	if _err != nil {
+		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		logrus.Error("UpdateUser error")
+		return
+	} else {
+		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+	}
+}
+
+// @Summary   获取单一用户
+// @Tags   用户
+// @Accept json
+// @Produce  json
+// @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
+// @Failure 400 {object} utils.Response
+// @Router /user/get  [GET]
+// @Security ApiKeyAuthc
+func GetOneUser(c *gin.Context) {
+	appG := utils.Gin{C: c}
+	Authorization := c.GetHeader("Authorization")
+	claims, err := jwt.ParseToken(Authorization)
+	if err!=nil{
+		appG.Response(http.StatusForbidden, utils.ACCESS_DENIED, nil)
+		return
+	}
+
+	user, err := models.GetOneUser(claims.Username)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		return
+	}
+	appG.Response(http.StatusOK, utils.SUCCESS, user)
+}
+
+
+// @Summary   刪除用户
+// @Tags   用户
+// @Accept json
+// @Produce  json
+// @Param   body  body   models.UserRegister   true "body"
+// @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
+// @Failure 400 {object} utils.Response
+// @Router /user/delete  [delete]
+// @Security ApiKeyAuth
+func DeleteUser(c *gin.Context) {
+	appG := utils.Gin{C: c}
+	var reqInfo models.UserRegister
+	err := c.ShouldBindJSON(&reqInfo)
+	if err != nil {
+		logrus.Info("AddUser param error")
+		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		return
+	}
+
+	_err := models.DeleteUser(reqInfo)
+	if _err != nil {
+		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		logrus.Error("DeleteUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)
