@@ -2,10 +2,12 @@ package log
 
 import (
 	"fmt"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
 	"os"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // logrus提供了New()函数来创建一个logrus的实例。
@@ -125,4 +127,13 @@ func Init() {
 	}
 	MyLogger.Logger = NewLogger(logrus.DebugLevel, &logrus.TextFormatter{FullTimestamp: true}, NewMyHook())
 	MyLogger.Logger.Out = MyLogger.File
+
+	//设置日志分割
+	writer,_:=rotatelogs.New(
+		"%Y%m%d%H%M_"+path,
+		rotatelogs.WithLinkName(path),
+		rotatelogs.WithMaxAge(time.Duration(180)*time.Second),
+		rotatelogs.WithRotationTime(time.Duration(60)*time.Second),
+	)
+	MyLogger.Logger.SetOutput(writer)
 }

@@ -64,6 +64,11 @@ func Run() {
 		{
 			product.GET("",v1.GetProducts)
 		}
+
+		email := group1.Group("product")
+		{
+			email.POST("",v1.EmailTest)
+		}
 	}
 
 

@@ -15,6 +15,9 @@ require (
 	github.com/go-xorm/xorm v0.7.9 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/jinzhu/gorm v1.9.16
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible // indirect
+	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
+	github.com/lestrrat-go/strftime v1.0.4 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.8.0
 	github.com/swaggo/gin-swagger v1.3.0

@@ -100,6 +100,36 @@ var doc = `{
                 }
             }
         },
+        "/email": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系統"
+                ],
+                "summary": "发送测试邮件",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/policy": {
             "get": {
                 "security": [
@@ -116,7 +146,7 @@ var doc = `{
                 "tags": [
                     "访问权限"
                 ],
-                "summary": "获取所有用户权限",
+                "summary": "获取权限列表",
                 "responses": {
                     "200": {
                         "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
