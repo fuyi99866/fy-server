@@ -1,4 +1,13 @@
 definitions:
+  models.Authority:
+    properties:
+      authorityId:
+        type: string
+      authorityName:
+        type: string
+      parentId:
+        type: string
+    type: object
   models.UserLogin:
     properties:
       password:
@@ -98,6 +107,120 @@ paths:
       summary: 登录获取登录token 信息
       tags:
       - 鉴权
+  /authority/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Authority'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建角色
+      tags:
+      - 角色
+  /authority/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除角色
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Authority'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除角色
+      tags:
+      - 角色
+  /authority/set:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 设置角色资源权限
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Authority'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 设置角色资源权限
+      tags:
+      - 角色
+  /authority/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 权限id, 权限名, 父角色id
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Authority'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新角色信息
+      tags:
+      - 角色
+  /email:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 发送测试邮件
+      tags:
+      - 系統
   /policy:
     delete:
       consumes:
@@ -141,7 +264,7 @@ paths:
             $ref: '#/definitions/utils.Response'
       security:
       - ApiKeyAuth: []
-      summary: 获取所有用户权限
+      summary: 获取权限列表
       tags:
       - 访问权限
     post:
@@ -214,6 +337,80 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 增加用户
+      tags:
+      - 用户
+  /user/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 刪除用户
+      tags:
+      - 用户
+  /user/get:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuthc: []
+      summary: 获取单一用户
+      tags:
+      - 用户
+  /user/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新用户信息
       tags:
       - 用户
   /ws:

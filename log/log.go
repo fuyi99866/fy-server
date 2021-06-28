@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
 	"go_server/conf"
 	"os"
@@ -141,8 +142,8 @@ func InitLog(path, name, ext string) {
 
 
 	//设置日志分割
-	writer, _ := rotatelogs.New(
-		path+".%Y%m%d%H%M",
+	writer,_:=rotatelogs.New(
+		"%Y%m%d%H%M_"+path,
 		rotatelogs.WithLinkName(path),
 		rotatelogs.WithMaxAge(time.Duration(180)*time.Second),
 		rotatelogs.WithRotationTime(time.Duration(60)*time.Second),
@@ -153,5 +154,4 @@ func InitLog(path, name, ext string) {
 
 //刷新日志文件,循环删除旧的日志，避免日志占用太大的内存
 func refreshLogFile(){
-
 }

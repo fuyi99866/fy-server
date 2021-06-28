@@ -51,6 +51,9 @@ func Run() {
 			user.GET("/:name",v1.GetApiParam)
 			user.GET("",v1.GetUsers)
 			user.POST("",v1.AddUser)
+			user.DELETE("delete",v1.DeleteUser)
+			user.POST("update",v1.UpdateUser)
+			user.GET("get",v1.GetOneUser)
 		}
 
 		policy := group1.Group("policy")
@@ -63,6 +66,20 @@ func Run() {
 		product := group1.Group("product")
 		{
 			product.GET("",v1.GetProducts)
+		}
+
+		email := group1.Group("product")
+		{
+			email.POST("",v1.EmailTest)
+		}
+
+		authority := group1.Group("authority")
+		{
+			authority.POST("add",v1.CreateAuthority)
+			authority.POST("update",v1.UpdateAuthority)
+			authority.POST("set",v1.SetAuthority)
+			authority.DELETE("delete",v1.DeleteAuthority)
+
 		}
 	}
 
