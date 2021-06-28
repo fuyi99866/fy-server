@@ -7,11 +7,11 @@ import (
 )
 
 type Database struct {
-	Type string
-	User string
-	Password string
-	Host string
-	Name string
+	Type        string
+	User        string
+	Password    string
+	Host        string
+	Name        string
 	TablePrefix string
 }
 
@@ -29,33 +29,38 @@ type SERVER struct {
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 	HTTPS        bool
-	BasePath string
+	BasePath     string
 }
 
 var ServerSetting = &SERVER{}
 
 type App struct {
-	JwtSecret string
+	JwtSecret   string
+	LogSavePath string
+	LogSaveName string
+	LogFileExt  string
+	LogLever    string
+	TimeFormat  string
 }
 
 var AppSetting = &App{}
 
 var cfg *ini.File
 
-func Init(config string)  {
+func Init(config string) {
 	var err error
-	cfg,err = ini.Load(config)
-	if err!=nil {
-		logrus.Fatal("初始化配置文件失败： ",err)
+	cfg, err = ini.Load(config)
+	if err != nil {
+		logrus.Fatal("初始化配置文件失败： ", err)
 	}
 	mapTo("app", AppSetting)
-	mapTo("database",DatabaseSetting)
+	mapTo("database", DatabaseSetting)
 	mapTo("swagger", Swag)
 }
 
-func mapTo(section string,v interface{})  {
+func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
-	if err != nil{
-		logrus.Fatalf("加载配置文件失败",err)
+	if err != nil {
+		logrus.Fatalf("加载配置文件失败", err)
 	}
 }

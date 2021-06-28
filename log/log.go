@@ -3,9 +3,11 @@ package log
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"go_server/conf"
 	"os"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // logrus提供了New()函数来创建一个logrus的实例。
@@ -112,17 +114,44 @@ func getCaller(skip int) (string, int, uintptr) {
 
 //初始化配置
 func Init() {
+	InitLog(conf.AppSetting.LogSavePath, conf.AppSetting.LogSaveName, conf.AppSetting.LogFileExt)
+}
+
+func InitLog(path, name, ext string) {
 	var (
 		file *os.File
 		err  error
 	)
-	path := "log.txt"
-	if file, err = os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm); err != nil {
+	if file, err = os.OpenFile(path+name, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm); err != nil {
 		logrus.Error("打开日志文件错误：", err)
 	}
 	MyLogger = &myLogger{
 		File: file,
 	}
-	MyLogger.Logger = NewLogger(logrus.DebugLevel, &logrus.TextFormatter{FullTimestamp: true}, NewMyHook())
+	fmt.Println("DebugLevel:  " + conf.AppSetting.LogLever)
+	var lever logrus.Level
+	if conf.AppSetting.LogLever == "debug" {
+		lever = logrus.DebugLevel
+	} else {
+		lever = logrus.InfoLevel
+	}
+
+	MyLogger.Logger = NewLogger(lever, &logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05"}, NewMyHook())
 	MyLogger.Logger.Out = MyLogger.File
+
+
+	//设置日志分割
+	writer, _ := rotatelogs.New(
+		path+".%Y%m%d%H%M",
+		rotatelogs.WithLinkName(path),
+		rotatelogs.WithMaxAge(time.Duration(180)*time.Second),
+		rotatelogs.WithRotationTime(time.Duration(60)*time.Second),
+	)
+	MyLogger.Logger.SetOutput(writer)
+
+}
+
+//刷新日志文件,循环删除旧的日志，避免日志占用太大的内存
+func refreshLogFile(){
+
 }
