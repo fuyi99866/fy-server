@@ -5,7 +5,7 @@ import (
 	"github.com/casbin/casbin"
 	"github.com/casbin/gorm-adapter"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
+	alog "go_server/log"
 	"go_server/routers/casbin/DB"
 	"go_server/routers/jwt"
 	"go_server/utils"
@@ -22,6 +22,7 @@ func Interceptor(e *casbin.Enforcer) gin.HandlerFunc {
 			appG.Response(http.StatusForbidden, utils.ACCESS_DENIED, nil)
 			return
 		}
+		alog.MyLogger.Info("claims===",claims)
         fmt.Println("claims===",claims)
 		//获取请求的URI
 		obj := context.Request.URL.RequestURI()
@@ -32,10 +33,10 @@ func Interceptor(e *casbin.Enforcer) gin.HandlerFunc {
 
 		//判断策略中是否存在
 		if ok := e.Enforce(sub, obj, act); ok {
-			logrus.Info("通过权限")
+			alog.MyLogger.Info("通过权限")
 			context.Next()
 		} else {
-			logrus.Warn("没有通过权限")
+			alog.MyLogger.Warn("没有通过权限")
 			context.Abort()
 			appG.Response(http.StatusForbidden, utils.ACCESS_DENIED, nil)
 		}

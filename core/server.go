@@ -1,12 +1,7 @@
 package core
 
 import (
-	"flag"
-	"fmt"
-	"go_server/conf"
-	"go_server/docs"
 	alog "go_server/log"
-	"go_server/models"
 	"go_server/routers"
 )
 
@@ -24,24 +19,7 @@ import (
 
 func RunWindowsServer()  {
 
-	//读取配置文件
-	config := flag.String("c", "./app.ini", "config file path")
-	//解析配置文件
-	flag.Parse()
-	conf.Init(*config) //根据配置文件初始化配置
-	models.Init() //初始化数据库
-
-	if conf.Swag != nil {
-		docs.SwaggerInfo.Host = conf.Swag.Host
-		docs.SwaggerInfo.BasePath = conf.ServerSetting.BasePath
-		scheme := "http"
-		if conf.ServerSetting.HTTPS {
-			scheme = "https"
-		}
-		alog.MyLogger.Debug(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------",scheme,conf.Swag.Host,conf.ServerSetting.BasePath,))
-	}
-
-	alog.MyLogger.Info("--------服务启动-------")
+	alog.MyLogger.Debug("--------服务启动-------")
 
 	routers.Run()
 

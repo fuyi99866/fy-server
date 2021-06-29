@@ -2,11 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72f470a7-9344-4cb1-a7b5-98bee64eb877" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/initialize/casbin.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/log_outputs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/app.ini" beforeDir="false" afterPath="$PROJECT_DIR$/conf/app.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/setting.go" beforeDir="false" afterPath="$PROJECT_DIR$/conf/setting.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/global/global.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go_build_go_server.exe" beforeDir="false" afterPath="$PROJECT_DIR$/go_build_go_server.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/initialize/gorm.go" beforeDir="false" afterPath="$PROJECT_DIR$/initialize/gorm.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/log.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/models.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/v1/policy.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v1/policy.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/casbin/enforcer/enforcer.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/casbin/enforcer/enforcer.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

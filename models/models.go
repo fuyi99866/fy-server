@@ -108,6 +108,7 @@ func Init() {
 	}
 
 	//给管理员赋予改变访问权限的权限
+     //initialize.Casbin.Init()
 	e := enforcer.EnforcerTool()
 	e.AddPolicy("admin", "/policy", "GET")
 	e.AddPolicy("admin", "/policy", "POST")
