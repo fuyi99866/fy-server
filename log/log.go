@@ -2,12 +2,10 @@ package log
 
 import (
 	"fmt"
-	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
 	"os"
 	"runtime"
 	"strings"
-	"time"
 )
 
 // logrus提供了New()函数来创建一个logrus的实例。
@@ -129,11 +127,15 @@ func Init() {
 	MyLogger.Logger.Out = MyLogger.File
 
 	//设置日志分割
-	writer,_:=rotatelogs.New(
+/*	writer,_:=rotatelogs.New(
 		"%Y%m%d%H%M_"+path,
-		rotatelogs.WithLinkName(path),
-		rotatelogs.WithMaxAge(time.Duration(180)*time.Second),
-		rotatelogs.WithRotationTime(time.Duration(60)*time.Second),
+		rotatelogs.WithLinkName(""),
+		rotatelogs.WithMaxAge(time.Duration(180)*time.Hour),
+		rotatelogs.WithRotationTime(time.Duration(60)*time.Hour),
 	)
-	MyLogger.Logger.SetOutput(writer)
+	MyLogger.Logger.SetOutput(writer)*/
+	/*清除软链接的方法：
+	  1、先把WithLinkName的path置为空""
+	  2、重新编译运行程序
+	  3、把日志分割代码注释掉，再重新编辑运行程序即可*/
 }

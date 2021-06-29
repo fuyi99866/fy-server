@@ -17,7 +17,6 @@ type Company struct {
 }
 
 type Robot struct {
-	gorm.Model
 	RobotSN      string `json:"robotsn"`
 	TaskID       string `json:"taskid";gorm:"unique_index, not null"` //任务名称（也就是ID，唯一标识
 	NickName     string `json:"nickname"`                             //任务别名（可忽略
@@ -32,6 +31,13 @@ type Robot struct {
 	Time         string `json:"time"`                                 //【暂无】定时消杀时间。“21:35:00”
 	Days         string `json:"days"`                                 //【暂无】每个星期消杀日期
 	Status       string `json:"status"`                               //消杀状态 start:开始 working：消杀中 terminate_by_robot：硬件结束 terminate_by_software软件结束 finish：消杀完成
+}
+
+type Authority struct {
+	gorm.Model
+	AuthorityId   string `json:"authority_id" gorm:"not null;unique"` //权限ID
+	AuthorityName string `json:"authority_name"`                      //角色名
+	ParentId      string `json:"parent_id"`                           //父角色ID
 }
 
 type User struct {
@@ -66,12 +72,6 @@ type UserPolicy struct {
 	Username string `json:"username"`
 	URL      string `json:"url"`
 	Type     string `json:"type"`
-}
-
-type Authority struct {
-	AuthorityId     string         `json:"authorityId" gorm:"not null;unique;primary_key;comment:角色ID;size:90"`
-	AuthorityName   string         `json:"authorityName" gorm:"comment:角色名"`
-	ParentId        string         `json:"parentId" gorm:"comment:父角色ID"`
 }
 
 func Init() {
@@ -109,9 +109,9 @@ func Init() {
 
 	//给管理员赋予改变访问权限的权限
 	e := enforcer.EnforcerTool()
-	e.AddPolicy("admin","/policy","GET")
-	e.AddPolicy("admin","/policy","POST")
-	e.AddPolicy("admin","/policy","DELETE")
+	e.AddPolicy("admin", "/policy", "GET")
+	e.AddPolicy("admin", "/policy", "POST")
+	e.AddPolicy("admin", "/policy", "DELETE")
 }
 
 //自动创建数据表
