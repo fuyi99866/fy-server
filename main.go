@@ -7,7 +7,7 @@ import (
 	"go_server/conf"
 	"go_server/core"
 	"go_server/docs"
-	alog "go_server/log"
+	logger "go_server/log"
 	"go_server/models"
 )
 
@@ -21,7 +21,13 @@ func main() {
 	//解析配置文件
 	flag.Parse()
 	conf.Init(*config) //根据配置文件初始化配置
-	models.Init() //初始化数据库
+
+	//初始化日志系统
+	//alog.Init() //初始化日志库
+	logger.InitLog1()
+
+	//初始化数据库
+	models.Init()
 
 	if conf.Swag != nil {
 		docs.SwaggerInfo.Host = conf.Swag.Host
@@ -33,8 +39,5 @@ func main() {
 		logrus.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------",scheme,conf.Swag.Host,conf.ServerSetting.BasePath,))
 	}
 
-	alog.Init() //初始化日志库
 	core.RunWindowsServer()
-
-
 }

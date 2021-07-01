@@ -43,6 +43,13 @@ type User struct {
 	Robots    []Robot `gorm:"many2many:user_robot;"`
 }
 
+type Authority struct {
+	gorm.Model
+	AuthorityId   string `json:"authorityId" gorm:"not null;unique"`
+	AuthorityName string `json:"authorityName"`
+	ParentId      string `json:"parentId"`
+}
+
 type UserRegister struct {
 	Username  string `json:"username"`
 	Password  string `json:"password"`
@@ -66,12 +73,6 @@ type UserPolicy struct {
 	Username string `json:"username"`
 	URL      string `json:"url"`
 	Type     string `json:"type"`
-}
-
-type Authority struct {
-	AuthorityId     string         `json:"authorityId" gorm:"not null;unique;primary_key;comment:角色ID;size:90"`
-	AuthorityName   string         `json:"authorityName" gorm:"comment:角色名"`
-	ParentId        string         `json:"parentId" gorm:"comment:父角色ID"`
 }
 
 func Init() {
@@ -108,11 +109,11 @@ func Init() {
 	}
 
 	//给管理员赋予改变访问权限的权限
-     //initialize.Casbin.Init()
+
 	e := enforcer.EnforcerTool()
-	e.AddPolicy("admin","/policy","GET")
-	e.AddPolicy("admin","/policy","POST")
-	e.AddPolicy("admin","/policy","DELETE")
+	e.AddPolicy("admin", "/policy", "GET")
+	e.AddPolicy("admin", "/policy", "POST")
+	e.AddPolicy("admin", "/policy", "DELETE")
 }
 
 //自动创建数据表

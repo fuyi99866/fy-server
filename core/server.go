@@ -1,7 +1,7 @@
 package core
 
 import (
-	alog "go_server/log"
+	"github.com/sirupsen/logrus"
 	"go_server/routers"
 )
 
@@ -19,7 +19,7 @@ import (
 
 func RunWindowsServer()  {
 
-	alog.MyLogger.Debug("--------服务启动-------")
+	logrus.Debug("--------服务启动-------")
 
 	routers.Run()
 

@@ -2,9 +2,11 @@ package log
 
 import (
 	"fmt"
-	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	nested "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 	"go_server/conf"
+	"go_server/utils"
+	"log"
 	"os"
 	"runtime"
 	"strings"
@@ -14,6 +16,7 @@ import (
 // logrus提供了New()函数来创建一个logrus的实例。
 // 项目中，可以创建任意数量的logrus实例。
 //var LOG = logrus.New()
+///////////////////////
 var (
 	MyLogger *myLogger
 )
@@ -112,46 +115,118 @@ func getCaller(skip int) (string, int, uintptr) {
 	}
 	return file, line, pc
 }
+/////////////////////////
+//自定义的hook,暂时先不用
+
+
+
+
+
+
+
+
 
 //初始化配置
 func Init() {
 	InitLog(conf.AppSetting.LogSavePath, conf.AppSetting.LogSaveName, conf.AppSetting.LogFileExt)
 }
 
+var logFilePath string
+var logOutputs *LogOutputs
+var logFile *os.File
+
 func InitLog(path, name, ext string) {
-	var (
-		file *os.File
-		err  error
-	)
-	if file, err = os.OpenFile(path+name, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm); err != nil {
-		logrus.Error("打开日志文件错误：", err)
-	}
-	MyLogger = &myLogger{
-		File: file,
-	}
-	fmt.Println("DebugLevel:  " + conf.AppSetting.LogLever)
-	var lever logrus.Level
-	if conf.AppSetting.LogLever == "debug" {
-		lever = logrus.DebugLevel
-	} else {
-		lever = logrus.InfoLevel
+	/*	var (
+			file *os.File
+			err  error
+		)
+		path = "go_server.log"
+		if file, err = os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm); err != nil {
+			logrus.Error("打开日志文件错误：", err)
+		}
+		MyLogger = &myLogger{
+			File: file,
+		}
+		fmt.Println("DebugLevel:  " + conf.AppSetting.LogLever)
+		var lever logrus.Level
+		if conf.AppSetting.LogLever == "debug" {
+			lever = logrus.DebugLevel
+		} else {
+			lever = logrus.InfoLevel
+		}
+
+		MyLogger.Logger = NewLogger(lever, &logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05"}, NewMyHook())
+		MyLogger.Logger.Out = MyLogger.File*/
+
+	LogFileName = name
+	logFileExt = ext
+	logPath = path
+	logOutputs = NewLogOutputs()
+	//判断文件路径是否存在？不存在就创建
+	err := utils.IsNotExistMkDir(path)
+	if err != nil {
+		logrus.Infoln(err)
 	}
 
-	MyLogger.Logger = NewLogger(lever, &logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05"}, NewMyHook())
-	MyLogger.Logger.Out = MyLogger.File
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
+	logOutputs.AppendLogger(os.Stdout)
+	//log.SetOutput(logOutputs)
 
+	//logrus.SetOutput(logOutputs)
+	logrus.SetFormatter(&nested.Formatter{
+		HideKeys:        true,
+		TimestampFormat: "2006-01-02 15:04:05", //time.RFC3339,
+		//FieldsOrder:     []string{"name", "age"},
+	})
 
-	//设置日志分割
-	writer,_:=rotatelogs.New(
-		"%Y%m%d%H%M_"+path,
+/*	writer, _ := rotatelogs.New(
+		"%Y%m%d%H%M===_"+path,
 		rotatelogs.WithLinkName(path),
-		rotatelogs.WithMaxAge(time.Duration(180)*time.Second),
-		rotatelogs.WithRotationTime(time.Duration(60)*time.Second),
+		rotatelogs.WithMaxAge(time.Duration(180)*time.Hour),
+		rotatelogs.WithRotationTime(time.Duration(60)*time.Hour),
 	)
-	MyLogger.Logger.SetOutput(writer)
+	log.SetOutput(writer)*/
+
+	refreshLogFile()
+	go func() {
+		for {
+			time.Sleep(time.Duration(1) * time.Hour) //每小时监测一次
+			refreshLogFile()
+		}
+	}()
+
+	fmt.Println("DebugLevel:  " + conf.AppSetting.LogLever)
+	if conf.AppSetting.LogLever == "debug" {
+		logrus.SetLevel(logrus.DebugLevel)
+		//gin.DefaultWriter = logOutputs
+	} else {
+		logrus.SetReportCaller(false)
+		logrus.SetLevel(logrus.InfoLevel)
+	}
 
 }
 
 //刷新日志文件,循环删除旧的日志，避免日志占用太大的内存
-func refreshLogFile(){
+func refreshLogFile() {
+	newLog := GetLogFileName(time.Now())
+	currentLog := logFilePath
+	currentLogIo := logFile
+
+	if logFile == nil || currentLog != newLog {
+		newLogIo, err := os.OpenFile(newLog, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+		if err != nil {
+			logrus.Infoln("Fail to create log file :", err)
+			return
+		}
+		logOutputs.AppendLogger(newLogIo)
+		logrus.Infoln("create new log file:", newLog)
+		logFile = newLogIo
+		logFilePath = newLog
+		if currentLogIo != nil {
+			logOutputs.RemoveLogger(currentLogIo)
+			currentLogIo.Close()
+		}
+		dropLog := GetLogFileName(time.Now().Add(time.Duration(-24*7) * time.Hour)) //只保留七天的日志
+		RemoveLogFile(dropLog)
+	}
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	alog "go_server/log"
 	"go_server/models"
 	"go_server/routers/casbin/enforcer"
 	"go_server/utils"
@@ -21,12 +20,12 @@ import (
 // @Router /policy  [POST]
 // @Security ApiKeyAuth
 func AddPolicy(c *gin.Context) {
-	alog.MyLogger.Info("1增加Policy")
+	logrus.Info("1增加Policy")
 	appG := utils.Gin{C: c}
 	var reqInfo models.UserPolicy
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		alog.MyLogger.Error("AddPolicy param error")
+		logrus.Error("AddPolicy param error")
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -34,10 +33,10 @@ func AddPolicy(c *gin.Context) {
 	e := enforcer.EnforcerTool()
 	fmt.Println("增加Policy")
 	if ok := e.AddPolicy(reqInfo.Username,reqInfo.URL,reqInfo.Type); !ok {
-		fmt.Println("Policy已经存在")
+		logrus.Println("Policy已经存在")
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
 	} else {
-		fmt.Println("增加成功")
+		logrus.Println("增加成功")
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)
 	}
 }
@@ -57,18 +56,17 @@ func DeletePolicy(c *gin.Context) {
 	var reqInfo models.UserPolicy
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		alog.MyLogger.Error("AddPolicy param error")
+		logrus.Error("AddPolicy param error")
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
 		return
 	}
 
 	e := enforcer.EnforcerTool()
-	fmt.Println("删除Policy")
 	if ok := e.RemovePolicy(reqInfo.Username,reqInfo.URL,reqInfo.Type); !ok {
-		fmt.Println("Policy不存在")
+		logrus.Println("Policy不存在")
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
 	} else {
-		fmt.Println("删除成功")
+		logrus.Println("删除成功")
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)
 	}
 }
@@ -85,12 +83,11 @@ func GetPolicy(c *gin.Context) {
 	logrus.Info("1查看Policy")
 	appG := utils.Gin{C: c}
 	e := enforcer.EnforcerTool()
-	fmt.Println("2查看Policy")
 
 	list := e.GetPolicy()
 	for _, vlist := range list {
 		for _, v := range vlist {
-			fmt.Printf("value: %s, ", v)
+			logrus.Printf("value: %s, ", v)
 		}
 	}
 

@@ -40,3 +40,11 @@ func (c *casbin) Init() error {
 		return nil
 	})
 }
+
+func Init_Casbin() error {
+	if err := db.Create(&carbines).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
