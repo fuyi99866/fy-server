@@ -7,7 +7,7 @@ import (
 	"go_server/conf"
 	"go_server/core"
 	"go_server/docs"
-	logger "go_server/log"
+	alog "go_server/log"
 	"go_server/models"
 )
 
@@ -23,8 +23,8 @@ func main() {
 	conf.Init(*config) //根据配置文件初始化配置
 
 	//初始化日志系统
-	//alog.Init() //初始化日志库
-	logger.InitLog1()
+	//alog.Init() //初始化日志库 ,使用logrus库
+	alog.InitLog1()//初始化日志库 ,使用zap库
 
 	//初始化数据库
 	models.Init()

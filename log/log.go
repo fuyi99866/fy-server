@@ -2,7 +2,6 @@ package log
 
 import (
 	"fmt"
-	nested "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 	"go_server/conf"
 	"go_server/utils"
@@ -136,7 +135,7 @@ var logOutputs *LogOutputs
 var logFile *os.File
 
 func InitLog(path, name, ext string) {
-	/*	var (
+/*		var (
 			file *os.File
 			err  error
 		)
@@ -158,6 +157,8 @@ func InitLog(path, name, ext string) {
 		MyLogger.Logger = NewLogger(lever, &logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05"}, NewMyHook())
 		MyLogger.Logger.Out = MyLogger.File*/
 
+
+
 	LogFileName = name
 	logFileExt = ext
 	logPath = path
@@ -173,19 +174,13 @@ func InitLog(path, name, ext string) {
 	//log.SetOutput(logOutputs)
 
 	//logrus.SetOutput(logOutputs)
-	logrus.SetFormatter(&nested.Formatter{
+
+
+/*	logrus.SetFormatter(&nested.Formatter{
 		HideKeys:        true,
 		TimestampFormat: "2006-01-02 15:04:05", //time.RFC3339,
 		//FieldsOrder:     []string{"name", "age"},
-	})
-
-/*	writer, _ := rotatelogs.New(
-		"%Y%m%d%H%M===_"+path,
-		rotatelogs.WithLinkName(path),
-		rotatelogs.WithMaxAge(time.Duration(180)*time.Hour),
-		rotatelogs.WithRotationTime(time.Duration(60)*time.Hour),
-	)
-	log.SetOutput(writer)*/
+	})*/
 
 	refreshLogFile()
 	go func() {
@@ -230,3 +225,8 @@ func refreshLogFile() {
 		RemoveLogFile(dropLog)
 	}
 }
+
+
+
+
+

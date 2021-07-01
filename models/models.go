@@ -17,7 +17,6 @@ type Company struct {
 }
 
 type Robot struct {
-	gorm.Model
 	RobotSN      string `json:"robotsn"`
 	TaskID       string `json:"taskid";gorm:"unique_index, not null"` //任务名称（也就是ID，唯一标识
 	NickName     string `json:"nickname"`                             //任务别名（可忽略
@@ -34,6 +33,13 @@ type Robot struct {
 	Status       string `json:"status"`                               //消杀状态 start:开始 working：消杀中 terminate_by_robot：硬件结束 terminate_by_software软件结束 finish：消杀完成
 }
 
+type Authority struct {
+	gorm.Model
+	AuthorityId   string `json:"authority_id" gorm:"not null;unique"` //权限ID
+	AuthorityName string `json:"authority_name"`                      //角色名
+	ParentId      string `json:"parent_id"`                           //父角色ID
+}
+
 type User struct {
 	gorm.Model
 	Username  string  `json:"username" gorm:"column:username; index:usr_name;not null"` //唯一索引
@@ -41,13 +47,6 @@ type User struct {
 	NickName  string  `json:"nickname" gorm:"column:nickname;" `
 	CompanyID string  `json:"company_id" gorm:"column:company_id;"`
 	Robots    []Robot `gorm:"many2many:user_robot;"`
-}
-
-type Authority struct {
-	gorm.Model
-	AuthorityId   string `json:"authorityId" gorm:"not null;unique"`
-	AuthorityName string `json:"authorityName"`
-	ParentId      string `json:"parentId"`
 }
 
 type UserRegister struct {
