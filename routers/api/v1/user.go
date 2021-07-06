@@ -4,10 +4,11 @@ import (
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"go_server/logger"
 	"go_server/models"
+	"go_server/pkg/app"
+	"go_server/pkg/e"
+	"go_server/pkg/logger"
 	"go_server/routers/jwt"
-	"go_server/utils"
 	"net/http"
 	"strings"
 )
@@ -25,8 +26,8 @@ import (
 // @Router /alive  [get]
 // @Security ApiKeyAuth
 func TokenAlive(c *gin.Context) {
-	appG := utils.Gin{C: c}
-	appG.Response(http.StatusOK, utils.SUCCESS, nil)
+	appG := app.Gin{C: c}
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
 // @Summary   登录获取登录token 信息
@@ -38,12 +39,12 @@ func TokenAlive(c *gin.Context) {
 // @Failure 400 {object} utils.Response
 // @Router /auth  [POST]
 func Auth(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.UserLogin
 	if err := c.ShouldBindJSON(&reqInfo); err != nil {
 		body, _ := c.GetRawData()
 		logger.Info("Auth request: ", string(body))
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, nil)
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
 		return
 	}
 	logger.Info("Auth: ", reqInfo.Username, reqInfo.Password)
@@ -61,21 +62,21 @@ func Auth(c *gin.Context) {
 	isOk, err := models.CheckUser(reqInfo.Username, reqInfo.Password)
 
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
 
 	if !isOk {
-		appG.Response(http.StatusUnauthorized, utils.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)
+		appG.Response(http.StatusUnauthorized, e.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)
 		return
 	}
 	token, err := jwt.GenerateToken(reqInfo.Username, reqInfo.Password)
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
 
-	appG.Response(http.StatusOK, utils.SUCCESS, map[string]string{
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
 		"token": token,
 	})
 }
@@ -131,15 +132,15 @@ func Auth(c *gin.Context) {
 // @Security ApiKeyAuth
 func GetUsers(c *gin.Context) {
 	//分页显示所有用户
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	user, err := models.GetAllUser()
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
 	data := make(map[string]interface{})
 	data["lists"] = user
-	appG.Response(http.StatusOK, utils.SUCCESS, data)
+	appG.Response(http.StatusOK, e.SUCCESS, data)
 }
 
 // @Summary   增加用户
@@ -153,12 +154,12 @@ func GetUsers(c *gin.Context) {
 // @Security ApiKeyAuth
 func AddUser(c *gin.Context) {
 	logger.Info("AddUser")
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logger.Info("AddUser param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 	menu := map[string]interface{}{
@@ -170,11 +171,11 @@ func AddUser(c *gin.Context) {
 
 	_, _err := models.AddUser(menu)
 	if _err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logger.Error("AddUser error")
 		return
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
 }
 
@@ -189,22 +190,22 @@ func AddUser(c *gin.Context) {
 // @Security ApiKeyAuth
 func UpdateUser(c *gin.Context) {
 	logrus.Info("UpdateUser")
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logger.Info("AddUser param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 
 	_err := models.UpdateUser(reqInfo)
 	if _err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logger.Info("UpdateUser error")
 		return
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
 }
 
@@ -217,20 +218,20 @@ func UpdateUser(c *gin.Context) {
 // @Router /user/get  [GET]
 // @Security ApiKeyAuthc
 func GetOneUser(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	Authorization := c.GetHeader("Authorization")
 	claims, err := jwt.ParseToken(Authorization)
 	if err!=nil{
-		appG.Response(http.StatusForbidden, utils.ACCESS_DENIED, nil)
+		appG.Response(http.StatusForbidden, e.ACCESS_DENIED, nil)
 		return
 	}
 
 	user, err := models.GetOneUser(claims.Username)
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
-	appG.Response(http.StatusOK, utils.SUCCESS, user)
+	appG.Response(http.StatusOK, e.SUCCESS, user)
 }
 
 
@@ -244,22 +245,22 @@ func GetOneUser(c *gin.Context) {
 // @Router /user/delete  [delete]
 // @Security ApiKeyAuth
 func DeleteUser(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logger.Info("AddUser param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 
 	_err := models.DeleteUser(reqInfo)
 	if _err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logger.Error("DeleteUser error")
 		return
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
 }
 

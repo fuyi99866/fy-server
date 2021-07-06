@@ -5,8 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"go_server/models"
+	"go_server/pkg/app"
+	e2 "go_server/pkg/e"
 	"go_server/routers/casbin/enforcer"
-	"go_server/utils"
 	"net/http"
 )
 
@@ -21,12 +22,12 @@ import (
 // @Security ApiKeyAuth
 func AddPolicy(c *gin.Context) {
 	logrus.Info("1增加Policy")
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.UserPolicy
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logrus.Error("AddPolicy param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e2.INVALID_PARAMS, err.Error())
 		return
 	}
 
@@ -34,10 +35,10 @@ func AddPolicy(c *gin.Context) {
 	fmt.Println("增加Policy")
 	if ok := e.AddPolicy(reqInfo.Username,reqInfo.URL,reqInfo.Type); !ok {
 		logrus.Println("Policy已经存在")
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e2.ERROR, nil)
 	} else {
 		logrus.Println("增加成功")
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e2.SUCCESS, nil)
 	}
 }
 
@@ -52,22 +53,22 @@ func AddPolicy(c *gin.Context) {
 // @Security ApiKeyAuth
 func DeletePolicy(c *gin.Context) {
 	logrus.Info("删除Policy")
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.UserPolicy
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logrus.Error("AddPolicy param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e2.INVALID_PARAMS, err.Error())
 		return
 	}
 
 	e := enforcer.EnforcerTool()
 	if ok := e.RemovePolicy(reqInfo.Username,reqInfo.URL,reqInfo.Type); !ok {
 		logrus.Println("Policy不存在")
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e2.ERROR, nil)
 	} else {
 		logrus.Println("删除成功")
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e2.SUCCESS, nil)
 	}
 }
 
@@ -81,7 +82,7 @@ func DeletePolicy(c *gin.Context) {
 // @Security ApiKeyAuth
 func GetPolicy(c *gin.Context) {
 	logrus.Info("1查看Policy")
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	e := enforcer.EnforcerTool()
 
 	list := e.GetPolicy()
@@ -91,5 +92,5 @@ func GetPolicy(c *gin.Context) {
 		}
 	}
 
-	appG.Response(http.StatusOK, utils.SUCCESS, list)
+	appG.Response(http.StatusOK, e2.SUCCESS, list)
 }

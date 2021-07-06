@@ -4,7 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"go_server/models"
-	"go_server/utils"
+	"go_server/pkg/app"
+	"go_server/pkg/e"
 	"net/http"
 )
 
@@ -18,12 +19,12 @@ import (
 // @Router /authority/add  [POST]
 // @Security ApiKeyAuth
 func CreateAuthority(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logrus.Info("CreateAuthority param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 	/*
@@ -34,11 +35,11 @@ func CreateAuthority(c *gin.Context) {
 		}*/
 
 	if _,err := models.CreateAuthority(reqInfo); err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logrus.Error("CreateAuthority error")
 		return
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
 }
 
@@ -51,19 +52,19 @@ func CreateAuthority(c *gin.Context) {
 // @Success 200 {string} string "{"code":200,"data":{},"msg":"ok"}"
 // @Router /authority/delete [delete]
 func DeleteAuthority(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logrus.Info("CreateAuthority param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 	if err := models.DeleteAuthority(reqInfo); err != nil { // 删除角色之前需要判断是否有用户正在使用此角色
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logrus.Error("DeleteAuthority error")
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
 }
 
@@ -76,20 +77,20 @@ func DeleteAuthority(c *gin.Context) {
 // @Success 200 {string} string "{"code":200,"data":{},"msg":"ok"}"
 // @Router /authority/update [post]
 func UpdateAuthority(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logrus.Info("CreateAuthority param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 
 	if err, authority := models.UpdateAuthority(reqInfo); err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logrus.Error("UpdateAuthority error")
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, authority)
+		appG.Response(http.StatusOK, e.SUCCESS, authority)
 	}
 }
 
@@ -102,20 +103,20 @@ func UpdateAuthority(c *gin.Context) {
 // @Success 200 {string} string "{"code":200,"data":{},"msg":"ok"}"
 // @Router /authority/set [post]
 func SetAuthority(c *gin.Context) {
-	appG := utils.Gin{C: c}
+	appG := app.Gin{C: c}
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
 		logrus.Info("CreateAuthority param error")
-		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 	}
 
 	if err := models.SetAuthority(reqInfo); err != nil {
-		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		logrus.Error("SetDataAuthority error")
 		return
 	} else {
-		appG.Response(http.StatusOK, utils.SUCCESS, nil)
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
 }
 

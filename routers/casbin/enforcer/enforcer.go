@@ -5,20 +5,21 @@ import (
 	"github.com/casbin/gorm-adapter"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"go_server/pkg/app"
+	e2 "go_server/pkg/e"
 	"go_server/routers/casbin/DB"
 	"go_server/routers/jwt"
-	"go_server/utils"
 	"net/http"
 )
 
 //拦截器函数
 func Interceptor(e *casbin.Enforcer) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		appG := utils.Gin{C: context}
+		appG := app.Gin{C: context}
 		Authorization := context.GetHeader("Authorization")
 		claims, err := jwt.ParseToken(Authorization)
 		if err!=nil{
-			appG.Response(http.StatusForbidden, utils.ACCESS_DENIED, nil)
+			appG.Response(http.StatusForbidden, e2.ACCESS_DENIED, nil)
 			return
 		}
         logrus.Info("claims===",claims)
@@ -36,7 +37,7 @@ func Interceptor(e *casbin.Enforcer) gin.HandlerFunc {
 		} else {
 			logrus.Warn("没有通过权限")
 			context.Abort()
-			appG.Response(http.StatusForbidden, utils.ACCESS_DENIED, nil)
+			appG.Response(http.StatusForbidden, e2.ACCESS_DENIED, nil)
 		}
 	}
 }

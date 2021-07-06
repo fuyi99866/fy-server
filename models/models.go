@@ -6,8 +6,8 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/sirupsen/logrus"
-	"go_server/conf"
-	"go_server/logger"
+	"go_server/pkg/logger"
+	"go_server/pkg/setting"
 	"go_server/routers/casbin/enforcer"
 )
 
@@ -80,17 +80,17 @@ func Init() {
 	//连接数据库
 	var err error
 	var dataPath string
-	if conf.DatabaseSetting.Type == "mysql" {
+	if setting.DatabaseSetting.Type == "mysql" {
 		dataPath = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			conf.DatabaseSetting.User,
-			conf.DatabaseSetting.Password,
-			conf.DatabaseSetting.Host,
-			conf.DatabaseSetting.Name)
-	}else if conf.DatabaseSetting.Type == "sqlite3" {
-		logger.Info("dataType = ",conf.DatabaseSetting.Type)
+			setting.DatabaseSetting.User,
+			setting.DatabaseSetting.Password,
+			setting.DatabaseSetting.Host,
+			setting.DatabaseSetting.Name)
+	}else if setting.DatabaseSetting.Type == "sqlite3" {
+		logger.Info("dataType = ", setting.DatabaseSetting.Type)
 		dataPath = "data/test.db"
 	}
-	db, err = gorm.Open(conf.DatabaseSetting.Type, dataPath)
+	db, err = gorm.Open(setting.DatabaseSetting.Type, dataPath)
 	if err != nil {
 		logrus.Fatal("无法连接数据库... err: %/v", err)
 	}

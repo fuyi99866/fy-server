@@ -1,18 +1,17 @@
 package jwt
 
 import (
-
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"go_server/conf"
-	"go_server/utils"
+	"go_server/pkg/e"
+	"go_server/pkg/setting"
 	"net/http"
 	"time"
 )
 
-var JwtSecret = []byte(conf.AppSetting.JwtSecret)
+var JwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
 	Username string `json:"username"`
@@ -59,28 +58,28 @@ func JWT() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var code int
 		var data interface{}
-		code = utils.SUCCESS
+		code = e.SUCCESS
 		Authorization := context.GetHeader("Authorization")//验证token，要从Header中查询Authorization
 		token := Authorization
 		fmt.Println("jwt", token)
 		if token == "" {
-			code = utils.INVALID_PARAMS
+			code = e.INVALID_PARAMS
 		} else {
 			claims, err := ParseToken(token)
 			fmt.Println("解析出来的claims:", claims)
 			fmt.Println("解析出来的err:", err)
 			if err != nil {
-				code = utils.ERROR_AUTH_CHECK_TOKEN_FAIL
+				code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 			} else if time.Now().Unix() > claims.ExpiresAt {
-				code = utils.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
+				code = e.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
 			}
 		}
 
-		if code!=utils.SUCCESS{
+		if code!= e.SUCCESS {
 			context.JSON(http.StatusUnauthorized,gin.H{
-				"code":code,
-				"msg":utils.GetMsg(code),
-				"data":data,
+				"code": code,
+				"msg":  e.GetMsg(code),
+				"data": data,
 			})
 			context.Abort()
 			return
