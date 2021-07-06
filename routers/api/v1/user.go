@@ -7,8 +7,8 @@ import (
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
+	"go_server/pkg/jwt"
 	"go_server/pkg/logger"
-	"go_server/routers/jwt"
 	"net/http"
 	"strings"
 )

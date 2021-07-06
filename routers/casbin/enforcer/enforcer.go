@@ -7,8 +7,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"go_server/pkg/app"
 	e2 "go_server/pkg/e"
+	"go_server/pkg/jwt"
 	"go_server/routers/casbin/DB"
-	"go_server/routers/jwt"
 	"net/http"
 )
 

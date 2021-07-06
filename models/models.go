@@ -126,5 +126,5 @@ func Init() {
 
 //自动创建数据表
 func migration() {
-	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{}).AutoMigrate(&Authority{})
+	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{}).AutoMigrate(&Authority{}).AutoMigrate(&Tag{}).AutoMigrate(&Article{})
 }
