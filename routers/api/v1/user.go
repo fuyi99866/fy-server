@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"go_server/logger"
 	"go_server/models"
 	"go_server/routers/jwt"
 	"go_server/utils"
@@ -41,11 +42,11 @@ func Auth(c *gin.Context) {
 	var reqInfo models.UserLogin
 	if err := c.ShouldBindJSON(&reqInfo); err != nil {
 		body, _ := c.GetRawData()
-		logrus.Println("Auth request: ", string(body))
+		logger.Info("Auth request: ", string(body))
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, nil)
 		return
 	}
-	logrus.Println("Auth: ", reqInfo.Username, reqInfo.Password)
+	logger.Info("Auth: ", reqInfo.Username, reqInfo.Password)
 
 	//有效性验证
 	valid := validation.Validation{}
@@ -151,12 +152,12 @@ func GetUsers(c *gin.Context) {
 // @Router /user  [POST]
 // @Security ApiKeyAuth
 func AddUser(c *gin.Context) {
-	logrus.Info("AddUser")
+	logger.Info("AddUser")
 	appG := utils.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("AddUser param error")
+		logger.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -170,7 +171,7 @@ func AddUser(c *gin.Context) {
 	_, _err := models.AddUser(menu)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
-		logrus.Error("AddUser error")
+		logger.Error("AddUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)
@@ -192,7 +193,7 @@ func UpdateUser(c *gin.Context) {
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("AddUser param error")
+		logger.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -200,7 +201,7 @@ func UpdateUser(c *gin.Context) {
 	_err := models.UpdateUser(reqInfo)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
-		logrus.Error("UpdateUser error")
+		logger.Info("UpdateUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)
@@ -247,7 +248,7 @@ func DeleteUser(c *gin.Context) {
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("AddUser param error")
+		logger.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, utils.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -255,7 +256,7 @@ func DeleteUser(c *gin.Context) {
 	_err := models.DeleteUser(reqInfo)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, utils.ERROR, nil)
-		logrus.Error("DeleteUser error")
+		logger.Error("DeleteUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, utils.SUCCESS, nil)
