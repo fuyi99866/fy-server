@@ -3,13 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"go_server/docs"
 	"go_server/models"
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/routers"
-	"net/http"
-	"time"
 )
 
 /**
@@ -28,6 +27,15 @@ import (
 8、casbin控制访问权限
 9、使用单元测试进行代码性能检测
 */
+
+// @title code server
+// @version 0.0.1
+// @description Go 学习综合demo
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 
 	//读取配置文件
@@ -37,7 +45,6 @@ func main() {
 	setting.Init(*config) //根据配置文件初始化配置
 
 	//初始化日志系统
-	//alog.Init() //初始化日志库 ,使用logrus库
 	logger.InitLog1(setting.AppSetting.LogLever, "/logs/go_server.log") //初始化日志库 ,使用zap库
 
 	//初始化数据库
@@ -48,16 +55,13 @@ func main() {
 
 //初始化服务
 func initServer() {
-	app := routers.InitRouter()
-
 	//注册路由
-	routers.RegisterRouter(app)
-
+	app := routers.InitRouter()
 	initHTTPServer(app)
 }
 
 // InitHTTPServer 初始化http服务
-func initHTTPServer(handler http.Handler) {
+func initHTTPServer(app *gin.Engine) {
 	logger.Info("start server")
 	if setting.Swag != nil {
 		docs.SwaggerInfo.Host = setting.Swag.Host
@@ -69,13 +73,5 @@ func initHTTPServer(handler http.Handler) {
 		logger.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
 	}
 
-	srv := &http.Server{
-		Addr:         ":" + fmt.Sprintf(":%d", setting.ServerSetting.HttpPort),
-		Handler:      handler,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  15 * time.Second,
-	}
-
-	srv.ListenAndServe()
+	app.Run(":8081")
 }

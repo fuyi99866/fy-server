@@ -1,11 +1,26 @@
 definitions:
+  app.Response:
+    properties:
+      code:
+        description: 错误码
+        type: integer
+      data:
+        description: 详细错误信息
+        type: string
+      msg:
+        description: 错误信息
+        type: string
+    type: object
   models.Authority:
     properties:
-      authorityId:
+      authority_id:
+        description: 权限ID
         type: string
-      authorityName:
+      authority_name:
+        description: 角色名
         type: string
-      parentId:
+      parent_id:
+        description: 父角色ID
         type: string
     type: object
   models.UserLogin:
@@ -41,26 +56,9 @@ definitions:
       username:
         type: string
     type: object
-  utils.Response:
-    properties:
-      code:
-        description: 错误码
-        type: integer
-      data:
-        description: 详细错误信息
-        type: string
-      msg:
-        description: 错误信息
-        type: string
-    type: object
 info:
   contact: {}
-  description: Go 学习综合demo
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: code server
-  version: 0.0.1
+  license: {}
 paths:
   /alive:
     get:
@@ -76,7 +74,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 检查token是否过期
@@ -103,7 +101,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       summary: 登录获取登录token 信息
       tags:
       - 鉴权
@@ -128,7 +126,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 创建角色
@@ -203,24 +201,6 @@ paths:
       summary: 更新角色信息
       tags:
       - 角色
-  /email:
-    post:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code":200,"data":{},"msg":"ok"}'
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: 发送测试邮件
-      tags:
-      - 系統
   /policy:
     delete:
       consumes:
@@ -242,7 +222,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 删除访问权限
@@ -261,7 +241,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 获取权限列表
@@ -287,7 +267,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 增加访问权限
@@ -307,7 +287,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 获取所有用户
@@ -333,7 +313,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 增加用户
@@ -360,7 +340,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 刪除用户
@@ -380,7 +360,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuthc: []
       summary: 获取单一用户
@@ -407,7 +387,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/utils.Response'
+            $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
       summary: 更新用户信息
@@ -424,9 +404,4 @@ paths:
       summary: Websocket接口, 支持订阅机器人状态、任务状态、任务倒计时信息
       tags:
       - websocket
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

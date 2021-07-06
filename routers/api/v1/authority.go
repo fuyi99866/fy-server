@@ -15,7 +15,7 @@ import (
 // @Produce  json
 // @Param   body  body   models.Authority   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /authority/add  [POST]
 // @Security ApiKeyAuth
 func CreateAuthority(c *gin.Context) {

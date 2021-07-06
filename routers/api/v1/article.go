@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetArticle(c *gin.Context)  {
-/*	appG:=app.Gin{c}
-	id:=com.StrTo(c.Params("id")).MustInt()*/
+func GetArticle(c *gin.Context) {
+/*	appG := app.Gin{c}
+	id := com.StrTo(c.Params("id")).MustInt()*/
 }

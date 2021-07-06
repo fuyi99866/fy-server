@@ -19,10 +19,7 @@ var doc = `{
         "description": "{{.Description}}",
         "title": "{{.Title}}",
         "contact": {},
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "license": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -55,7 +52,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -94,7 +91,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -138,7 +135,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -258,36 +255,6 @@ var doc = `{
                 }
             }
         },
-        "/email": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系統"
-                ],
-                "summary": "发送测试邮件",
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/policy": {
             "get": {
                 "security": [
@@ -315,7 +282,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -357,7 +324,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -399,7 +366,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -432,7 +399,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -474,7 +441,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -518,7 +485,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -551,7 +518,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -595,7 +562,7 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -619,16 +586,36 @@ var doc = `{
         }
     },
     "definitions": {
+        "app.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "错误码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "详细错误信息",
+                    "type": "string"
+                },
+                "msg": {
+                    "description": "错误信息",
+                    "type": "string"
+                }
+            }
+        },
         "models.Authority": {
             "type": "object",
             "properties": {
-                "authorityId": {
+                "authority_id": {
+                    "description": "权限ID",
                     "type": "string"
                 },
-                "authorityName": {
+                "authority_name": {
+                    "description": "角色名",
                     "type": "string"
                 },
-                "parentId": {
+                "parent_id": {
+                    "description": "父角色ID",
                     "type": "string"
                 }
             }
@@ -675,30 +662,6 @@ var doc = `{
                     "type": "string"
                 }
             }
-        },
-        "utils.Response": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "错误码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "详细错误信息",
-                    "type": "string"
-                },
-                "msg": {
-                    "description": "错误信息",
-                    "type": "string"
-                }
-            }
-        }
-    },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }`
@@ -714,12 +677,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.1",
+	Version:     "",
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "code server",
-	Description: "Go 学习综合demo",
+	Title:       "",
+	Description: "",
 }
 
 type s struct{}

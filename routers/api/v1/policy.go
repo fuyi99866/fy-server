@@ -17,7 +17,7 @@ import (
 // @Produce  json
 // @Param   body  body   models.UserPolicy   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /policy  [POST]
 // @Security ApiKeyAuth
 func AddPolicy(c *gin.Context) {
@@ -48,7 +48,7 @@ func AddPolicy(c *gin.Context) {
 // @Produce  json
 // @Param   body  body   models.UserPolicy   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /policy  [DELETE]
 // @Security ApiKeyAuth
 func DeletePolicy(c *gin.Context) {
@@ -77,7 +77,7 @@ func DeletePolicy(c *gin.Context) {
 // @Accept json
 // @Produce  json
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /policy  [GET]
 // @Security ApiKeyAuth
 func GetPolicy(c *gin.Context) {

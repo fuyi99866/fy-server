@@ -13,23 +13,18 @@ import (
 )
 
 
-//swag init --generalInfo .\routers\http.go
+//swag init --generalInfo .\routers\router.go
 
-// @title code server
-// @version 0.0.1
-// @description Go 学习综合demo
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @securityDefinitions.apikey ApiKeyAuth
-// @in header
-// @name Authorization
-func RegisterRouter(app *gin.Engine) {
-	//1.创建路由
-	r := app
+
+
+func InitRouter() *gin.Engine {
+	r:=gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())//崩溃恢复，直接返回500
+	gin.SetMode(setting.RunMode)
+
 	//2、绑定路由规则，执行的函数
 	//gin.Context,封装了request和response
-
-	//r.Use(enforcer.Interceptor(enforcer.EnforcerTool()))
 
 
 	//将访问路由到swagger的HTML页面
@@ -75,17 +70,8 @@ func RegisterRouter(app *gin.Engine) {
 			authority.POST("update",v1.UpdateAuthority)
 			authority.POST("set",v1.SetAuthority)
 			authority.DELETE("delete",v1.DeleteAuthority)
-
 		}
 	}
-}
-
-
-func InitRouter() *gin.Engine {
-	r:=gin.New()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())//崩溃恢复，直接返回500
-	gin.SetMode(setting.RunMode)
 
 	return r
 }

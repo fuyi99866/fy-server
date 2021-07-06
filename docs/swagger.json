@@ -1,14 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Go 学习综合demo",
-        "title": "code server",
         "contact": {},
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "0.0.1"
+        "license": {}
     },
     "paths": {
         "/alive": {
@@ -38,7 +32,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -77,7 +71,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -121,7 +115,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -241,36 +235,6 @@
                 }
             }
         },
-        "/email": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系統"
-                ],
-                "summary": "发送测试邮件",
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/policy": {
             "get": {
                 "security": [
@@ -298,7 +262,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -340,7 +304,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -382,7 +346,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -415,7 +379,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -457,7 +421,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -501,7 +465,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -534,7 +498,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -578,7 +542,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.Response"
+                            "$ref": "#/definitions/app.Response"
                         }
                     }
                 }
@@ -602,16 +566,36 @@
         }
     },
     "definitions": {
+        "app.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "错误码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "详细错误信息",
+                    "type": "string"
+                },
+                "msg": {
+                    "description": "错误信息",
+                    "type": "string"
+                }
+            }
+        },
         "models.Authority": {
             "type": "object",
             "properties": {
-                "authorityId": {
+                "authority_id": {
+                    "description": "权限ID",
                     "type": "string"
                 },
-                "authorityName": {
+                "authority_name": {
+                    "description": "角色名",
                     "type": "string"
                 },
-                "parentId": {
+                "parent_id": {
+                    "description": "父角色ID",
                     "type": "string"
                 }
             }
@@ -658,30 +642,6 @@
                     "type": "string"
                 }
             }
-        },
-        "utils.Response": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "description": "错误码",
-                    "type": "integer"
-                },
-                "data": {
-                    "description": "详细错误信息",
-                    "type": "string"
-                },
-                "msg": {
-                    "description": "错误信息",
-                    "type": "string"
-                }
-            }
-        }
-    },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }

@@ -22,7 +22,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /alive  [get]
 // @Security ApiKeyAuth
 func TokenAlive(c *gin.Context) {
@@ -36,7 +36,7 @@ func TokenAlive(c *gin.Context) {
 // @Produce  json
 // @Param   body  body   models.UserLogin   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /auth  [POST]
 func Auth(c *gin.Context) {
 	appG := app.Gin{C: c}
@@ -127,7 +127,7 @@ func Auth(c *gin.Context) {
 // @Accept json
 // @Produce  json
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /user  [GET]
 // @Security ApiKeyAuth
 func GetUsers(c *gin.Context) {
@@ -149,7 +149,7 @@ func GetUsers(c *gin.Context) {
 // @Produce  json
 // @Param   body  body   models.UserRegister   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /user  [POST]
 // @Security ApiKeyAuth
 func AddUser(c *gin.Context) {
@@ -185,7 +185,7 @@ func AddUser(c *gin.Context) {
 // @Produce  json
 // @Param   body  body   models.UserRegister   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /user/update  [POST]
 // @Security ApiKeyAuth
 func UpdateUser(c *gin.Context) {
@@ -214,7 +214,7 @@ func UpdateUser(c *gin.Context) {
 // @Accept json
 // @Produce  json
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /user/get  [GET]
 // @Security ApiKeyAuthc
 func GetOneUser(c *gin.Context) {
@@ -241,7 +241,7 @@ func GetOneUser(c *gin.Context) {
 // @Produce  json
 // @Param   body  body   models.UserRegister   true "body"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
-// @Failure 400 {object} utils.Response
+// @Failure 400 {object} app.Response
 // @Router /user/delete  [delete]
 // @Security ApiKeyAuth
 func DeleteUser(c *gin.Context) {
