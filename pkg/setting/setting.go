@@ -3,6 +3,7 @@ package setting
 import (
 	"github.com/go-ini/ini"
 	"github.com/sirupsen/logrus"
+	"go_server/pkg/logger"
 	"time"
 )
 
@@ -35,13 +36,20 @@ type SERVER struct {
 var ServerSetting = &SERVER{}
 
 type App struct {
-	JwtSecret   string
+	JwtSecret       string
+	PageSize        int
+	RuntimeRootPath string
+
+	ImagePrefixUrl string
+	ImageSavePath  string
+	ImageMaxSize   int
+	ImageAllowExts []string
+
 	LogSavePath string
 	LogSaveName string
 	LogFileExt  string
 	LogLever    string
 	TimeFormat  string
-	PAGE_SIZE   int
 }
 
 var AppSetting = &App{}
@@ -71,16 +79,12 @@ func Init(config string) {
 	mapTo("redis", RedisSetting)
 	mapTo("server", ServerSetting)
 
-	LoadBase()
 }
 
 func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
 	if err != nil {
-		logrus.Fatalf("加载配置文件失败", err)
+		logger.Fatalf("加载配置文件失败", err)
 	}
 }
 
-func LoadBase()  {
-	RunMode = cfg.Section("").Key("RUN_MODE").MustString("debug")
-}

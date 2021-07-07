@@ -49,8 +49,9 @@ func main() {
 
 	//初始化数据库
 	models.Init()
-
+	//go CronRun() //定时任务，定时删除数据库
 	initServer()
+
 }
 
 //初始化服务

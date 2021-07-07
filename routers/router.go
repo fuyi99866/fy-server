@@ -4,8 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-	"go_server/pkg/jwt"
+	"go_server/middleware/jwt"
 	"go_server/pkg/setting"
+	"go_server/routers/api"
 	v1 "go_server/routers/api/v1"
 	"go_server/routers/casbin/enforcer"
 	"go_server/routers/websocket"
@@ -26,6 +27,7 @@ func InitRouter() *gin.Engine {
 	//将访问路由到swagger的HTML页面
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
 	r.POST("/auth", v1.Auth)                                             // token鉴权
+	r.POST("/upload", api.UploadImage)                                   //上传图片
 
 	//websocket实现聊天室
 	r.GET("/ws", websocket.NotifySocket)
@@ -69,19 +71,19 @@ func InitRouter() *gin.Engine {
 
 		tags := group1.Group("tags")
 		{
-			tags.GET("get",v1.GetTags)
-			tags.POST("get",v1.AddTag)
-			tags.PUT("get",v1.EditTag)
-			tags.DELETE("delete",v1.DeleteTag)
+			tags.GET("get", v1.GetTags)
+			tags.POST("get", v1.AddTag)
+			tags.PUT("get", v1.EditTag)
+			tags.DELETE("delete", v1.DeleteTag)
 		}
 
 		articles := group1.Group("articles")
 		{
-			articles.GET("getOne",v1.GetArticle)
-			articles.GET("getAll",v1.GetArticles)
-			articles.POST("add",v1.AddArticle)
-			articles.PUT("put",v1.EditArticle)
-			articles.DELETE("delete",v1.DeleteArticle)
+			articles.GET("getOne", v1.GetArticle)
+			articles.GET("getAll", v1.GetArticles)
+			articles.POST("add", v1.AddArticle)
+			articles.PUT("put", v1.EditArticle)
+			articles.DELETE("delete", v1.DeleteArticle)
 		}
 	}
 

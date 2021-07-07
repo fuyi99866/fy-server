@@ -28,7 +28,7 @@ func GetTags(c *gin.Context) {
 		state = com.StrTo(arg).MustInt() //String转换成int
 		maps["state"] = state
 	}
-	data["lists"]=models.GetTags(util.GetPage(c),setting.AppSetting.PAGE_SIZE,maps)
+	data["lists"]=models.GetTags(util.GetPage(c),setting.AppSetting.PageSize,maps)
 	data["total"]=models.GetTagTotal(maps)
 
 	appG.Response(http.StatusOK, e.SUCCESS, data)

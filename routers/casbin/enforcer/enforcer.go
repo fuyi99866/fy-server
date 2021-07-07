@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"go_server/pkg/app"
 	e2 "go_server/pkg/e"
-	"go_server/pkg/jwt"
+	"go_server/pkg/util"
 	"go_server/routers/casbin/DB"
 	"net/http"
 )
@@ -17,7 +17,7 @@ func Interceptor(e *casbin.Enforcer) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		appG := app.Gin{C: context}
 		Authorization := context.GetHeader("Authorization")
-		claims, err := jwt.ParseToken(Authorization)
+		claims, err := util.ParseToken(Authorization)
 		if err!=nil{
 			appG.Response(http.StatusForbidden, e2.ACCESS_DENIED, nil)
 			return

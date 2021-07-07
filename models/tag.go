@@ -78,3 +78,10 @@ func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
 	scope.SetColumn("ModifiedAt",time.Now().Unix())
 	return nil
 }
+
+
+//注意硬删除要使用 Unscoped()，这是 GORM 的约定
+func CleanAllTag() bool {
+	db.Unscoped().Where("delete_on != ?",0).Delete(&Tag{})
+	return true
+}

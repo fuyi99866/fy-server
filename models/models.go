@@ -76,6 +76,7 @@ type UserPolicy struct {
 	Type     string `json:"type"`
 }
 
+
 func Init() {
 	//连接数据库
 	var err error

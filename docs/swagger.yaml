@@ -58,7 +58,12 @@ definitions:
     type: object
 info:
   contact: {}
-  license: {}
+  description: Go 学习综合demo
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: code server
+  version: 0.0.1
 paths:
   /alive:
     get:
@@ -404,4 +409,9 @@ paths:
       summary: Websocket接口, 支持订阅机器人状态、任务状态、任务倒计时信息
       tags:
       - websocket
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
