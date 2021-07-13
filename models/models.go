@@ -9,9 +9,17 @@ import (
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/routers/casbin/enforcer"
+	"time"
 )
 
 var db *gorm.DB
+
+type Model struct {
+	ID         int `gorm:"primary_key" json:"id"`
+	CreatedOn  int `json:"created_on"`
+	ModifiedOn int `json:"modified_on"`
+	DeletedOn  int `json:"deleted_on"`
+}
 
 type Company struct {
 	gorm.Model
@@ -76,7 +84,6 @@ type UserPolicy struct {
 	Type     string `json:"type"`
 }
 
-
 func Init() {
 	//连接数据库
 	var err error
@@ -87,7 +94,7 @@ func Init() {
 			setting.DatabaseSetting.Password,
 			setting.DatabaseSetting.Host,
 			setting.DatabaseSetting.Name)
-	}else if setting.DatabaseSetting.Type == "sqlite3" {
+	} else if setting.DatabaseSetting.Type == "sqlite3" {
 		logger.Info("dataType = ", setting.DatabaseSetting.Type)
 		dataPath = "data/test.db"
 	}
@@ -104,6 +111,11 @@ func Init() {
 	db.SingularTable(true)       //设置全局表名禁用复数
 	db.DB().SetMaxOpenConns(100) //设置最大连接数
 	db.DB().SetMaxIdleConns(10)  //设置最大闲置连接数
+
+	//使用自定义的回调函数替换自带的回调函数
+	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 
 	migration()
 
@@ -128,4 +140,69 @@ func Init() {
 //自动创建数据表
 func migration() {
 	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{}).AutoMigrate(&Authority{}).AutoMigrate(&Tag{}).AutoMigrate(&Article{})
+}
+
+// updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
+func updateTimeStampForCreateCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
+		nowTime := time.Now().Unix()
+		//判断是否含有字段"CreatedOn"
+		if createTimeFiled, ok := scope.FieldByName("CreatedOn"); ok {
+			if createTimeFiled.IsBlank {
+				//给字段设值
+				createTimeFiled.Set(nowTime)
+			}
+		}
+		if modifyTimeFiled, ok := scope.FieldByName("ModifiedOn"); ok {
+			if modifyTimeFiled.IsBlank {
+				modifyTimeFiled.Set(nowTime)
+			}
+		}
+	}
+}
+
+// updateTimeStampForUpdateCallback will set `ModifyTime` when updating
+func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
+	//根据入参获取设置了字面值的参数，例如本文中是 gorm:update_column ，
+	//它会去查找含这个字面值的字段属性
+	if _, ok := scope.Get("gorm:update_column"); !ok {
+		//假设没有指定 update_column 的字段，我们默认在更新回调设置 ModifiedOn 的值
+		scope.SetColumn("ModifiedOn", time.Now().Unix())
+	}
+}
+
+// Scope contain current operation's information when you perform any operation on the database
+func deleteCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
+		var extraOption string
+		if str, ok := scope.Get("gorm:delete_option"); ok {
+			extraOption = fmt.Sprint(str)
+		}
+		//scope.FieldByName("DeletedOn") 获取我们约定的删除字段，若存在则 UPDATE 软删除，若不存在则 DELETE 硬删除
+		deleteOnField, hasDeleteOnField := scope.FieldByName("DeleteOn")
+		if !scope.Search.Unscoped && hasDeleteOnField {
+			scope.Raw(fmt.Sprintf(
+				"UPDATE %v SET %v=%v%v%v",
+				scope.QuotedTableName(),//返回引用的表名，这个方法 GORM 会根据自身逻辑对表名进行一些处理
+				scope.Quote(deleteOnField.DBName),
+				scope.AddToVars(time.Now().Unix()),
+				addExtraSpaceIfExist(scope.CombinedConditionSql()),// scope.CombinedConditionSql():返回组合好的条件SQL
+				addExtraSpaceIfExist(extraOption),
+				)).Exec()
+		}else {
+			scope.Raw(fmt.Sprintf(
+				"DELETE FROM %v%v%v",
+				scope.QuotedTableName(),
+				addExtraSpaceIfExist(scope.CombinedConditionSql()),
+				addExtraSpaceIfExist(extraOption),
+			)).Exec()
+		}
+	}
+}
+
+func addExtraSpaceIfExist(str string) string {
+	if str!=""{
+		return " "+str
+	}
+	return ""
 }
