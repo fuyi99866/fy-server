@@ -8,7 +8,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
-	"go_server/routers/casbin/enforcer"
 	"time"
 )
 
@@ -131,10 +130,10 @@ func Init() {
 
 	//给管理员赋予改变访问权限的权限
 
-	e := enforcer.EnforcerTool()
+/*	e := enforcer.EnforcerTool()
 	e.AddPolicy("admin", "/policy", "GET")
 	e.AddPolicy("admin", "/policy", "POST")
-	e.AddPolicy("admin", "/policy", "DELETE")
+	e.AddPolicy("admin", "/policy", "DELETE")*/
 }
 
 //自动创建数据表
