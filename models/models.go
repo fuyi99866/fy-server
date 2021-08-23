@@ -127,13 +127,6 @@ func Init() {
 		}
 		AddUser(data) //添加的管理员账号不允许修改
 	}
-
-	//给管理员赋予改变访问权限的权限
-
-/*	e := enforcer.EnforcerTool()
-	e.AddPolicy("admin", "/policy", "GET")
-	e.AddPolicy("admin", "/policy", "POST")
-	e.AddPolicy("admin", "/policy", "DELETE")*/
 }
 
 //自动创建数据表

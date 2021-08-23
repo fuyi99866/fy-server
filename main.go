@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go_server/cron"
 	"go_server/docs"
 	"go_server/models"
 	"go_server/pkg/logger"
@@ -52,6 +53,9 @@ func main() {
 	models.Casbin_Init()
 	//go CronRun() //定时任务，定时删除数据库
 	initServer()
+
+	//开始定时任务
+	go cron.Start()
 
 }
 
