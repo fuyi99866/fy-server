@@ -31,7 +31,11 @@ func InitRouter() *gin.Engine {
 
 	//websocket实现聊天室
 	r.GET("/ws", websocket.NotifySocket)
-	http.Handle("/",http.FileServer(http.Dir("dist")))
+	//访问静态前端文件
+	r.Static("static","dist/static")
+	r.Static("/img","dist/img")
+	r.StaticFile("/","dist/index.html")
+
 	//group1 := r.Group("api/v1")
 	group1 := r.Group("")
 	group1.Use(jwt.JWT())                                     //token 验证
