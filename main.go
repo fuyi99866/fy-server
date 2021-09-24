@@ -7,6 +7,7 @@ import (
 	"go_server/cron"
 	"go_server/docs"
 	"go_server/models"
+	"go_server/pkg/gredis"
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/routers"
@@ -51,12 +52,13 @@ func main() {
 	//初始化数据库
 	models.Init()
 	models.Casbin_Init()
+	gredis.Setup()
+	gredis.TestRedis()//测试redis
 	//go CronRun() //定时任务，定时删除数据库
 	initServer()
 
 	//开始定时任务
 	go cron.Start()
-
 }
 
 //初始化服务
@@ -81,3 +83,4 @@ func initHTTPServer(app *gin.Engine) {
 
 	app.Run(":8081")
 }
+

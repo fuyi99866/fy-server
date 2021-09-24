@@ -10,6 +10,7 @@ require (
 	github.com/casbin/gorm-adapter v1.0.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eclipse/paho.mqtt.golang v1.3.5
+	github.com/garyburd/redigo v1.6.2 // indirect
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-ini/ini v1.62.0
 	github.com/golang/protobuf v1.5.2 // indirect

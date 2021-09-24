@@ -3,6 +3,7 @@ package gredis
 import (
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
+	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"time"
 )
@@ -17,6 +18,7 @@ IdleTimeout：在给定时间内将会保持空闲状态，若到达时间限制
 
 var RedisConn *redis.Pool //连接池
 
+//连接池
 func Setup() error {
 	RedisConn = &redis.Pool{
 		MaxIdle:         setting.RedisSetting.MaxIdle,
@@ -45,8 +47,9 @@ func Setup() error {
 	return nil
 }
 
+//设置，存数据
 func Set(key string, data interface{}, time int) (bool, error) {
-	conn := RedisConn.Get()//在连接池中获取一个活跃连接
+	conn := RedisConn.Get() //在连接池中获取一个活跃连接
 	defer conn.Close()
 	value, err := json.Marshal(data)
 	if err != nil {
@@ -58,6 +61,7 @@ func Set(key string, data interface{}, time int) (bool, error) {
 	return reply, err
 }
 
+//判断文件是否存在
 func Exists(key string) bool {
 	conn := RedisConn.Get()
 	defer conn.Close()
@@ -69,6 +73,7 @@ func Exists(key string) bool {
 	return exists
 }
 
+//查找
 func Get(key string) ([]byte, error) {
 	conn := RedisConn.Get()
 	defer conn.Close()
@@ -81,6 +86,7 @@ func Get(key string) ([]byte, error) {
 	return reply, nil
 }
 
+//删除
 func Delete(key string) (bool, error) {
 	conn := RedisConn.Get()
 	defer conn.Close()
@@ -88,6 +94,7 @@ func Delete(key string) (bool, error) {
 	return redis.Bool(conn.Do("DEL", key))
 }
 
+//模糊删除
 func LikeDeletes(key string) error {
 	conn := RedisConn.Get()
 	defer conn.Close()
@@ -105,4 +112,20 @@ func LikeDeletes(key string) error {
 	}
 
 	return nil
+}
+
+//测试
+func TestRedis() {
+	ok, err := Set("etf", 100, int(10*time.Second))
+	if err != nil {
+		logger.Error("redis set err ", err)
+		return
+	}
+	logger.Info("ok == ",ok)
+	r, err := Get("etf")
+	if err != nil {
+		logger.Error("redis get err ", err)
+		return
+	}
+	logger.Info("etf == ", r)
 }
