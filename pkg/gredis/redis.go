@@ -56,9 +56,10 @@ func Set(key string, data interface{}, time int) (bool, error) {
 		return false, err
 	}
 	//conn.Do 向 Redis 服务器发送命令并返回收到的答复
-	reply, err := redis.Bool(conn.Do("SET", key, value))
+	//reply, err := redis.Bool(conn.Do("Set", key, value))
+	_, err=conn.Do("Set", key, value)
 	conn.Do("EXPIRE", key, time)
-	return reply, err
+	return true, err
 }
 
 //判断文件是否存在
@@ -116,16 +117,15 @@ func LikeDeletes(key string) error {
 
 //测试
 func TestRedis() {
-	ok, err := Set("etf", 100, int(10*time.Second))
+	_, err := Set("etf", 100, int(10*time.Second))
 	if err != nil {
 		logger.Error("redis set err ", err)
 		return
 	}
-	logger.Info("ok == ",ok)
 	r, err := Get("etf")
 	if err != nil {
 		logger.Error("redis get err ", err)
 		return
 	}
-	logger.Info("etf == ", r)
+	logger.Info("etf == ", string(r))
 }
