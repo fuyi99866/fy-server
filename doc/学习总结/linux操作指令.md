@@ -12,5 +12,5 @@ select * from adis_robot;
 ####### ubuntu账号:cruiser@10.5.5.1
 ####### 密码:ubt123
 ```text
--h
+sudo /home/cruiser/wifi/wifi_ctl.sh sta '"UBT-Users"' '"ubtubtubt"'
 ```
