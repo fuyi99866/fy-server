@@ -23,6 +23,11 @@ definitions:
         description: 父角色ID
         type: string
     type: object
+  models.Command:
+    properties:
+      cmd:
+        type: string
+    type: object
   models.UserLogin:
     properties:
       password:
@@ -206,6 +211,33 @@ paths:
       summary: 更新角色信息
       tags:
       - 角色
+  /cmd/set:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Command'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 控制指令
+      tags:
+      - 控制
   /policy:
     delete:
       consumes:

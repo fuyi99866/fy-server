@@ -89,6 +89,10 @@ func InitRouter() *gin.Engine {
 			articles.PUT("put", v1.EditArticle)
 			articles.DELETE("delete", v1.DeleteArticle)
 		}
+		cmd:=group1.Group("cmd")
+		{
+			cmd.POST("set",v1.SetRobot)
+		}
 	}
 
 	return r

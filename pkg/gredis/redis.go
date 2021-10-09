@@ -19,7 +19,7 @@ IdleTimeout：在给定时间内将会保持空闲状态，若到达时间限制
 var RedisConn *redis.Pool //连接池
 
 //连接池
-func Setup() error {
+func InitRedis() error {
 	RedisConn = &redis.Pool{
 		MaxIdle:         setting.RedisSetting.MaxIdle,
 		MaxActive:       setting.RedisSetting.MaxActive,

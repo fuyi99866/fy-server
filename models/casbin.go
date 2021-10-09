@@ -40,6 +40,7 @@ var casbinrule = []gormadapter.CasbinRule{
 	{PType: "p", V0: "admin", V1: "/articles/add", V2: "POST"},       //POST   /articles/add
 	{PType: "p", V0: "admin", V1: "/articles/put", V2: "PUT"},        //PUT    /articles/put
 	{PType: "p", V0: "admin", V1: "/articles/delete", V2: "DELETE"},  //DELETE /articles/delete
+	{PType: "p", V0: "admin", V1: "/cmd/set", V2: "POST"},  //DELETE /articles/delete
 }
 
 var casbinrule_custom = []gormadapter.CasbinRule{

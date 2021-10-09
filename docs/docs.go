@@ -258,6 +258,50 @@ var doc = `{
                 }
             }
         },
+        "/cmd/set": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "控制"
+                ],
+                "summary": "控制指令",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Command"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/policy": {
             "get": {
                 "security": [
@@ -619,6 +663,14 @@ var doc = `{
                 },
                 "parent_id": {
                     "description": "父角色ID",
+                    "type": "string"
+                }
+            }
+        },
+        "models.Command": {
+            "type": "object",
+            "properties": {
+                "cmd": {
                     "type": "string"
                 }
             }

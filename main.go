@@ -14,7 +14,7 @@ import (
 )
 
 /**
-  执行 swag init --generalInfo .\routers\http.go 生成docs
+  执行 swag init --generalInfo .\main.go 生成docs
   https://www.ctolib.com/swaggo-swag.html
 */
 
@@ -52,8 +52,7 @@ func main() {
 	//初始化数据库
 	models.Init()
 	models.Casbin_Init()
-	gredis.Setup()
-	gredis.TestRedis()//测试redis
+	gredis.InitRedis()
 	//go CronRun() //定时任务，定时删除数据库
 	initServer()
 
@@ -66,6 +65,7 @@ func initServer() {
 	//注册路由
 	app := routers.InitRouter()
 	initHTTPServer(app)
+	//TODO 启动MQTT服务
 }
 
 // InitHTTPServer 初始化http服务
