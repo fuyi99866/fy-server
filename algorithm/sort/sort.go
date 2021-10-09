@@ -10,6 +10,10 @@ const (
 	rangeNUm = 1000 //数组元素大小范围
 )
 
+/**
+常见的排序算法
+ */
+
 //生成随机的数组
 func GenerateRand() []int {
 	randSeed := rand.New(rand.NewSource(time.Now().Unix() + time.Now().UnixNano()))
