@@ -31,7 +31,7 @@ func TestHeapSort(t *testing.T) {
 
 func TestMergeSort(t *testing.T) {
 	arr := GenerateRand()
-	MergeSort(arr,1,len(arr)-1)
+	MergeSort(arr,0,len(arr)-1)
 	for _,v:=range arr{
 		fmt.Println(v," ")
 	}
