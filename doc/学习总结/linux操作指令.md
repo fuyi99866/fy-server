@@ -4,7 +4,7 @@
 ```text
 mysql -h host地址 -u 用户名 -p
 show databases;
-use 
+use adis;
 select * from adis_robot;
 ```
 
@@ -13,4 +13,19 @@ select * from adis_robot;
 ####### 密码:ubt123
 ```text
 sudo /home/cruiser/wifi/wifi_ctl.sh sta '"UBT-Users"' '"ubtubtubt"'
+```
+
+##### websocket调试
+```text
+wss://prerelease.ubtrobot.com/v1/adis/channel?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6OCwicGFzc3dvcmQiOiIyNWQ1NWFkMjgzYWE0MDBhZjQ2NGM3NmQ3MTNjMDdhZCIsImNvbXBhbnlpZCI6IlRFU1QiLCJleHAiOjE2MzI5MTQzMzEsImlzcyI6Imh0dHBzOi8vYWRpcy1zZXJ2ZXIvIn0.ApAj4l0PjteEdYgKkwil-ZfHZ2h71iV9asKDGsjMOUA
+
+ws://10.10.17.15:9090/v1/channel?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6MiwicGFzc3dvcmQiOiJlMTBhZGMzOTQ5YmE1OWFiYmU1NmUwNTdmMjBmODgzZSIsImNvbXBhbnlpZCI6InVidGVjaCIsImV4cCI6MTYzMjg4NTgyOSwiaXNzIjoiaHR0cHM6Ly9hZGlzLXNlcnZlci8ifQ.6zPw6zL4-1jhzGHT8cSnxVEGYib1ck2hnV5IJ0VAtOU
+```
+
+```text
+{
+	"robotsn": "CAI001UBT10000016",
+	"topic": "notify",
+	"unsubscribe": false
+}
 ```

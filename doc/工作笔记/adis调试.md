@@ -7,7 +7,7 @@
 ```
 
 ##### Adis新加坡互联网节点
-```
+```text
 Adis新加坡互联网节点
 默认信息
 企业号：ubtech
@@ -20,7 +20,7 @@ Adis新加坡互联网节点
 ```
 
 ##### Adis国内互联网节点
-```
+```text
 Adis国内互联网节点
 默认信息
 企业号：ubtech
@@ -34,7 +34,7 @@ Adis国内互联网节点
 
 
 ##### Adis公司内网
-```
+```text
 Adis公司内网
 默认信息
 企业号：ubtech
@@ -45,4 +45,9 @@ Adis公司内网
 3、内网App服务器设置 http://adis-private.ubtrobot.com:9090/v1
 4、机器人本体设置的服务器地址：http://adis-private.ubtrobot.com:9090/v1/profile
 5、UV_Tool地址： http://adis-private.ubtrobot.com:7080/uv_tools/
+```
+
+##### 设置私有服务器
+```text
+http://10.10.17.15:9090/v1/profile
 ```
