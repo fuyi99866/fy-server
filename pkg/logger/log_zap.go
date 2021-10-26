@@ -55,9 +55,9 @@ func InitLog1(level string, filePath string) {
 	// 开启文件及行号
 	development := zap.Development()
 	// 设置初始化字段
-	//filed := zap.Fields(zap.String("serviceName", "serviceName"))
+	filed := zap.Fields(zap.String("serviceName", "go_server"))
 	// 构造日志
-	logger = zap.New(core, caller, development, zap.AddCallerSkip(1)).Sugar()
+	logger = zap.New(core, caller, development, filed,zap.AddCallerSkip(1)).Sugar()
 
 	logger.Info("初始化日志")
 }

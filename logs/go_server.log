@@ -1,32 +1,21 @@
-{"level":"info","time":"2021-06-29T17:02:15.757+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-06-29T17:02:15.783+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-06-29T18:25:20.254+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-06-29T18:25:20.283+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-06-29T19:26:59.350+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-06-29T19:26:59.378+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-01T11:04:56.159+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-01T11:04:56.189+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-01T11:22:43.884+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-01T11:22:43.916+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-01T11:23:42.683+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-01T11:23:42.713+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-01T11:24:11.811+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-01T11:24:11.842+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-01T11:29:09.402+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-01T11:29:09.437+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-01T13:42:47.376+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-01T13:42:47.405+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-06T11:04:12.821+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:63","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:04:12.867+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:64","msg":"无法获取网址","serviceName":"serviceName","url":"http://www.baidu.com","attempt":3,"backoff":1}
-{"level":"info","time":"2021-07-06T11:06:36.652+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:14:39.343+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:15:39.215+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:16:15.944+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:16:30.390+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:16:47.987+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:17:12.488+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:18:03.666+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:18:24.633+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:18:56.578+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:19:29.445+0800","linenum":"D:/fy-server/go_server/log/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
-{"level":"info","time":"2021-07-06T11:23:32.281+0800","linenum":"D:/fy-server/go_server/logger/log_zap.go:62","msg":"log 初始化成功","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:09:13.324","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:09:16.785","linenum":"D:/fy-server/go_server/models/casbin.go:93","msg":"casbin_rule 表初始数据成功!","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:09:16.785","linenum":"D:/fy-server/go_server/models/casbin.go:71","msg":"recover <nil>","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:09:17.187","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:09:17.188","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:10:27.805","linenum":"D:/fy-server/go_server/routers/api/upload.go:44","msg":"file = {0xc000860390}","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:10:27.839","linenum":"D:/fy-server/go_server/routers/api/upload.go:46","msg":"imageName = 6c8349cc7260ae62e3b1396831a8398f.jpgtrue","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:10:27.839","linenum":"D:/fy-server/go_server/pkg/upload/image.go:51","msg":"size = 440840","serviceName":"serviceName"}
+{"level":"info","time":"2021-10-26 17:11:30.445","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:11:32.593","linenum":"D:/fy-server/go_server/models/casbin.go:93","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:11:32.593","linenum":"D:/fy-server/go_server/models/casbin.go:71","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:11:33.002","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:11:33.002","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:13:14.424","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:13:16.355","linenum":"D:/fy-server/go_server/models/casbin.go:93","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:13:16.355","linenum":"D:/fy-server/go_server/models/casbin.go:71","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:13:16.758","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:13:16.758","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:20:43.320","linenum":"D:/fy-server/go_server/routers/api/upload.go:44","msg":"file = {0xc0000123f0}","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:20:43.358","linenum":"D:/fy-server/go_server/routers/api/upload.go:46","msg":"imageName = 6c8349cc7260ae62e3b1396831a8398f.jpgtrue","serviceName":"go_server"}
+{"level":"info","time":"2021-10-26 17:20:43.358","linenum":"D:/fy-server/go_server/pkg/upload/image.go:51","msg":"size = 440840","serviceName":"go_server"}
