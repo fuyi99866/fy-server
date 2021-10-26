@@ -427,7 +427,7 @@ var doc = `{
                     }
                 ],
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -438,10 +438,10 @@ var doc = `{
                 "summary": "上传文件",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "图片文件",
-                        "name": "image",
-                        "in": "path",
+                        "type": "file",
+                        "description": "file",
+                        "name": "file",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -469,7 +469,7 @@ var doc = `{
                     }
                 ],
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -477,7 +477,16 @@ var doc = `{
                 "tags": [
                     "上传下载"
                 ],
-                "summary": "上传文件",
+                "summary": "上传图片",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",

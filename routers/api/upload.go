@@ -15,7 +15,8 @@ import (
 
 // @Summary   上传图片
 // @Tags   上传下载
-// @Accept json
+// @Accept multipart/form-data
+// @Param file formData file true "file"
 // @Produce  json
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
 // @Failure 400 {object} app.Response
@@ -31,7 +32,7 @@ func UploadImage(c *gin.Context) {
 		appG.Response(http.StatusBadRequest, e.ERROR, err)
 		return
 	}
-	logger.Info("image = ", image)
+
 	if image == nil {
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
 		return
@@ -39,10 +40,10 @@ func UploadImage(c *gin.Context) {
 		imageName := upload.GetImageName(image.Filename)
 		fullPath := upload.GetImageFullPath()
 		savePath := upload.GetImagePath()
-
 		src := fullPath + imageName
+		logger.Info("file = ", file)
+		logger.Info("image = ", image)
 		logger.Info("imageName = ", imageName, upload.CheckImageExt(imageName))
-		logger.Info("file = ", file, )
 		if !upload.CheckImageExt(imageName) || !upload.CheckImageSize(file) { //检查图片的大小和后缀
 			appG.Response(http.StatusBadRequest, e.ERROR_UPLOAD_CHECK_IMAGE_FORMAT, nil)
 			return
@@ -65,9 +66,9 @@ func UploadImage(c *gin.Context) {
 
 // @Summary   上传文件
 // @Tags   上传下载
-// @Accept json
+// @Accept multipart/form-data
+// @Param file formData file true "file"
 // @Produce  json
-// @Param image path string true "图片文件"
 // @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
 // @Failure 400 {object} app.Response
 // @Router /upload_file  [POST]

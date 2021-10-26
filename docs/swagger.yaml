@@ -313,13 +313,13 @@ paths:
   /upload_file:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       parameters:
-      - description: 图片文件
-        in: path
-        name: image
+      - description: file
+        in: formData
+        name: file
         required: true
-        type: string
+        type: file
       produces:
       - application/json
       responses:
@@ -339,7 +339,13 @@ paths:
   /upload_img:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
+      parameters:
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
       produces:
       - application/json
       responses:
@@ -353,7 +359,7 @@ paths:
             $ref: '#/definitions/app.Response'
       security:
       - ApiKeyAuth: []
-      summary: 上传文件
+      summary: 上传图片
       tags:
       - 上传下载
   /user:
