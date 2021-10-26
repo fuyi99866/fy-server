@@ -5,6 +5,7 @@ import (
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/logger"
+	"go_server/pkg/setting"
 	"go_server/pkg/upload"
 	"net/http"
 	"path/filepath"
@@ -75,20 +76,22 @@ func UploadFile(c *gin.Context) {
 	appG := app.Gin{C: c}
 	data := make(map[string]string)
 	// 单文件
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("file") //解析提交的表单
 	if err != nil || file == nil {
 		logger.Info("UploadFill", err)
 		c.String(http.StatusBadRequest, "")
 		return
 	}
+	logger.Info("file:", file)
 	logger.Info("UploadFile:", file.Filename)
 
-	fullPath := upload.GetImageFullPath()
+	//设置文件存储的地址
+	fullPath := setting.AppSetting.RuntimeRootPath + "upload/images/"
 	filename := fullPath + filepath.Base(file.Filename)
 	// 上传文件到指定的路径
 	c.SaveUploadedFile(file, filename)
 
-	url :=  upload.GetImageFullUrl(file.Filename)
+	url := "http://127.0.0.1:8081"+"/upload/images/"+file.Filename
 	logger.Info("Url   ", url)
 	data["url"] = url
 	appG.Response(http.StatusOK, e.SUCCESS, data)
