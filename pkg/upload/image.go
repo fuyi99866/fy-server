@@ -48,6 +48,7 @@ func CheckImageSize(f multipart.File) bool {
 		return false
 	}
 	//不能超过配置文件里面的设置
+	logger.Info("size = ",size)
 	return size <= setting.AppSetting.ImageMaxSize
 }
 

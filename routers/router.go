@@ -6,6 +6,7 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go_server/middleware/jwt"
 	"go_server/pkg/setting"
+	"go_server/pkg/upload"
 	"go_server/routers/api"
 	v1 "go_server/routers/api/v1"
 	"go_server/routers/casbin/enforcer"
@@ -24,17 +25,19 @@ func InitRouter() *gin.Engine {
 	//2、绑定路由规则，执行的函数
 	//gin.Context,封装了request和response
 
+	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	//将访问路由到swagger的HTML页面
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
 	r.POST("/auth", v1.Auth)                                             // token鉴权
-	r.POST("/upload", api.UploadImage)                                   //上传图片
+	r.POST("/upload_img", api.UploadImage)                               // 上传图片
+	r.POST("/upload_file", api.UploadFile)
 
 	//websocket实现聊天室
 	r.GET("/ws", websocket.NotifySocket)
 	//访问静态前端文件
-	r.Static("static","dist/static")
-	r.Static("/img","dist/img")
-	r.StaticFile("/","dist/index.html")
+	r.Static("static", "dist/static")
+	r.Static("/img", "dist/img")
+	r.StaticFile("/", "dist/index.html")
 
 	//group1 := r.Group("api/v1")
 	group1 := r.Group("")
@@ -89,9 +92,9 @@ func InitRouter() *gin.Engine {
 			articles.PUT("put", v1.EditArticle)
 			articles.DELETE("delete", v1.DeleteArticle)
 		}
-		cmd:=group1.Group("cmd")
+		cmd := group1.Group("cmd")
 		{
-			cmd.POST("set",v1.SetRobot)
+			cmd.POST("set", v1.SetRobot)
 		}
 	}
 
