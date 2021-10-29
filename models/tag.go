@@ -13,75 +13,100 @@ type Tag struct {
 	State      int    `json:"state"`
 }
 
-func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {
-	db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
-	return
+type AddTagForm struct {
+	Name      string
+	CreatedBy string
+	State     int
 }
 
-func GetTagTotal(maps interface{}) (count int) {
-	db.Model(&Tag{}).Where(maps).Count(&count)
-	return
+type ExportTagForm struct {
+	Name      string
+	State     int
 }
 
-func ExistTagByName(name string) bool {
-	var tag Tag
-	db.Select("id").Where("name = ？",name).First(&tag)
-	if tag.ID>0 {
-		return true
+func GetTags(pageNum int, pageSize int, maps interface{}) ([]Tag, error) {
+	var tags []Tag
+	err := db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags).Error
+	if err != nil {
+		return nil, err
 	}
-	return false
+	return tags, nil
 }
 
-func AddTag(name string, state int, createdBy string) bool{
-	db.Create(&Tag {
-		Name : name,
-		State : state,
-		CreatedBy : createdBy,
-	})
-
-	return true
+func GetTagTotal(maps interface{}) (int, error) {
+	var count int
+	err := db.Model(&Tag{}).Where(maps).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }
 
-func ExistTagByID(id int) bool {
+func ExistTagByName(name string) (bool, error) {
 	var tag Tag
-	db.Select("id").Where("id = ?", id).First(&tag)
+	err := db.Select("id").Where("name = ?", name).First(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+
 	if tag.ID > 0 {
-		return true
+		return true, nil
+	}
+	return false, nil
+}
+
+func AddTag(name string, state int, createdBy string) error {
+	err := db.Create(&Tag{
+		Name:      name,
+		State:     state,
+		CreatedBy: createdBy,
+	}).Error
+
+	return err
+}
+
+func ExistTagByID(id int) (bool, error) {
+	var tag Tag
+	err := db.Select("id").Where("id = ?", id).First(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+	if tag.ID > 0 {
+		return true, nil
 	}
 
-	return false
+	return false, nil
 }
 
-func DeleteTag(id int) bool {
-	db.Where("id = ?", id).Delete(&Tag{})
+func DeleteTag(id int) error {
+	err := db.Where("id = ?", id).Delete(&Tag{}).Error
 
-	return true
+	return err
 }
 
-func EditTag(id int, data interface {}) bool {
-	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
+func EditTag(id int, data interface{}) error {
+	err := db.Model(&Tag{}).Where("id = ?", id).Updates(data).Error
 
-	return true
+	return err
 }
 
 //回调函数 Callbacks
 /**
 可以将回调方法定义为模型结构的指针，在创建、更新、查询、删除时将被调用，
 如果任何回调返回错误，gorm将停止未来操作并回滚所有更改
- */
-func (tag *Tag) BeforeCreate(scope *gorm.Scope) error{
-	scope.SetColumn("CreateAt",time.Now().Unix())
+*/
+func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
+	scope.SetColumn("CreateAt", time.Now().Unix())
 	return nil
 }
 
 func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
-	scope.SetColumn("ModifiedAt",time.Now().Unix())
+	scope.SetColumn("ModifiedAt", time.Now().Unix())
 	return nil
 }
 
-
 //注意硬删除要使用 Unscoped()，这是 GORM 的约定
-func CleanAllTag() bool {
-	db.Unscoped().Where("delete_on != ?",0).Delete(&Tag{})
-	return true
+func CleanAllTag() error {
+	err := db.Unscoped().Where("delete_on != ?", 0).Delete(&Tag{}).Error
+	return err
 }

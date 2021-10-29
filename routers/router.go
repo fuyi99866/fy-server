@@ -5,6 +5,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go_server/middleware/jwt"
+	"go_server/pkg/export"
 	"go_server/pkg/setting"
 	"go_server/pkg/upload"
 	"go_server/routers/api"
@@ -28,7 +29,8 @@ func InitRouter() *gin.Engine {
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	//将访问路由到swagger的HTML页面
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
-	r.POST("/auth", v1.Auth)                                             // token鉴权
+	r.POST("/auth", api.Auth)                                            // token鉴权
+	r.StaticFS("/export",http.Dir(export.GetExcelFullPath()))            //下载导出的excel
 	r.POST("/upload_img", api.UploadImage)                               // 上传图片
 	r.POST("/upload_file", api.UploadFile)
 
@@ -44,7 +46,7 @@ func InitRouter() *gin.Engine {
 	group1.Use(jwt.JWT())                                     //token 验证
 	group1.Use(enforcer.Interceptor(enforcer.EnforcerTool())) //拦截器进行访问控制
 	{
-		group1.GET("/alive", v1.TokenAlive)
+		group1.GET("/alive", api.TokenAlive)
 		user := group1.Group("user")
 		{
 			user.GET("/test", Response_test) //测试回复
@@ -78,16 +80,19 @@ func InitRouter() *gin.Engine {
 
 		tags := group1.Group("tags")
 		{
-			tags.GET("get", v1.GetTags)
-			tags.POST("get", v1.AddTag)
+			tags.GET("all", v1.GetTags)
+			tags.POST("add", v1.AddTag)
 			tags.PUT("get", v1.EditTag)
 			tags.DELETE("delete", v1.DeleteTag)
+			tags.POST("export", v1.ExportTag)
+			tags.POST("import", v1.ImportTag)
+
 		}
 
 		articles := group1.Group("articles")
 		{
-			articles.GET("getOne", v1.GetArticle)
-			articles.GET("getAll", v1.GetArticles)
+			articles.GET("/:id", v1.GetArticle)
+			articles.GET("all", v1.GetArticles)
 			articles.POST("add", v1.AddArticle)
 			articles.PUT("put", v1.EditArticle)
 			articles.DELETE("delete", v1.DeleteArticle)

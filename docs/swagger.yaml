@@ -11,6 +11,32 @@ definitions:
         description: 错误信息
         type: string
     type: object
+  models.AddArticleForm:
+    properties:
+      content:
+        type: string
+      coverImageUrl:
+        type: string
+      createdBy:
+        type: string
+      desc:
+        type: string
+      state:
+        type: integer
+      tagID:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.AddTagForm:
+    properties:
+      createdBy:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
+    type: object
   models.Authority:
     properties:
       authority_id:
@@ -27,6 +53,13 @@ definitions:
     properties:
       cmd:
         type: string
+    type: object
+  models.ExportTagForm:
+    properties:
+      name:
+        type: string
+      state:
+        type: integer
     type: object
   models.UserLogin:
     properties:
@@ -90,6 +123,95 @@ paths:
       summary: 检查token是否过期
       tags:
       - 鉴权
+  /articles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 文章ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询文章
+      tags:
+      - 文章
+  /articles/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddArticleForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 添加文章
+      tags:
+      - 文章
+  /articles/all:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: TagID
+        in: body
+        name: tag_id
+        schema:
+          type: integer
+      - description: state
+        in: body
+        name: state
+        schema:
+          type: integer
+      - description: CreatedBy
+        in: body
+        name: created_by
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询多篇文章
+      tags:
+      - 文章
   /auth:
     post:
       consumes:
@@ -310,6 +432,112 @@ paths:
       summary: 增加访问权限
       tags:
       - 访问权限
+  /tags/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddTagForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 添加标签
+      tags:
+      - 标签
+  /tags/all:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: state
+        in: query
+        name: state
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询多个标签
+      tags:
+      - 标签
+  /tags/export:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/models.ExportTagForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 导出标签
+      tags:
+      - 标签
+  /tags/import:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 导入标签
+      tags:
+      - 标签
   /upload_file:
     post:
       consumes:
