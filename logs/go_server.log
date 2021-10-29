@@ -231,3 +231,45 @@
 {"level":"info","time":"2021-10-29 13:04:25.173","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwteyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIxMjM0NTYiLCJleHAiOjE2MzU0OTQ1NDQsImlzcyI6Imdpbi1ibG9nIn0.lrIONeGbduiYh9pVErMZlBQDL9plzhk6KpOk6Vs8QD0","serviceName":"go_server"}
 {"level":"info","time":"2021-10-29 13:04:25.173","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:24","msg":"解析出来的claims:&{admin 123456 { 1635494544  0 gin-blog 0 }}","serviceName":"go_server"}
 {"level":"info","time":"2021-10-29 13:04:25.173","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:25","msg":"解析出来的err:<nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:41:19.849","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:41:20.997","linenum":"D:/fy-server/go_server/models/casbin.go:99","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:41:20.997","linenum":"D:/fy-server/go_server/models/casbin.go:77","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:41:21.401","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:41:21.401","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:43:01.309","linenum":"D:/fy-server/go_server/routers/api/auth.go:44","msg":"Auth: admin123456","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:43:01.314","linenum":"D:/fy-server/go_server/pkg/util/jwt.go:34","msg":"GenerateToken ","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:46:30.480","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:46:31.556","linenum":"D:/fy-server/go_server/models/casbin.go:100","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:46:31.556","linenum":"D:/fy-server/go_server/models/casbin.go:78","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:46:31.944","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:46:31.944","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:47:14.613","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:47:15.743","linenum":"D:/fy-server/go_server/models/casbin.go:100","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:47:15.743","linenum":"D:/fy-server/go_server/models/casbin.go:78","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:47:16.134","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:47:16.134","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:48:28.198","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwt","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:49:56.349","linenum":"D:/fy-server/go_server/routers/api/auth.go:44","msg":"Auth: admin123456","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:49:56.354","linenum":"D:/fy-server/go_server/pkg/util/jwt.go:34","msg":"GenerateToken ","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:50:11.958","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwt","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:54:04.400","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwt","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:56:44.718","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwt","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 15:59:18.808","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwt","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:01:35.837","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:01:37.109","linenum":"D:/fy-server/go_server/models/casbin.go:100","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:01:37.110","linenum":"D:/fy-server/go_server/models/casbin.go:78","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:01:37.504","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:01:37.504","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:02:07.610","linenum":"D:/fy-server/go_server/routers/api/auth.go:44","msg":"Auth: admin123456","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:02:07.615","linenum":"D:/fy-server/go_server/pkg/util/jwt.go:34","msg":"GenerateToken ","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:02:28.888","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwteyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIxMjM0NTYiLCJleHAiOjE2MzU1MDUzMjcsImlzcyI6Imdpbi1ibG9nIn0.ZuLoiR9Eb3V5tzGpYD_7EAgr_XxPu_iZjzquhUcvepU","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:02:28.889","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:24","msg":"解析出来的claims:&{admin 123456 { 1635505327  0 gin-blog 0 }}","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:02:28.889","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:25","msg":"解析出来的err:<nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:51:14.912","linenum":"D:/fy-server/go_server/main.go:50","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:51:16.093","linenum":"D:/fy-server/go_server/models/casbin.go:100","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:51:16.093","linenum":"D:/fy-server/go_server/models/casbin.go:78","msg":"recover <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:51:16.577","linenum":"D:/fy-server/go_server/main.go:73","msg":"start server","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:51:16.577","linenum":"D:/fy-server/go_server/main.go:81","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:59:05.875","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:19","msg":"jwteyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIxMjM0NTYiLCJleHAiOjE2MzU1MDUzMjcsImlzcyI6Imdpbi1ibG9nIn0.ZuLoiR9Eb3V5tzGpYD_7EAgr_XxPu_iZjzquhUcvepU","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:59:05.876","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:24","msg":"解析出来的claims:&{admin 123456 { 1635505327  0 gin-blog 0 }}","serviceName":"go_server"}
+{"level":"info","time":"2021-10-29 16:59:05.876","linenum":"D:/fy-server/go_server/middleware/jwt/jwt.go:25","msg":"解析出来的err:<nil>","serviceName":"go_server"}

@@ -33,6 +33,8 @@ var MsgFlags = map[int]string{
 
 	ERROR_EXPORT_TAG_FAIL:"导出标签失败",
 	ERROR_IMPORT_TAG_FAIL:"导ru标签失败",
+
+	ERROR_GEN_ARTICLE_POSTER_FAIL:"生成海报失败",
 }
 
 func GetMsg(code int) string {

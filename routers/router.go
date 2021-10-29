@@ -96,6 +96,7 @@ func InitRouter() *gin.Engine {
 			articles.POST("add", v1.AddArticle)
 			articles.PUT("put", v1.EditArticle)
 			articles.DELETE("delete", v1.DeleteArticle)
+			articles.POST("poster/generate", v1.GenerateArticlePoster)
 		}
 		cmd := group1.Group("cmd")
 		{

@@ -2,12 +2,14 @@ package v1
 
 import (
 	"github.com/astaxie/beego/validation"
+	"github.com/boombuler/barcode/qr"
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/logger"
+	"go_server/pkg/qrcode"
 	"go_server/pkg/setting"
 	"go_server/pkg/util"
 	"go_server/service/article_service"
@@ -147,8 +149,8 @@ func AddArticle(c *gin.Context) {
 	}
 
 	tag := tag_service.Tag{ID: reqInfo.TagID}
-	exist,err:=tag.ExistByID()
-	if err!=nil{
+	exist, err := tag.ExistByID()
+	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_CHECK_EXIST_TAG_FAIL, nil)
 		return
 	}
@@ -271,4 +273,49 @@ func DeleteArticle(c *gin.Context) {
 			logger.Info("err.key: %s, err.message: %s", err.Key, err.Message)
 		}
 	}
+}
+
+// @Summary   生成海报
+// @Tags   文章
+// @Accept json
+// @Produce  json
+// @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
+// @Failure 400 {object} app.Response
+// @Router /articles/poster/generate  [POST]
+// @Security ApiKeyAuth
+func GenerateArticlePoster(c *gin.Context) {
+	appG := app.Gin{C: c}
+	article := &article_service.Article{}
+	qrc := qrcode.NewQrCode(qrcode.QRCODE_URL, 300, 300, qr.M, qr.Auto) // 目前写死 gin 系列路径，可自行增加业务逻辑
+	posterName := article_service.GetPosterFlag() + "-" + qrcode.GetQrCodeFileName(qrc.URL) + qrc.GetQrCodeExt()
+	articlePoster := article_service.NewArticlePoster(posterName, article, qrc)
+	articlePosterBgService := article_service.NewArticlePosterBg(
+		"bg.jpg",
+		articlePoster,
+		&article_service.Rect{
+			X0: 0,
+			Y0: 0,
+			X1: 550,
+			Y1: 700,
+		},
+		&article_service.Pt{
+			X: 125,
+			Y: 298,
+		},
+	)
+	/*	path := qrcode.GetQrCodeFullPath()
+		_, _, err := qrc.Encode(path)
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR, nil)
+			return
+		}*/
+	_, filePath, err := articlePosterBgService.Generate()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GEN_ARTICLE_POSTER_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
+		"poster_url":      qrcode.GetQrCodeFullUrl(posterName),
+		"poster_save_url": filePath + posterName,
+	})
 }
