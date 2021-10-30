@@ -5,7 +5,6 @@ import (
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/logger"
-	"go_server/pkg/setting"
 	"go_server/pkg/upload"
 	"net/http"
 	"path/filepath"
@@ -87,7 +86,8 @@ func UploadFile(c *gin.Context) {
 	logger.Info("UploadFile:", file.Filename)
 
 	//设置文件存储的地址
-	fullPath := setting.AppSetting.RuntimeRootPath + "upload/images/"
+	//fullPath := setting.AppSetting.RuntimeRootPath + "upload/images/"
+	fullPath := "dist/"
 	filename := fullPath + filepath.Base(file.Filename)
 	// 上传文件到指定的路径
 	c.SaveUploadedFile(file, filename)
