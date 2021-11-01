@@ -38,7 +38,7 @@ func InitRouter() *gin.Engine {
 	r.GET("/ws", websocket.NotifySocket)
 	//访问静态前端文件
 	r.Static("static", "dist/static")
-	r.Static("/img", "dist/img")
+	r.Static("img", "dist/img")
 	r.StaticFile("/", "dist/index.html")
 
 	//group1 := r.Group("api/v1")
