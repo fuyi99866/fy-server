@@ -11,7 +11,7 @@ import (
 */
 
 func Init() {
-	resp, err := http.Get("https://www.zhenai.com/zhenhun")
+	resp, err := http.Get("http://www.zhenai.com/zhenghun")
 	if err != nil {
 		logger.Error(err)
 		return
