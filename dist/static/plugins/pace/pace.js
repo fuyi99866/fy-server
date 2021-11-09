@@ -921,7 +921,11 @@
   };
 
   if (typeof define === 'function' && define.amd) {
+<<<<<<< HEAD:dist/static/plugins/pace/pace.js
     define(['go_server/dist/static/plugins/pace/pace'], function() {
+=======
+    define(['fy-server/dist/static/plugins/pace/pace'], function() {
+>>>>>>> 94f80c88379680fc560b249a8ec4804747b7deac:dist/static/plugins/pace/pace.js
       return Pace;
     });
   } else if (typeof exports === 'object') {

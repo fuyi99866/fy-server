@@ -9,12 +9,20 @@
 (function(root, factory) {
 
   if (typeof define === 'function' && define.amd) {
+<<<<<<< HEAD:dist/static/plugins/daterangepicker/daterangepicker.js
     define(['go_server/dist/static/plugins/daterangepicker/moment', 'jquery', 'exports'], function(momentjs, $, exports) {
+=======
+    define(['fy-server/dist/static/plugins/daterangepicker/moment', 'jquery', 'exports'], function(momentjs, $, exports) {
+>>>>>>> 94f80c88379680fc560b249a8ec4804747b7deac:dist/static/plugins/daterangepicker/daterangepicker.js
       root.daterangepicker = factory(root, exports, momentjs, $);
     });
 
   } else if (typeof exports !== 'undefined') {
+<<<<<<< HEAD:dist/static/plugins/daterangepicker/daterangepicker.js
       var momentjs = require('go_server/dist/static/plugins/daterangepicker/moment');
+=======
+      var momentjs = require('fy-server/dist/static/plugins/daterangepicker/moment');
+>>>>>>> 94f80c88379680fc560b249a8ec4804747b7deac:dist/static/plugins/daterangepicker/daterangepicker.js
       var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;  //isomorphic issue
       if (!jQuery) {
           try {

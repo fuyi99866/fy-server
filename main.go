@@ -78,7 +78,7 @@ func initHTTPServer(app *gin.Engine) {
 		if setting.ServerSetting.HTTPS {
 			scheme = "https"
 		}
-		logger.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
+		logger.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index1.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
 	}
 
 	app.Run(":8081")
