@@ -96,34 +96,43 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
+	logger.Info("1111111111111  ",a.CheckMergeImage(path))
 	if !a.CheckMergeImage(path) {
 		mergedF, err := a.OpenMergeImage(path)
 		if err != nil {
+			logger.Info("mergedF  ",err)
 			return "", "", err
 		}
 		defer mergedF.Close()
 
 		bgF, err := file.MustOpen(a.Name, path)
 		if err != nil {
+
 			return "", "", err
 		}
 		defer bgF.Close()
 
 		qrF, err := file.MustOpen(fileName, path)
 		if err != nil {
+			logger.Info("qrF  ",err)
 			return "", "", err
 		}
 		defer qrF.Close()
+		logger.Info("bgF  ",bgF)
 		bgImage, err := jpeg.Decode(bgF)
 		if err != nil {
+			logger.Info("bgImage  ",err)
 			return "", "", err
 		}
 		logger.Info("bgImage = ", bgImage)
+
 		qrImage, err := jpeg.Decode(qrF)
 		if err != nil {
+			logger.Info("qrImage  ",err)
 			return "", "", err
 		}
 		logger.Info("qrImage = ", qrImage)
+
 		jpg := image.NewRGBA(image.Rect(
 			a.Rect.X0,
 			a.Rect.Y0,
@@ -134,6 +143,7 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 
 		draw.Draw(jpg,jpg.Bounds(),bgImage,bgImage.Bounds().Min,draw.Over)
 		draw.Draw(jpg,jpg.Bounds(),qrImage,qrImage.Bounds().Min.Sub(image.Pt(a.Pt.X,a.Pt.Y)),draw.Over)
+		jpeg.Encode(mergedF, jpg, nil)
 
 		err = a.DrawPoster(&DrawText{
 			JPG:      jpg,
