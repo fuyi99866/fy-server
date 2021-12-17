@@ -116,19 +116,6 @@ func InitRouter() *gin.Engine {
 	return r
 }
 
-//简单的回复成功
-func Response_test(context *gin.Context) {
-	message := "成功"
-	code := 200
-	data := "data"
-	context.JSON(http.StatusOK, gin.H{
-		"code":    code,
-		"message": message,
-		"data":    data,
-		"result":  "true",
-	})
-}
-
 func Mcc(context *gin.Context)  {
 	r := gin.Default()
 

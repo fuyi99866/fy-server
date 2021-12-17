@@ -480,6 +480,50 @@ var doc = `{
                 }
             }
         },
+        "/createOrder": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "科技化云平台"
+                ],
+                "summary": "下发订单",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/policy": {
             "get": {
                 "security": [
@@ -586,6 +630,279 @@ var doc = `{
                         "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/retrieveOrder": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "科技化云平台"
+                ],
+                "summary": "查询订单",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderIdListInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/robot/add": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "坝光酒店部署"
+                ],
+                "summary": "添加机器人",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RobotStatusEdit"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/robot/point": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "坝光酒店部署"
+                ],
+                "summary": "查询楼层机器人及位置地图信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "楼栋",
+                        "name": "buildingNo",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "楼层",
+                        "name": "floorNo",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "房间",
+                        "name": "roomNo",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "坝光酒店部署"
+                ],
+                "summary": "给楼层部署机器人，并绑定位置和地图",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RobotRoomTechInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/robot/statistics": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "科技化云平台"
+                ],
+                "summary": "获取所有机器人的状态统计信息",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RobotTypeInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/stop": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "科技化云平台"
+                ],
+                "summary": "取消订单",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskIDInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
                         }
                     },
                     "400": {
@@ -1158,6 +1475,107 @@ var doc = `{
                 },
                 "state": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.OrderIdListInfo": {
+            "type": "object",
+            "properties": {
+                "orderIdList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "models.OrderInfo": {
+            "type": "object",
+            "properties": {
+                "destinationCodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "priority": {
+                    "type": "string"
+                },
+                "vehicleType": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RobotRoomTechInfo": {
+            "type": "object",
+            "properties": {
+                "areaId": {
+                    "description": "区域ID",
+                    "type": "integer"
+                },
+                "buildingNo": {
+                    "description": "所在楼栋编号",
+                    "type": "string"
+                },
+                "floorNo": {
+                    "description": "所在楼栋楼层",
+                    "type": "string"
+                },
+                "mapName": {
+                    "description": "地图名",
+                    "type": "string"
+                },
+                "roomId": {
+                    "description": "房间ID",
+                    "type": "integer"
+                },
+                "roomNo": {
+                    "description": "当前工作房间号码或者准备前往的房间号码（在工作状态下，房间号必填）",
+                    "type": "string"
+                },
+                "sn": {
+                    "description": "机器人唯一标识",
+                    "type": "string"
+                }
+            }
+        },
+        "models.RobotStatusEdit": {
+            "type": "object",
+            "properties": {
+                "pointId": {
+                    "description": "机器人的部署的楼层位置",
+                    "type": "string"
+                },
+                "robotBranchCode": {
+                    "description": "机器人厂商编号 ；企业号",
+                    "type": "string"
+                },
+                "robotNo": {
+                    "description": "机器人编号 ；机器人的昵称",
+                    "type": "string"
+                },
+                "robotType": {
+                    "description": "1餐饮 2垃圾回收 3环境消杀 4房间消杀 5巡逻监控 6物流运送",
+                    "type": "integer"
+                },
+                "sn": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RobotTypeInfo": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.TaskIDInfo": {
+            "type": "object",
+            "properties": {
+                "taskId": {
+                    "type": "string"
                 }
             }
         },

@@ -61,6 +61,75 @@ definitions:
       state:
         type: integer
     type: object
+  models.OrderIdListInfo:
+    properties:
+      orderIdList:
+        items:
+          type: string
+        type: array
+    type: object
+  models.OrderInfo:
+    properties:
+      destinationCodes:
+        items:
+          type: string
+        type: array
+      priority:
+        type: string
+      vehicleType:
+        type: string
+    type: object
+  models.RobotRoomTechInfo:
+    properties:
+      areaId:
+        description: 区域ID
+        type: integer
+      buildingNo:
+        description: 所在楼栋编号
+        type: string
+      floorNo:
+        description: 所在楼栋楼层
+        type: string
+      mapName:
+        description: 地图名
+        type: string
+      roomId:
+        description: 房间ID
+        type: integer
+      roomNo:
+        description: 当前工作房间号码或者准备前往的房间号码（在工作状态下，房间号必填）
+        type: string
+      sn:
+        description: 机器人唯一标识
+        type: string
+    type: object
+  models.RobotStatusEdit:
+    properties:
+      pointId:
+        description: 机器人的部署的楼层位置
+        type: string
+      robotBranchCode:
+        description: 机器人厂商编号 ；企业号
+        type: string
+      robotNo:
+        description: 机器人编号 ；机器人的昵称
+        type: string
+      robotType:
+        description: 1餐饮 2垃圾回收 3环境消杀 4房间消杀 5巡逻监控 6物流运送
+        type: integer
+      sn:
+        type: string
+    type: object
+  models.RobotTypeInfo:
+    properties:
+      type:
+        type: integer
+    type: object
+  models.TaskIDInfo:
+    properties:
+      taskId:
+        type: string
+    type: object
   models.UserLogin:
     properties:
       password:
@@ -380,6 +449,33 @@ paths:
       summary: 控制指令
       tags:
       - 控制
+  /createOrder:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 下发订单
+      tags:
+      - 科技化云平台
   /policy:
     delete:
       consumes:
@@ -452,6 +548,175 @@ paths:
       summary: 增加访问权限
       tags:
       - 访问权限
+  /retrieveOrder:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderIdListInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询订单
+      tags:
+      - 科技化云平台
+  /robot/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RobotStatusEdit'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 添加机器人
+      tags:
+      - 坝光酒店部署
+  /robot/point:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 楼栋
+        in: query
+        name: buildingNo
+        required: true
+        type: string
+      - description: 楼层
+        in: query
+        name: floorNo
+        required: true
+        type: string
+      - description: 房间
+        in: query
+        name: roomNo
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询楼层机器人及位置地图信息
+      tags:
+      - 坝光酒店部署
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RobotRoomTechInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 给楼层部署机器人，并绑定位置和地图
+      tags:
+      - 坝光酒店部署
+  /robot/statistics:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RobotTypeInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取所有机器人的状态统计信息
+      tags:
+      - 科技化云平台
+  /stop:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskIDInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 取消订单
+      tags:
+      - 科技化云平台
   /tags/add:
     post:
       consumes:

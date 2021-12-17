@@ -2,6 +2,7 @@ package robot_service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"go_server/models"
@@ -42,7 +43,7 @@ type MsgPackage struct {
 	MessageId string
 	Topic     string
 	HoldTitle string
-	Cancel    context.Context
+	Cancel    context.CancelFunc
 }
 
 var S *robotService = NewService()
@@ -191,4 +192,52 @@ func (s *robotService) connectMqtt() {
 		}
 		return err
 	}, -1, time.Second*3) //3秒重连一次，无限重连
+}
+
+//发送机器人消息
+func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn, SessionID string, msgStr []byte) (string, error) {
+	logrus.Debugln("SendMqttMsg", sn, string(msgStr))
+	robotInfo := s.getRobot(sn)
+	if robotInfo == nil {
+		logrus.Debugln("SendMqttMsg can't find robot: " + sn)
+		return "", errors.New("can't find robot: " + sn)
+	}
+
+	topic := MakeTopic(robotInfo.Company, sn, ROBOT_REQUEST)
+
+	logrus.Debugln("SendMqttMsg start: ", sn, SessionID)
+	ctx, cancel := context.WithTimeout(c, timeout*time.Second)
+	//add msg to map
+	mpk := MsgPackage{
+		Result:    make(chan string, 0),
+		MessageId: SessionID,
+		Topic:     topic,
+		HoldTitle: MakeTopic(robotInfo.Company, sn, ROBOT_RESPONSE),
+		Cancel:    cancel,
+	}
+
+	s.msgList.Store(SessionID, &mpk) //添加新的消息订阅
+
+	logrus.Debugln("Publish", topic, 0, false, string(msgStr), SessionID)
+	err := s.mq.Publish(topic, 0, false, msgStr)
+	if err != nil {
+		logrus.Warnln("SendMqttMsg error", topic, err)
+		cancel()
+	}
+	var result string
+	select {
+	case <-ctx.Done():
+		{
+			err = errors.New("time out")
+			logrus.Debugln("SendMqttMsg Finish with timeout",topic, SessionID)
+		}
+	case result = <-mpk.Result:
+		{
+			logrus.Debugln("SendMqttMsg Finish with get msg",topic, SessionID)
+		}
+	}
+
+	s.msgList.Delete(SessionID)
+
+	return result, err
 }
