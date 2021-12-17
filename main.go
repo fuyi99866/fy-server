@@ -11,6 +11,7 @@ import (
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/routers"
+	"go_server/service"
 )
 
 /**
@@ -66,6 +67,7 @@ func initServer() {
 	app := routers.InitRouter()
 	initHTTPServer(app)
 	//TODO 启动MQTT服务
+	service.Start()
 }
 
 // InitHTTPServer 初始化http服务

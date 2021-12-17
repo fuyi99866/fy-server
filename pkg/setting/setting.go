@@ -40,7 +40,7 @@ type App struct {
 	PageSize        int
 	RuntimeRootPath string
 
-	PrefixUrl string
+	PrefixUrl      string
 	ImageSavePath  string
 	ImageMaxSize   int
 	ImageAllowExts []string
@@ -68,6 +68,17 @@ type Redis struct {
 
 var RedisSetting = &Redis{}
 
+type MQTT struct {
+	Scheme   string
+	Addr     string
+	Port     int
+	UserName string
+	Password string
+	Tls      bool
+}
+
+var Mqtt = &MQTT{}
+
 var cfg *ini.File
 var RunMode string
 
@@ -82,7 +93,7 @@ func Init(config string) {
 	mapTo("swagger", Swag)
 	mapTo("redis", RedisSetting)
 	mapTo("server", ServerSetting)
-
+	mapTo("mqtt", Mqtt)
 }
 
 func mapTo(section string, v interface{}) {
@@ -91,4 +102,3 @@ func mapTo(section string, v interface{}) {
 		logger.Fatalf("加载配置文件失败", err)
 	}
 }
-

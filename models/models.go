@@ -25,7 +25,7 @@ type Company struct {
 	CompanyID string
 }
 
-type Robot struct {
+type Task struct {
 	RobotSN      string `json:"robotsn"`
 	TaskID       string `json:"taskid";gorm:"unique_index, not null"` //任务名称（也就是ID，唯一标识
 	NickName     string `json:"nickname"`                             //任务别名（可忽略
@@ -55,7 +55,6 @@ type User struct {
 	Password  string  `json:"password, omitempty" gorm:"column:password;" `
 	NickName  string  `json:"nickname" gorm:"column:nickname;" `
 	CompanyID string  `json:"company_id" gorm:"column:company_id;"`
-	Robots    []Robot `gorm:"many2many:user_robot;"`
 }
 
 type UserRegister struct {
@@ -83,6 +82,7 @@ type UserPolicy struct {
 	Type     string `json:"type"`
 }
 
+
 func Init() {
 	//连接数据库
 	var err error
@@ -103,7 +103,7 @@ func Init() {
 	}
 
 	//指定表的前缀，修改默认的表名
-	/*	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+/*		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return conf.DatabaseSetting.TablePrefix+defaultTableName
 	}*/
 	//禁用表名复数
@@ -131,7 +131,7 @@ func Init() {
 
 //自动创建数据表
 func migration() {
-	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{}).AutoMigrate(&Authority{}).AutoMigrate(&Tag{}).AutoMigrate(&Article{})
+	db.AutoMigrate(&Company{}).AutoMigrate(&Robot{}).AutoMigrate(&User{}).AutoMigrate(&Authority{}).AutoMigrate(&Tag{}).AutoMigrate(&Article{}).AutoMigrate(&Robot{})
 }
 
 // updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
@@ -198,3 +198,4 @@ func addExtraSpaceIfExist(str string) string {
 	}
 	return ""
 }
+

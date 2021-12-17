@@ -32,3 +32,11 @@ go get -u github.com/jinzhu/gorm/dialects/sqlite
 
 
 
+###### 使用MYSQL语句更新数据库
+```text
+ALTER TABLE adis_report_record  ADD company_id varchar(255) DEFAULT NULL;
+UPDATE adis_report_record SET company_id = (select adis_robot.company_id FROM adis_robot WHERE adis_robot.sn = adis_report_record.sn );
+```
+
+
+

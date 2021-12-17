@@ -1,0 +1,87 @@
+{"level":"info","time":"2021-11-17 13:49:30.048","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:49:31.045","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{ 0   }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:50:14.400","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:50:15.357","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{ 0   }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:51:21.713","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:51:57.916","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:54:11.958","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:54:47.775","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:55:31.300","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:55:32.294","linenum":"D:/fy-server/go_server/models/models_test.go:34","msg":"result = &{ 来看 小意思 一篇惊世骇俗的文章}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:56:05.813","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:56:06.784","linenum":"D:/fy-server/go_server/models/models_test.go:34","msg":"result = <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:56:26.008","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:56:26.992","linenum":"D:/fy-server/go_server/models/models_test.go:34","msg":"result = <nil>","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:56:41.298","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:56:42.258","linenum":"D:/fy-server/go_server/models/models_test.go:34","msg":"result = &{ 来看 小意思 一篇惊世骇俗的文章}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:58:54.051","linenum":"D:/fy-server/go_server/models/models_test.go:26","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 13:58:55.301","linenum":"D:/fy-server/go_server/models/models_test.go:34","msg":"result = &{ 来看 小意思 一篇惊世骇俗的文章}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:02:06.564","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:02:07.573","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{  来看 小意思 一篇惊世骇俗的文章}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:02:23.120","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:02:24.096","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{  来看 小意思 一篇惊世骇俗的文章}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:03:58.722","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:03:59.762","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:04:18.468","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:04:19.431","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{  来看 小意思 一篇惊世骇俗的文章}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:04:34.821","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:04:35.896","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{123 1   }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:05:30.210","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:05:31.168","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{   123 1}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:07:09.064","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:07:10.039","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:07:23.194","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:07:24.161","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{   123 1}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:07:35.112","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-17 14:07:36.082","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{来看 小意思 一篇惊世骇俗的文章  }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-22 18:32:26.296","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-22 18:32:27.232","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{来看 小意思 一篇惊世骇俗的文章  }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-22 18:33:37.509","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-22 18:33:38.326","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{   123 1}","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:22:07.983","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:22:08.932","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:22:39.980","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:22:40.888","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:23:07.436","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:23:08.348","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:24:47.699","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:24:48.674","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:25:34.246","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:25:35.169","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:25:53.533","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:25:54.454","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:26:36.508","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:26:37.615","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = {    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:27:32.866","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:27:33.809","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:28:13.808","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:28:14.773","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:29:24.072","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:29:24.982","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:30:21.330","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:30:22.264","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{来看 小意思 一篇惊世骇俗的文章  }","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:48:12.303","linenum":"D:/fy-server/go_server/models/models_test.go:27","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-11-23 14:48:13.232","linenum":"D:/fy-server/go_server/models/models_test.go:35","msg":"result = &{来看 小意思 一篇惊世骇俗的文章  }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:14:39.479","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:14:40.495","linenum":"D:/fy-server/go_server/models/models_test.go:37","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:16:13.081","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:16:14.052","linenum":"D:/fy-server/go_server/models/models_test.go:37","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:17:26.400","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:17:27.263","linenum":"D:/fy-server/go_server/models/models_test.go:37","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:18:21.008","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:18:21.892","linenum":"D:/fy-server/go_server/models/models_test.go:37","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:21:22.742","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:21:23.640","linenum":"D:/fy-server/go_server/models/models_test.go:37","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:26:16.173","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:26:17.457","linenum":"D:/fy-server/go_server/models/models_test.go:37","msg":"result = &{    }","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:27:21.582","linenum":"D:/fy-server/go_server/models/models_test.go:29","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:28:24.244","linenum":"D:/fy-server/go_server/models/models_test.go:28","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:28:43.289","linenum":"D:/fy-server/go_server/models/models_test.go:28","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:29:00.668","linenum":"D:/fy-server/go_server/models/models_test.go:28","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:29:01.610","linenum":"D:/fy-server/go_server/models/models_test.go:38","msg":"match = [[10B-11F 10 11]]","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:29:49.134","linenum":"D:/fy-server/go_server/models/models_test.go:28","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:29:50.183","linenum":"D:/fy-server/go_server/models/models_test.go:38","msg":"match = [10B-11F 10 11]","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:30:02.895","linenum":"D:/fy-server/go_server/models/models_test.go:28","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:30:03.762","linenum":"D:/fy-server/go_server/models/models_test.go:38","msg":"match = 10","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:30:39.111","linenum":"D:/fy-server/go_server/models/models_test.go:28","msg":"初始化日志","serviceName":"go_server"}
+{"level":"info","time":"2021-12-15 18:30:39.982","linenum":"D:/fy-server/go_server/models/models_test.go:38","msg":"match = 1011","serviceName":"go_server"}

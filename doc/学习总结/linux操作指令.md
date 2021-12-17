@@ -12,7 +12,6 @@ select * from adis_robot;
 ####### ubuntu账号:cruiser@10.5.5.1
 ####### 密码:ubt123
 ```text
-sudo /home/cruiser/wifi/wifi_ctl.sh sta '"UBT-Users"' '"ubtubtubt"'
 ```
 
 ##### websocket调试
@@ -24,8 +23,18 @@ ws://10.10.17.15:9090/v1/channel?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1
 
 ```text
 {
-	"robotsn": "CAI001UBT10000016",
-	"topic": "notify",
-	"unsubscribe": false
-}
+ 	"robotsn": "CAI001UBT10000016",
+ 	"topic": "notify",
+ 	"unsubscribe": false
+ }
+```
+
+##### 设置私有服务器地址
+```text
+http://10.10.17.15:9090/v1/profile
+```
+
+
+```text
+wss://adis.ubtrobot.com/v1/adis/channel?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6NDgsInBhc3N3b3JkIjoiMjVkNTVhZDI4M2FhNDAwYWY0NjRjNzZkNzEzYzA3YWQiLCJjb21wYW55aWQiOiJURVNUIiwiZXhwIjoxNjM3MDYzNzIzLCJpc3MiOiJodHRwczovL2FkaXMtc2VydmVyLyJ9.k__hP12DP9nf_0i70DpDJOpXaMCUK5PE455GM868idw
 ```
