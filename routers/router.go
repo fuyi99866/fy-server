@@ -58,7 +58,6 @@ func InitRouter() *gin.Engine {
 		group1.GET("/alive", api.TokenAlive)
 		user := group1.Group("user")
 		{
-			user.GET("/test", Response_test) //测试回复
 			user.GET("/:name", v1.GetApiParam)
 			user.GET("", v1.GetUsers)
 			user.POST("", v1.AddUser)
