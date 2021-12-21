@@ -26,4 +26,14 @@ func (context *Gin)Response(httpCode,errCode int,data interface{})  {
 	return
 }
 
+func (g *Gin) ResponseTest(httpCode int, data interface{},errCode int,) {
+	g.C.JSON(httpCode, gin.H{
+		"respCode": 10000000,
+		"respMessage": "操作成功！",
+		"data": data,
+	})
+
+	return
+}
+
 

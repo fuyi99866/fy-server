@@ -229,15 +229,34 @@ func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn,
 	case <-ctx.Done():
 		{
 			err = errors.New("time out")
-			logrus.Debugln("SendMqttMsg Finish with timeout",topic, SessionID)
+			logrus.Debugln("SendMqttMsg Finish with timeout", topic, SessionID)
 		}
 	case result = <-mpk.Result:
 		{
-			logrus.Debugln("SendMqttMsg Finish with get msg",topic, SessionID)
+			logrus.Debugln("SendMqttMsg Finish with get msg", topic, SessionID)
 		}
 	}
 
 	s.msgList.Delete(SessionID)
 
 	return result, err
+}
+
+//订阅机器人MQTT 发出通知
+func (s *robotService) SubNotify(sn string) (string, chan interface{}, error) {
+	robot := s.getRobot(sn)
+	if robot == nil {
+		return "", nil, errors.New("robot not exist ")
+	}
+	return robot.SubNotify()
+}
+
+//取消订阅机器人的通知
+func (s *robotService) UnSubNotify(sn string, messageID string) {
+	robot := s.getRobot(sn)
+	if robot == nil {
+		logrus.Warnln("UnSubNotify: robot is not exist", sn)
+		return
+	}
+	robot.UnSubNotify(messageID)
 }
