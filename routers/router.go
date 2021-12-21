@@ -11,16 +11,18 @@ import (
 	"github.com/GoAdminGroup/go-admin/template/types"
 	"github.com/GoAdminGroup/themes/adminlte"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go_server/middleware/jwt"
+	"go_server/pkg/app"
+	"go_server/pkg/e"
 	"go_server/pkg/export"
 	"go_server/pkg/setting"
 	"go_server/pkg/upload"
 	"go_server/routers/api"
 	v1 "go_server/routers/api/v1"
 	"go_server/routers/casbin/enforcer"
-	"go_server/routers/websocket"
 	"net/http"
 )
 
@@ -39,12 +41,53 @@ func InitRouter() *gin.Engine {
 	//将访问路由到swagger的HTML页面
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
 	r.POST("/auth", api.Auth)                                            // token鉴权
-	r.StaticFS("/export",http.Dir(export.GetExcelFullPath()))            //下载导出的excel
+	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))           //下载导出的excel
 	r.POST("/upload_img", api.UploadImage)                               // 上传图片
 	r.POST("/upload_file", api.UploadFile)
 
-	//websocket实现聊天室
-	r.GET("/ws", websocket.NotifySocket)
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/request/create/1.0", func(context *gin.Context) {
+		buf := make([]byte, 1024)
+		n, _ := context.Request.Body.Read(buf)
+		logrus.Info( string(buf[0:n]))
+
+		appG := app.Gin{C: context}
+		data := make(map[string]interface{})
+		data["taskKey"] = "123"
+		data["pointId"] = "2"
+		data["vendor"] = "ubtech"
+		appG.ResponseTest(http.StatusOK, data, e.SUCCESS)
+
+	})
+
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/depository/notify/{version}", func(context *gin.Context) {
+		buf := make([]byte, 1024)
+		n, _ := context.Request.Body.Read(buf)
+		logrus.Info( string(buf[0:n]))
+		appG := app.Gin{C: context}
+		data := make(map[string]interface{})
+		data["pointId"] = "A2-3F-1K"
+		appG.ResponseTest(http.StatusOK, data, e.SUCCESS)
+
+	})
+
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/robot/notify/{version}", func(context *gin.Context) {
+		buf := make([]byte, 1024)
+		n, _ := context.Request.Body.Read(buf)
+		logrus.Info( string(buf[0:n]))
+		appG := app.Gin{C: context}
+		appG.ResponseTest(http.StatusOK, nil, e.SUCCESS)
+
+	})
+
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/status/report/%7Bversion%7D", func(context *gin.Context) {
+		buf := make([]byte, 1024)
+		n, _ := context.Request.Body.Read(buf)
+		logrus.Info( string(buf[0:n]))
+		appG := app.Gin{C: context}
+		appG.ResponseTest(http.StatusOK, nil, e.SUCCESS)
+
+	})
+	
 	//访问静态前端文件
 	r.Static("static", "dist/static")
 	r.Static("img", "dist/img")
@@ -58,7 +101,6 @@ func InitRouter() *gin.Engine {
 		group1.GET("/alive", api.TokenAlive)
 		user := group1.Group("user")
 		{
-			user.GET("/test", Response_test) //测试回复
 			user.GET("/:name", v1.GetApiParam)
 			user.GET("", v1.GetUsers)
 			user.POST("", v1.AddUser)
@@ -116,7 +158,7 @@ func InitRouter() *gin.Engine {
 	return r
 }
 
-func Mcc(context *gin.Context)  {
+func Mcc(context *gin.Context) {
 	r := gin.Default()
 
 	eng := engine.Default()
@@ -125,14 +167,14 @@ func Mcc(context *gin.Context)  {
 	cfg := config.Config{
 		Databases: config.DatabaseList{
 			"default": {
-				Host:         "127.0.0.1",
-				Port:         "3306",
-				User:         "root",
-				Pwd:          "root",
-				Name:         "godmin",
+				Host:       "127.0.0.1",
+				Port:       "3306",
+				User:       "root",
+				Pwd:        "root",
+				Name:       "godmin",
 				MaxIdleCon: 50,
 				MaxOpenCon: 150,
-				Driver:       "mysql",
+				Driver:     "mysql",
 			},
 		},
 		UrlPrefix: "admin",
@@ -145,10 +187,10 @@ func Mcc(context *gin.Context)  {
 		// 开发模式
 		Debug: true,
 		// 日志文件位置，需为绝对路径
-		InfoLogPath: "/var/logs/info.log",
+		InfoLogPath:   "/var/logs/info.log",
 		AccessLogPath: "/var/logs/access.log",
-		ErrorLogPath: "/var/logs/error.log",
-		ColorScheme: adminlte.ColorschemeSkinBlack,
+		ErrorLogPath:  "/var/logs/error.log",
+		ColorScheme:   adminlte.ColorschemeSkinBlack,
 	}
 
 	// Generators： 详见 https://github.com/GoAdminGroup/go-admin/blob/master/examples/datamodel/tables.go
