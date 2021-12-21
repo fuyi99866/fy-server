@@ -42,7 +42,7 @@ import (
 func main() {
 
 	//读取配置文件
-	config := flag.String("c", "./app.ini", "config file path")
+	config := flag.String("c", "./conf/app.ini", "config file path")
 	//解析配置文件
 	flag.Parse()
 	setting.Init(*config) //根据配置文件初始化配置
