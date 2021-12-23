@@ -153,3 +153,6 @@ func GetRobotPoint(c *gin.Context) {
 
 	appG.Response(http.StatusOK, e.SUCCESS, point)
 }
+
+
+

@@ -54,11 +54,15 @@ func main() {
 	models.Init()
 	models.Casbin_Init()
 	gredis.InitRedis()
-	//go CronRun() //定时任务，定时删除数据库
+
+	//TODO 启动MQTT服务
+	go service.Start()
+
 	initServer()
 
 	//开始定时任务
 	go cron.Start()
+
 }
 
 //初始化服务
@@ -66,8 +70,7 @@ func initServer() {
 	//注册路由
 	app := routers.InitRouter()
 	initHTTPServer(app)
-	//TODO 启动MQTT服务
-	service.Start()
+
 }
 
 // InitHTTPServer 初始化http服务

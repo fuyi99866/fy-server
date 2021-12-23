@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"go_server/models"
+	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/pkg/util"
 	"strings"
@@ -64,6 +65,7 @@ func (s *robotService) Start() error {
 }
 
 func (s *robotService) onMessageComing(topic string, data []byte) {
+	logger.Info("onMessageComing: ", topic, " ", string(data))
 	isOnlineTopic := strings.HasPrefix(topic, "$SYS/brokers/")
 	if !isOnlineTopic {
 		cid, sn, scheme, _ := ParseTopic(topic)
@@ -102,6 +104,13 @@ func (s *robotService) onConnected() {
 	logrus.Warnln("robotService:onConnected  ", "connected ", s.mq.IsConnected(), "connecting ", s.connecting)
 }
 
+func (s *robotService) addRobot(cid, sn string) error {
+	cRobot := NewROBOT(sn, cid, s.mq)
+	s.robots.Store(sn, cRobot)
+	logger.Info("addRobot end  ", cid," ", sn)
+	return nil
+}
+
 //结束机器人服务
 func (s *robotService) Stop() error {
 	logrus.Warnln("Stop robotService")
@@ -113,8 +122,17 @@ func (s *robotService) Stop() error {
 	return nil
 }
 
-//连接机器人
+//连接机器人，订阅机器人的mqtt消息，创建实例
 func (s *robotService) ConnectRobot(cid, sn string) error {
+	robot := s.getRobot(sn)
+	if robot != nil {
+		if robot.connect {
+			return errors.New("already connect")
+		} else {
+			s.DisconnectRobot(robot.Company, sn)
+		}
+	}
+	s.addRobot(cid, sn)
 	return nil
 }
 
@@ -141,21 +159,32 @@ func (s *robotService) getRobot(sn string) *ROBOT {
 
 //收到请求
 func (s *robotService) onRequest(cid, sn string, data []byte) error {
+	logger.Info("onRequest: ", cid, " ", string(data))
 	return nil
 }
 
 //收到回复
 func (s *robotService) onResponse(cid, sn string, data []byte) error {
+	logger.Info("onResponse: ", cid, " ", string(data))
 	return nil
 }
 
 //收到通知
 func (s *robotService) onNotify(cid, sn string, data []byte) error {
+	logger.Info("onNotify: ", cid, " ", string(data))
+	//TODO 调用websocket上传到前端
+	robot:=s.getRobot(sn)
+	if robot == nil{
+		return errors.New("robot is not exist")
+	}
+	//robot.PubNotify(data)
+	s.SubNotify(sn)
 	return nil
 }
 
 //连接到mqtt
 func (s *robotService) connectMqtt() {
+	logger.Info("connect to mqtt")
 	if s.connecting {
 		return
 	}
@@ -181,10 +210,11 @@ func (s *robotService) connectMqtt() {
 	go util.RetryCancelWithContext(ctx, func() error {
 		err := s.mq.Connect()
 		if err != nil {
+			logger.Info("reconnect to mqtt")
 			s.connecting = true
 		} else {
 			s.connecting = false
-			logrus.Infoln("Connect to  MQTT" + " succeed")
+			logger.Info("Connect to  MQTT" + " succeed")
 			robots, _ := models.GetAllRobot()
 			for _, robot := range robots {
 				s.ConnectRobot(robot.Company, robot.SN)
@@ -199,13 +229,13 @@ func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn,
 	logrus.Debugln("SendMqttMsg", sn, string(msgStr))
 	robotInfo := s.getRobot(sn)
 	if robotInfo == nil {
-		logrus.Debugln("SendMqttMsg can't find robot: " + sn)
+		logger.Info("SendMqttMsg can't find robot: " + sn)
 		return "", errors.New("can't find robot: " + sn)
 	}
 
 	topic := MakeTopic(robotInfo.Company, sn, ROBOT_REQUEST)
 
-	logrus.Debugln("SendMqttMsg start: ", sn, SessionID)
+	logger.Info("SendMqttMsg start: ", sn, SessionID)
 	ctx, cancel := context.WithTimeout(c, timeout*time.Second)
 	//add msg to map
 	mpk := MsgPackage{
@@ -218,7 +248,7 @@ func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn,
 
 	s.msgList.Store(SessionID, &mpk) //添加新的消息订阅
 
-	logrus.Debugln("Publish", topic, 0, false, string(msgStr), SessionID)
+	logger.Info("Publish", topic, 0, false, string(msgStr), SessionID)
 	err := s.mq.Publish(topic, 0, false, msgStr)
 	if err != nil {
 		logrus.Warnln("SendMqttMsg error", topic, err)

@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
+	"go_server/pkg/logger"
 	"go_server/service/robot_service"
 	"net"
 	"sync"
@@ -189,9 +190,9 @@ func (client *WsClient) HandleWebRequest() {
 					continue
 				}
 				msgID, input, err := robot_service.S.SubNotify(sub.RobotSN)
-				logrus.Debug("msgID, input, err : ", msgID, input, err)
+				logger.Info("msgID, input, err : ", msgID, input, err)
 				if err != nil {
-					logrus.Errorf("websocketSubscribeNotify error!")
+					logger.Error("websocketSubscribeNotify error! ")
 					client.wsJsonChan <- app.Response{
 						Code: e.ERROR_NOT_EXIST,
 						Msg:  e.GetMsg(e.ERROR_NOT_EXIST),
@@ -229,6 +230,5 @@ func (client *WsClient) readRobotMsg(c chan interface{}, mid, sn string) {
 			}
 			client.wsMsgChan <- data
 		}
-
 	}
 }

@@ -53,6 +53,7 @@ type RobotRoomTechInfo struct {
 	AreaID     int    `json:"areaId"`     //区域ID
 }
 
+
 type TaskIDInfo struct {
 	TaskId string `json:"taskId"`
 }

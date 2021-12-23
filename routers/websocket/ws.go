@@ -2,7 +2,9 @@ package websocket
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"go_server/pkg/logger"
 	"net/http"
 )
 
@@ -37,6 +39,49 @@ func init() {
 	wsManager.ctx = context.Background()
 }
 
-func Quit()  {
+func Quit() {
+	logger.Info("socket quit")
 	wsManager.ctx.Done()
+}
+
+// @Summary  Websocket接口, 支持订阅机器人状态、任务状态
+// @Tags  websocket
+// @Accept json
+// @Produce  json
+// @Param token query string true "TOKEN"
+// @Param  body  body   SubscribeRequest  false "body"
+// @Success 200 {object} MsgPackage
+// @Failure 400 {object} app.Response
+// @Router /channel [GET]
+// @Security ApiKeyAuth
+func NotifySocket(c *gin.Context) {
+	defer func() {
+		//捕获抛出的panic
+		if err := recover(); err != nil {
+			logger.Info(err)
+		}
+	}()
+
+	//升级get请求为webSocket协议
+	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		c.JSON(http.StatusOK,"create websocket failed")
+		return
+	}
+	client:=new(WsClient)
+	client.subMap = make(map[string]*SubMsgInfo,0)
+	client.wsMsgChan = make(chan interface{},10)
+	client.wsJsonChan = make(chan interface{},10)
+	client.ctx,client.cancel = context.WithCancel(wsManager.ctx)
+	client.ws = ws
+
+	//向前端发送消息
+	go client.DispatchMessage()
+	//处理请求消息
+	go client.HandleWebRequest()
+
+	select {
+	case <-client.ctx.Done()://等待退出
+	}
+	client.Close()
 }

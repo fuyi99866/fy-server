@@ -131,7 +131,15 @@ func Init() {
 
 //自动创建数据表
 func migration() {
-	db.AutoMigrate(&Company{}).AutoMigrate(&User{}).AutoMigrate(&Authority{}).AutoMigrate(&Tag{}).AutoMigrate(&Article{})
+	db.AutoMigrate(&Company{}).
+		AutoMigrate(&User{}).
+		AutoMigrate(&Authority{}).
+		AutoMigrate(&Tag{}).
+		AutoMigrate(&Article{}).
+		AutoMigrate(&RobotTaskTech{}).
+		AutoMigrate(&RobotStatusTech{}).
+		AutoMigrate(&RobotRoomTech{})
+
 }
 
 // updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating

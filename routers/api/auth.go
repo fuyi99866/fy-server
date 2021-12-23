@@ -7,9 +7,23 @@ import (
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/logger"
+	"go_server/pkg/setting"
 	"go_server/pkg/util"
+	"go_server/service/robot_service"
 	"net/http"
 )
+
+type ConnectProfile struct {
+	MqttAddr      string
+	MqttPort      int
+	RobotUser     string
+	RobotPassword string
+	Tls           bool
+	RobotClientID string
+	RequestTopic  string
+	ResponseTopic string
+	NotifyTopic   string
+}
 
 // @Summary  检查token是否过期
 // @Tags 鉴权
@@ -75,3 +89,34 @@ func Auth(c *gin.Context) {
 	})
 }
 
+// @Summary   获取机器人连接服务器需要的信息
+// @Tags   连接
+// @Accept json
+// @Produce  json
+// @Param sn query string true "机器人SN"
+// @Success 200 {string} json ConnectProfile
+// @Failure 400 {object} app.Response
+// @Router /profile [GET]
+func GetConnectProfile(c *gin.Context) {
+	appG := app.Gin{C: c}
+	sn := c.Query("sn")
+	//获取机器人的企业号
+	logger.Info("sn: ", sn)
+	robot, err := models.GetRobotInfoBySn(sn)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR, err)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, ConnectProfile{
+		MqttAddr:      setting.Mqtt.Addr,
+		MqttPort:      setting.Mqtt.Port,
+		RobotUser:     setting.Mqtt.UserName,
+		RobotPassword: setting.Mqtt.Password,
+		Tls:           setting.Mqtt.Tls,
+		RobotClientID: sn,
+		RequestTopic:  robot_service.MakeTopic(robot.Company,robot.SN,robot_service.ROBOT_REQUEST),
+		ResponseTopic: robot_service.MakeTopic(robot.Company,robot.SN,robot_service.ROBOT_RESPONSE),
+		NotifyTopic:   robot_service.MakeTopic(robot.Company,robot.SN,robot_service.ROBOT_NOTIFY),
+	})
+}

@@ -29,6 +29,7 @@ func NewROBOT(sn, cid string, mq *MQ) *ROBOT {
 		online:        false,
 		mq:            mq,
 	}
+	r.initTopic()//添加机器人时订阅主题
 	return r
 }
 
