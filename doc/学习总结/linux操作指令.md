@@ -23,10 +23,10 @@ ws://10.10.17.15:9090/v1/channel?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1
 
 ```text
 {
- 	"robotsn": "CAI001UBT10000016",
- 	"topic": "notify",
- 	"unsubscribe": false
- }
+   	"robotsn": "CAI001UBT10000016",
+   	"topic": "notify",
+   	"unsubscribe": false
+   }
 ```
 
 ##### 设置私有服务器地址

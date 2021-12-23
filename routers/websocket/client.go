@@ -57,7 +57,7 @@ func (client *WsClient) AddMsgQueue(msgID, RobotSN, topic string, input chan int
 		inputChan: input,
 		wsConn:    conn,
 	}
-	logrus.Debugln("AddMsgQueue", msgID, RobotSN, "current list", len(client.subMap))
+	logger.Info("AddMsgQueue", msgID, RobotSN, "current list", len(client.subMap))
 	return nil
 }
 
@@ -100,7 +100,7 @@ func (client *WsClient) DispatchMessage() {
 	for {
 		select {
 		case <-client.ctx.Done():
-			logrus.Info("quit DispatchMessage")
+			logger.Info("quit DispatchMessage")
 			return
 		case dataStr, ok := <-client.wsMsgChan:
 			if !ok {
@@ -212,7 +212,7 @@ func (client *WsClient) HandleWebRequest() {
 func (client *WsClient) readRobotMsg(c chan interface{}, mid, sn string) {
 	defer func() {
 		err := recover()
-		logrus.Errorln("websocket read robot message error: ", err)
+		logger.Error("websocket read robot message error: ", err)
 	}()
 	for {
 		select {
@@ -228,6 +228,7 @@ func (client *WsClient) readRobotMsg(c chan interface{}, mid, sn string) {
 				logrus.Errorln(mid, " ", data)
 				return
 			}
+			logger.Info("readRobotMsg: ",data)
 			client.wsMsgChan <- data
 		}
 	}
