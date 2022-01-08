@@ -82,7 +82,6 @@ type UserPolicy struct {
 	Type     string `json:"type"`
 }
 
-
 func Init() {
 	//连接数据库
 	var err error
@@ -139,7 +138,6 @@ func migration() {
 		AutoMigrate(&RobotTaskTech{}).
 		AutoMigrate(&RobotStatusTech{}).
 		AutoMigrate(&RobotRoomTech{})
-
 }
 
 // updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
