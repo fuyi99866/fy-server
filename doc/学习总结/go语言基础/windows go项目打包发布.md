@@ -5,4 +5,4 @@
 start cmd /c start  ./go_build_adis_server.exe  -c "./conf/app.ini"
 ```
 #### 脚本如图
-![脚本如图](./img/111.jpg)
+![脚本如图](../img/111.jpg)
