@@ -1,0 +1,8 @@
+version: '3'
+services:
+  go_server:
+    build: .
+    ports:
+    - "8082:8081"
+  mqtt:
+    image: "mqtt:alpine"
