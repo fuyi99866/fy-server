@@ -2,13 +2,13 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go_server/middleware/jwt"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/export"
+	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/pkg/upload"
 	"go_server/routers/api"
@@ -40,7 +40,7 @@ func InitRouter() *gin.Engine {
 	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/request/create/1.0", func(context *gin.Context) {
 		buf := make([]byte, 1024)
 		n, _ := context.Request.Body.Read(buf)
-		logrus.Info( string(buf[0:n]))
+		logger.Info(string(buf[0:n]))
 
 		appG := app.Gin{C: context}
 		data := make(map[string]interface{})
@@ -51,10 +51,10 @@ func InitRouter() *gin.Engine {
 
 	})
 
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/depository/notify/{version}", func(context *gin.Context) {
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/depository/notify/1.0", func(context *gin.Context) {
 		buf := make([]byte, 1024)
 		n, _ := context.Request.Body.Read(buf)
-		logrus.Info( string(buf[0:n]))
+		logger.Info(string(buf[0:n]))
 		appG := app.Gin{C: context}
 		data := make(map[string]interface{})
 		data["pointId"] = "A2-3F-1K"
@@ -62,31 +62,53 @@ func InitRouter() *gin.Engine {
 
 	})
 
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/robot/notify/{version}", func(context *gin.Context) {
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/robot/notify/1.0", func(context *gin.Context) {
 		buf := make([]byte, 1024)
 		n, _ := context.Request.Body.Read(buf)
-		logrus.Info( string(buf[0:n]))
+		logger.Info(string(buf[0:n]))
 		appG := app.Gin{C: context}
 		appG.ResponseTest(http.StatusOK, nil, e.SUCCESS)
 
 	})
 
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/status/report/%7Bversion%7D", func(context *gin.Context) {
+	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/status/report/1.0", func(context *gin.Context) {
 		buf := make([]byte, 1024)
 		n, _ := context.Request.Body.Read(buf)
-		logrus.Info( string(buf[0:n]))
+		logger.Info(string(buf[0:n]))
 		appG := app.Gin{C: context}
 		appG.ResponseTest(http.StatusOK, nil, e.SUCCESS)
 
 	})
-	
+
+	r.POST("/ifaas-authority/oauth/token", func(context *gin.Context) {
+		buf := make([]byte, 1024)
+		n, _ := context.Request.Body.Read(buf)
+		logger.Info(string(buf[0:n]))
+		//appG := app.Gin{C: context}
+		data := make(map[string]interface{})
+		data["access_token"] = "GJbqRK_cWlLTkhzWfKM/dXnwX58BQ=="
+		data["token_type"] = "bearer"
+		data["expires_in"] = 8639
+		data["scope"] = "read write"
+
+		context.JSON(http.StatusOK, gin.H{
+			"respCode":     10000000,
+			"respMessage":  "操作成功！",
+			"access_token": "GJbqRK_cWlLTkhzWfKM/dXnwX58BQ==",
+			"token_type":   "bearer",
+			"expires_in":   8639,
+			"scope":        "read write",
+		})
+
+	})
+
 	//访问静态前端文件
 	r.Static("static", "dist/static")
 	r.Static("img", "dist/img")
 	r.StaticFile("/", "dist/index.html")
 
-	r.GET("/profile",api.GetConnectProfile)
-	r.GET("/channel",websocket.NotifySocket)
+	r.GET("/profile", api.GetConnectProfile)
+	r.GET("/channel", websocket.NotifySocket)
 	//group1 := r.Group("api/v1")
 	group1 := r.Group("")
 	group1.Use(jwt.JWT())                                     //token 验证
@@ -151,4 +173,3 @@ func InitRouter() *gin.Engine {
 
 	return r
 }
-

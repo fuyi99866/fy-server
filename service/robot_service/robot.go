@@ -2,6 +2,7 @@ package robot_service
 
 import (
 	"github.com/sirupsen/logrus"
+	"go_server/pkg/logger"
 	"go_server/pkg/util"
 	"sync"
 )
@@ -36,11 +37,11 @@ func NewROBOT(sn, cid string, mq *MQ) *ROBOT {
 //初始化单个机器人的数据
 func (robot *ROBOT) initTopic() error {
 	logrus.Info("ROBOT init topic :", robot.SN)
-	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_REQUEST), 0); err != nil {
+/*	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_REQUEST), 0); err != nil {
 		logrus.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
-	}
+	}*/
 
 	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_RESPONSE), 0); err != nil {
 		logrus.Info("Subscribe failed :", err)
@@ -48,11 +49,11 @@ func (robot *ROBOT) initTopic() error {
 		return err
 	}
 
-	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_NOTIFY), 0); err != nil {
+/*	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_NOTIFY), 0); err != nil {
 		logrus.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
-	}
+	}*/
 
 	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_CONNECT), 0); err != nil {
 		logrus.Info("Subscribe failed :", err)
@@ -94,11 +95,11 @@ func (robot *ROBOT) Update(cid string) {
 
 //订阅通知
 func (robot *ROBOT) SubNotify() (string, chan interface{}, error) {
-	logrus.Infoln("Robot SubNotify ", robot.SN)
+	logger.Info("Robot SubNotify ", robot.SN)
 	robot.chanMutex.Lock()
 	defer robot.chanMutex.Unlock()
 	messageId := util.UUIDShort()
-	logrus.Infoln("Robot SubNotify messageId", robot.SN, messageId)
+	logger.Info("Robot SubNotify messageId", robot.SN, messageId)
 	c := make(chan interface{}, 10)
 	robot.notifyChanMap[messageId] = c //存储messageId
 	return messageId, c, nil
