@@ -104,7 +104,7 @@ func InitRouter() *gin.Engine {
 
 	//访问静态前端文件
 	r.Static("static", "dist/static")
-	r.Static("img", "dist/img")
+	r.Static("img", "dist/static/img")
 	r.StaticFile("/", "dist/index.html")
 
 	r.GET("/profile", api.GetConnectProfile)
