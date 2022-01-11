@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
@@ -87,21 +86,21 @@ func (s *robotService) onMessageComing(topic string, data []byte) {
 			online = false
 		}
 
-		logrus.Info("sn , online :", sn, online)
+		logger.Info("sn , online :", sn, online)
 		//TODO 保存机器人的在线状态，并向前端推送
 	}
 }
 
 func (s *robotService) onReconnecting() {
-	logrus.Warnln("robotService:onReconnecting", s.connecting)
+	logger.Warn("robotService:onReconnecting", s.connecting)
 }
 
 func (s *robotService) onDisconnected(err error) {
-	logrus.Warnln("robotService:onDisconnected", err, s.connecting)
+	logger.Warn("robotService:onDisconnected", err, s.connecting)
 }
 
 func (s *robotService) onConnected() {
-	logrus.Warnln("robotService:onConnected  ", "connected ", s.mq.IsConnected(), "connecting ", s.connecting)
+	logger.Warn("robotService:onConnected  ", "connected ", s.mq.IsConnected(), "connecting ", s.connecting)
 }
 
 func (s *robotService) addRobot(cid, sn string) error {
@@ -113,7 +112,7 @@ func (s *robotService) addRobot(cid, sn string) error {
 
 //结束机器人服务
 func (s *robotService) Stop() error {
-	logrus.Warnln("Stop robotService")
+	logger.Warn("Stop robotService")
 	if s.cancel != nil {
 		s.cancel()
 		s.cancel = nil
@@ -226,7 +225,7 @@ func (s *robotService) connectMqtt() {
 
 //发送机器人消息
 func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn, SessionID string, msgStr []byte) (string, error) {
-	logrus.Debugln("SendMqttMsg", sn, string(msgStr))
+	logger.Debug("SendMqttMsg", sn, string(msgStr))
 	robotInfo := s.getRobot(sn)
 	if robotInfo == nil {
 		logger.Info("SendMqttMsg can't find robot: " + sn)
@@ -251,7 +250,7 @@ func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn,
 	logger.Info("Publish", topic, 0, false, string(msgStr), SessionID)
 	err := s.mq.Publish(topic, 0, false, msgStr)
 	if err != nil {
-		logrus.Warnln("SendMqttMsg error", topic, err)
+		logger.Warn("SendMqttMsg error", topic, err)
 		cancel()
 	}
 	var result string
@@ -259,11 +258,11 @@ func (s *robotService) SendMqttMsg(c context.Context, timeout time.Duration, sn,
 	case <-ctx.Done():
 		{
 			err = errors.New("time out")
-			logrus.Debugln("SendMqttMsg Finish with timeout", topic, SessionID)
+			logger.Debug("SendMqttMsg Finish with timeout", topic, SessionID)
 		}
 	case result = <-mpk.Result:
 		{
-			logrus.Debugln("SendMqttMsg Finish with get msg", topic, SessionID)
+			logger.Debug("SendMqttMsg Finish with get msg", topic, SessionID)
 		}
 	}
 
@@ -285,7 +284,7 @@ func (s *robotService) SubNotify(sn string) (string, chan interface{}, error) {
 func (s *robotService) UnSubNotify(sn string, messageID string) {
 	robot := s.getRobot(sn)
 	if robot == nil {
-		logrus.Warnln("UnSubNotify: robot is not exist", sn)
+		logger.Warn("UnSubNotify: robot is not exist", sn)
 		return
 	}
 	robot.UnSubNotify(messageID)

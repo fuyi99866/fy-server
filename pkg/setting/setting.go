@@ -2,7 +2,6 @@ package setting
 
 import (
 	"github.com/go-ini/ini"
-	"github.com/sirupsen/logrus"
 	"go_server/pkg/logger"
 	"time"
 )
@@ -86,7 +85,7 @@ func Init(config string) {
 	var err error
 	cfg, err = ini.Load(config)
 	if err != nil {
-		logrus.Fatal("初始化配置文件失败： ", err)
+		logger.Fatal("初始化配置文件失败： ", err)
 	}
 	mapTo("app", AppSetting)
 	mapTo("database", DatabaseSetting)

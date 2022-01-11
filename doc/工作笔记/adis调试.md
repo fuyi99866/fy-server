@@ -50,4 +50,5 @@ Adis公司内网
 ##### 设置私有服务器
 ```text
 http://10.10.17.15:9090/v1/profile
+https://prerelease.ubtrobot.com/v1/rcmp-api/tool/getDomain
 ```

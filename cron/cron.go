@@ -3,7 +3,7 @@ package cron
 import (
 	"github.com/pkg/errors"
 	"github.com/robfig/cron/v3"
-	"github.com/sirupsen/logrus"
+	"go_server/pkg/logger"
 	"os"
 	"sync"
 )
@@ -114,7 +114,7 @@ type testTask struct {
 }
 
 func (t *testTask) Run() {
-	logrus.Info("hello world")
+	logger.Info("hello world")
 }
 
 func Start() {
@@ -122,16 +122,16 @@ func Start() {
 	// 实现接口的方式添加定时任务
 	task := &testTask{}
 	if err := crontab.AddByID("1", "* * * * *", task); err != nil {
-		logrus.Infof("error to add crontab task:%s  ",err)
+		logger.Infof("error to add crontab task:%s  ",err)
 		os.Exit(-1)
 	}
 
 	// 添加函数作为定时任务
 	taskFunc := func() {
-		logrus.Info("hello world")
+		logger.Info("hello world")
 	}
 	if err := crontab.AddByFunc("2", "* * * * *", taskFunc); err != nil {
-		logrus.Infof("error to add crontab task:%s  ",err)
+		logger.Infof("error to add crontab task:%s  ",err)
 		os.Exit(-1)
 	}
 	crontab.Start()

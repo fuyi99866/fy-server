@@ -24,7 +24,7 @@ import (
 2、服务器接口框架gin
 3、MQTT
 4、HTTP和websocket
-5、日志打印logrus
+5、日志打印logger
 6、路由、校验Token jwt
 7、生成标准的在线文档swagger
 8、casbin控制访问权限
@@ -48,7 +48,7 @@ func main() {
 	setting.Init(*config) //根据配置文件初始化配置
 
 	//初始化日志系统
-	logger.InitLog1(setting.AppSetting.LogLever, "./logs/go_server.log") //初始化日志库 ,使用zap库
+	logger.InitLog(setting.AppSetting.LogLever, "./logs") //初始化日志库 ,使用zap库
 
 	//初始化数据库
 	models.Init()

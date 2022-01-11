@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/sirupsen/logrus"
+	"go_server/pkg/logger"
 	"go_server/pkg/util"
 	"sync"
 	"time"
@@ -56,7 +56,7 @@ func NewMq(url string, opts ...Option) *MQ {
 
 //连接
 func (m *MQ) Connect() error {
-	logrus.Debug("Mqtt connect : ", m.opts, m.url)
+	logger.Debug("Mqtt connect : ", m.opts, m.url)
 	if m.cli.IsConnected() {
 		return nil
 	}
@@ -76,9 +76,9 @@ func (m *MQ) MustConnect(c context.Context) {
 	util.RetryCancelWithContext(c, func() error {
 		err := m.Connect()
 		if err != nil {
-			logrus.Info("Connect to mqtt  failed! ", err)
+			logger.Info("Connect to mqtt  failed! ", err)
 		} else {
-			logrus.Info("Connect to mqtt  succeed!")
+			logger.Info("Connect to mqtt  succeed!")
 		}
 		return err
 	}, -1, time.Duration(m.opts.retry))
@@ -103,7 +103,7 @@ func (m *MQ) IsConnected() bool {
 
 //TODO 处理断开重连
 func (m *MQ) mqttConnectionLostHandler(client mqtt.Client, err error) {
-	logrus.Warnln("MQTT:Disconnected", err, client.IsConnected())
+	logger.Info("MQTT:Disconnected", err, client.IsConnected())
 	if m.opts.autoReconnect {
 		go m.MustConnect(m.ctx)
 	}
@@ -114,14 +114,14 @@ func (m *MQ) mqttConnectionLostHandler(client mqtt.Client, err error) {
 }
 
 func (m *MQ) mqttOnConnectionHandler(mqtt.Client) {
-	logrus.Info("Mqtt is connected")
+	logger.Info("Mqtt is connected")
 	if m.opts.OnConnect != nil {
 		m.opts.OnConnect()
 	}
 }
 
 func (m *MQ) mqttOnReconnectingHandler(mqtt.Client, *mqtt.ClientOptions) {
-	logrus.Info("Mqtt is reconnecting")
+	logger.Info("Mqtt is reconnecting")
 	if m.opts.OnReconnecting != nil {
 		m.opts.OnReconnecting()
 	}
@@ -137,7 +137,7 @@ func (m *MQ) Publish(topic string, qos byte, retained bool, payload []byte) erro
 	go func(mqtt.Token) {
 		_ = token.Wait()
 		if token.Error() != nil {
-			logrus.Println("Publish: ", token.Error())
+			logger.Info("Publish: ", token.Error())
 		}
 	}(token)
 	return nil
@@ -152,14 +152,14 @@ func (m *MQ) Subscribe(topic string, qos byte) error {
 		if m.opts.OnMessageComing != nil {
 			m.opts.OnMessageComing(message.Topic(), message.Payload())
 		} else {
-			logrus.Infoln("There are no handler for handle", message.Topic())
+			logger.Info("There are no handler for handle", message.Topic())
 		}
 	})
 
 	go func(mqtt.Token) {
 		_ = token.Wait() // Can also use '<-t.Done()' in releases > 1.2.0
 		if token.Error() != nil {
-			logrus.Println("UnSubscribe failed: ", token.Error())
+			logger.Info("UnSubscribe failed: ", token.Error())
 		}
 	}(token)
 	return nil
@@ -174,7 +174,7 @@ func (m *MQ) UnSubscribe(topic string) error {
 	go func(mqtt.Token) {
 		_ = token.Wait() // Can also use '<-t.Done()' in releases > 1.2.0
 		if token.Error() != nil {
-			logrus.Println("UnSubscribe failed: ", token.Error())
+			logger.Info("UnSubscribe failed: ", token.Error())
 		}
 	}(token)
 	return nil

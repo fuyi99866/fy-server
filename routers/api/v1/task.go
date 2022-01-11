@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"github.com/buger/jsonparser"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/format"
+	"go_server/pkg/logger"
 	"go_server/pkg/util"
 	"go_server/service/robot_service"
 	"math/rand"
@@ -33,7 +33,7 @@ func CreateOrder(c *gin.Context) {
 	var reqInfo models.OrderInfo
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Error("err = ", err, )
+		logger.Error("err = ", err, )
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
@@ -43,7 +43,7 @@ func CreateOrder(c *gin.Context) {
 	//TODO 通过正则提取楼栋和楼层信息
 	re := regexp.MustCompile(`([0-9]+)B-([0-9]+)F`)
 	match := re.FindAllStringSubmatch(reqInfo.DestinationCodes[0], -1)
-	logrus.Info("match = ", match[0][1], match[0][2], " ", reqInfo.DestinationCodes[0])
+	logger.Info("match = ", match[0][1], match[0][2], " ", reqInfo.DestinationCodes[0])
 	roomInfo, _ := models.GetRobotPoint(match[0][1], match[0][2])
 
 	//创建现有地图探索任务
@@ -121,7 +121,7 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	msgStr, err := json.Marshal(req)
-	logrus.Debugln("startTask req", req.Content.Mode, string(msgStr))
+	logger.Debug("startTask req", req.Content.Mode, string(msgStr))
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
@@ -142,11 +142,11 @@ func CreateOrder(c *gin.Context) {
 		return
 	}
 
-	logrus.Info("result = ", result)
+	logger.Info("result = ", result)
 	data := make(map[string]interface{})
 	data["taskId"] = taskId
 	if err := models.CreateTask(roomInfo.SN, strconv.Itoa(taskId), reqInfo.DestinationCodes[0]); err != nil {
-		logrus.Error("err = ", err, )
+		logger.Error("err = ", err, )
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
@@ -168,7 +168,7 @@ func RetrieveOrder(c *gin.Context) {
 	var reqInfo models.OrderIdListInfo
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Error("err = ", err, )
+		logger.Error("err = ", err, )
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
@@ -181,7 +181,7 @@ func RetrieveOrder(c *gin.Context) {
 	for _, v := range reqInfo.OrderIdList {
 		tasks, err := models.GetTaskByTaskId(v)
 		if err != nil {
-			logrus.Error("GetTaskByTaskId err = ", err, )
+			logger.Error("GetTaskByTaskId err = ", err, )
 			appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 			return
 		}
