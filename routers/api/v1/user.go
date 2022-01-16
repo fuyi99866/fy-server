@@ -2,7 +2,6 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
@@ -84,7 +83,7 @@ func AddUser(c *gin.Context) {
 // @Router /user/update  [POST]
 // @Security ApiKeyAuth
 func UpdateUser(c *gin.Context) {
-	logrus.Info("UpdateUser")
+	logger.Info("UpdateUser")
 	appG := app.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)

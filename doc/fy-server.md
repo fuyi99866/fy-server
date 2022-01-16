@@ -5,7 +5,7 @@ fy-server 主要是用于go语言学习的后台demo，主要学习以下模块�
 * 服务器接口框架gin
 * MQTT
 * HTTP和websocket
-* 日志打印logrus
+* 日志打印logger
 * 路由、校验Token jwt
 * 生成标准的在线文档swagger
 * casbin控制访问权限

@@ -5,7 +5,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/sirupsen/logrus"
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"time"
@@ -98,7 +97,7 @@ func Init() {
 	}
 	db, err = gorm.Open(setting.DatabaseSetting.Type, dataPath)
 	if err != nil {
-		logrus.Fatal("无法连接数据库... err: %/v", err)
+		logger.Fatal("无法连接数据库... err: %/v", err)
 	}
 
 	//指定表的前缀，修改默认的表名

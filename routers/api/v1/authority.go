@@ -2,9 +2,9 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/e"
+	"go_server/pkg/logger"
 
 	//"go_server/pgo kg/e"
 	"go_server/pkg/app"
@@ -25,7 +25,7 @@ func CreateAuthority(c *gin.Context) {
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("CreateAuthority param error")
+		logger.Info("CreateAuthority param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -38,7 +38,7 @@ func CreateAuthority(c *gin.Context) {
 
 	if _,err := models.CreateAuthority(reqInfo); err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logrus.Error("CreateAuthority error")
+		logger.Error("CreateAuthority error")
 		return
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)
@@ -58,13 +58,13 @@ func DeleteAuthority(c *gin.Context) {
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("CreateAuthority param error")
+		logger.Info("CreateAuthority param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 	if err := models.DeleteAuthority(reqInfo); err != nil { // 删除角色之前需要判断是否有用户正在使用此角色
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logrus.Error("DeleteAuthority error")
+		logger.Error("DeleteAuthority error")
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	}
@@ -83,14 +83,14 @@ func UpdateAuthority(c *gin.Context) {
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("CreateAuthority param error")
+		logger.Info("CreateAuthority param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
 
 	if err, authority := models.UpdateAuthority(reqInfo); err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logrus.Error("UpdateAuthority error")
+		logger.Error("UpdateAuthority error")
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, authority)
 	}
@@ -109,13 +109,13 @@ func SetAuthority(c *gin.Context) {
 	var reqInfo models.Authority
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Info("CreateAuthority param error")
+		logger.Info("CreateAuthority param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 	}
 
 	if err := models.SetAuthority(reqInfo); err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logrus.Error("SetDataAuthority error")
+		logger.Error("SetDataAuthority error")
 		return
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)

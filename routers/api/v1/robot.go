@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
+	"go_server/pkg/logger"
 	"net/http"
 )
 
@@ -55,7 +55,7 @@ func GetRobotsStat(c *gin.Context) {
 	var reqInfo models.RobotTypeInfo
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logrus.Error("err = ", err, )
+		logger.Error("err = ", err, )
 		appG.Response(http.StatusInternalServerError, e.ERROR, err)
 		return
 	}
@@ -113,14 +113,14 @@ func SetRobotPoint(c *gin.Context) {
 		AreaID:     reqInfo.AreaID,
 	}
 	if err = models.EditRobotPoint(rp); err != nil {
-		logrus.Error("EditRobotPoint failed : ", err)
+		logger.Error("EditRobotPoint failed : ", err)
 		appG.Response(http.StatusInternalServerError, e.ERROR, err)
 		return
 	}
 
 	point := reqInfo.BuildingNo + "B-" + reqInfo.BuildingNo + "F"
 	if err = models.UpdateRobotStatusTech(reqInfo.SN, point); err != nil {
-		logrus.Error("UpdateRobotStatusTech failed : ", err)
+		logger.Error("UpdateRobotStatusTech failed : ", err)
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
 		return
 	}
@@ -144,7 +144,7 @@ func GetRobotPoint(c *gin.Context) {
 	build := c.Query("buildingNo")
 	floor := c.Query("floorNo")
 
-	logrus.Info("build,floor ", build, floor)
+	logger.Info("build,floor ", build, floor)
 	point, err := models.GetRobotPoint(build, floor)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, err)

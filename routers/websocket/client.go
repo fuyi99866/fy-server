@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/gorilla/websocket"
-	"github.com/sirupsen/logrus"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
 	"go_server/pkg/logger"
@@ -63,14 +62,14 @@ func (client *WsClient) AddMsgQueue(msgID, RobotSN, topic string, input chan int
 
 //取消机器人消息订阅
 func (client *WsClient) RemoveMsgQueue(msgID string) {
-	logrus.Debugln("RemoveMsgQueue", msgID)
+	logger.Debug("RemoveMsgQueue", msgID)
 	m := client.subMap[msgID]
 	if m != nil {
 		//TODO 取消对机器人消息的订阅
 		robot_service.S.UnSubNotify(m.RobotSN,m.MessageID)
 		delete(client.subMap, msgID)
 	} else {
-		logrus.Errorf("RemoveMsgQueue error, has no", msgID)
+		logger.Errorf("RemoveMsgQueue error, has no", msgID)
 	}
 }
 
@@ -86,7 +85,7 @@ func (client *WsClient) Close() {
 	client.subMap = make(map[string]*SubMsgInfo, 0)
 	client.ws.WriteMessage(websocket.CloseMessage, []byte{})
 	client.ws.Close()
-	logrus.Debug("close")
+	logger.Debug("close")
 }
 
 //读取各种消息，然后通过websocket发送出去
@@ -94,7 +93,7 @@ func (client *WsClient) DispatchMessage() {
 	defer func() {
 		//捕获抛出的panic
 		if err := recover(); err != nil {
-			logrus.Warn(err)
+			logger.Warn(err)
 		}
 	}()
 	for {
@@ -104,23 +103,23 @@ func (client *WsClient) DispatchMessage() {
 			return
 		case dataStr, ok := <-client.wsMsgChan:
 			if !ok {
-				logrus.Errorf("DispatchMessage error ,channel is not ok!", dataStr, ok)
+				logger.Errorf("DispatchMessage error ,channel is not ok!", dataStr, ok)
 				continue
 			}
 			err := client.ws.WriteMessage(websocket.TextMessage, dataStr.([]byte))
 			if err != nil {
-				logrus.Errorln("websocket wsMsgChan error! maybe websocket has been closed, remove chan", string(dataStr.([]byte)), client.ws)
+				logger.Error("websocket wsMsgChan error! maybe websocket has been closed, remove chan", string(dataStr.([]byte)), client.ws)
 				client.cancel()
 				return
 			}
 		case dataJson, ok := <-client.wsJsonChan:
 			if !ok {
-				logrus.Errorf("DispatchMessage error ,channel is not ok!", dataJson, ok)
+				logger.Errorf("DispatchMessage error ,channel is not ok!", dataJson, ok)
 				continue
 			}
 			err := client.ws.WriteJSON(dataJson)
 			if err != nil {
-				logrus.Errorln("WriteMessage  PingMessage err", err)
+				logger.Error("WriteMessage  PingMessage err", err)
 				client.cancel()
 				return
 			}
@@ -133,13 +132,13 @@ func (client *WsClient) HandleWebRequest() {
 	defer func() {
 		//捕获抛出的panic
 		if err := recover(); err != nil {
-			logrus.Warning(err)
+			logger.Warn(err)
 		}
 	}()
 	for {
 		select {
 		case <-client.ctx.Done():
-			logrus.Infoln("quit HandleWebRequest")
+			logger.Info("quit HandleWebRequest")
 			return
 		default:
 		}
@@ -149,10 +148,10 @@ func (client *WsClient) HandleWebRequest() {
 			client.cancel()
 			if netErr, ok := err.(net.Error); ok {
 				if netErr.Timeout() {
-					logrus.Errorln("ReadMessage timeout remote: %v\n", client.ws.RemoteAddr())
+					logger.Error("ReadMessage timeout remote: %v\n", client.ws.RemoteAddr())
 				}
 			} else {
-				logrus.Errorln("ReadWebsocketMessage err", client.ws.RemoteAddr(), err)
+				logger.Error("ReadWebsocketMessage err", client.ws.RemoteAddr(), err)
 			}
 			return
 		}
@@ -160,9 +159,9 @@ func (client *WsClient) HandleWebRequest() {
 			data = []byte("pong")
 			client.wsMsgChan <- data
 		} else if mt == websocket.PongMessage || string(data) == "pong" {
-			logrus.Debug("get websocket.PongMessage ")
+			logger.Debug("get websocket.PongMessage ")
 		} else {
-			logrus.Debugln("get websocket data", string(data), mt)
+			logger.Debug("get websocket data", string(data), mt)
 			var sub SubscribeRequest
 			if err = json.Unmarshal(data, &sub); err != nil {
 				client.wsJsonChan <- app.Response{
@@ -176,12 +175,12 @@ func (client *WsClient) HandleWebRequest() {
 				for k, v := range client.subMap {
 					if v.RobotSN == sub.RobotSN && v.Topic == sub.Topic {
 						client.RemoveMsgQueue(k)
-						logrus.Infoln("websocket UnSubscribe!, remove chan", v.RobotSN)
+						logger.Info("websocket UnSubscribe!, remove chan", v.RobotSN)
 					}
 				}
 			} else { //订阅
 				if client.IsMsgSubExist(sub.RobotSN, sub.Topic, client.ws) {
-					logrus.Debugln("websocket SubNotify duplicate!", sub.RobotSN, sub.Topic)
+					logger.Debug("websocket SubNotify duplicate!", sub.RobotSN, sub.Topic)
 					client.wsJsonChan <- app.Response{
 						Code: e.ERROR_EXIST,
 						Msg:  e.GetMsg(e.ERROR_EXIST),
@@ -217,15 +216,15 @@ func (client *WsClient) readRobotMsg(c chan interface{}, mid, sn string) {
 	for {
 		select {
 		case <-client.ctx.Done():
-			logrus.Infoln("quit readRobotMsg")
+			logger.Info("quit readRobotMsg")
 			return
 		case data, ok := <-c:
 			if !ok {
-				logrus.Errorln(mid, " ", data)
+				logger.Error(mid, " ", data)
 				return
 			}
 			if data == nil {
-				logrus.Errorln(mid, " ", data)
+				logger.Error(mid, " ", data)
 				return
 			}
 			logger.Info("readRobotMsg: ",data)

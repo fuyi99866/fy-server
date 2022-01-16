@@ -1,7 +1,6 @@
 package robot_service
 
 import (
-	"github.com/sirupsen/logrus"
 	"go_server/pkg/logger"
 	"go_server/pkg/util"
 	"sync"
@@ -36,39 +35,39 @@ func NewROBOT(sn, cid string, mq *MQ) *ROBOT {
 
 //初始化单个机器人的数据
 func (robot *ROBOT) initTopic() error {
-	logrus.Info("ROBOT init topic :", robot.SN)
+	logger.Info("ROBOT init topic :", robot.SN)
 /*	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_REQUEST), 0); err != nil {
-		logrus.Info("Subscribe failed :", err)
+		logger.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
 	}*/
 
 	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_RESPONSE), 0); err != nil {
-		logrus.Info("Subscribe failed :", err)
+		logger.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
 	}
 
 /*	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_NOTIFY), 0); err != nil {
-		logrus.Info("Subscribe failed :", err)
+		logger.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
 	}*/
 
 	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_CONNECT), 0); err != nil {
-		logrus.Info("Subscribe failed :", err)
+		logger.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
 	}
 
 	if err := robot.mq.Subscribe(MakeTopic(robot.Company, robot.SN, ROBOT_DISCONNECT), 0); err != nil {
-		logrus.Info("Subscribe failed :", err)
+		logger.Info("Subscribe failed :", err)
 		robot.connect = false
 		return err
 	}
 
 	robot.connect = true
-	logrus.Info("ROBOT init topic success:", robot.SN)
+	logger.Info("ROBOT init topic success:", robot.SN)
 	return nil
 }
 
@@ -107,7 +106,7 @@ func (robot *ROBOT) SubNotify() (string, chan interface{}, error) {
 
 //取消订阅
 func (robot *ROBOT) UnSubNotify(messageId string) {
-	logrus.Infoln("Robot UnSubNotify", robot.SN, messageId)
+	logger.Info("Robot UnSubNotify", robot.SN, messageId)
 	robot.chanMutex.Lock()
 	defer robot.chanMutex.Unlock()
 	close(robot.notifyChanMap[messageId]) //close message chan
@@ -122,14 +121,14 @@ func (robot *ROBOT) PubNotify(data []byte) {
 	defer func() {
 		err := recover()
 		if err != nil {
-			logrus.Errorln("PubNotify send robot message error:", err)
+			logger.Error("PubNotify send robot message error:", err)
 		}
 	}()
-	logrus.Debugln("send robot msg:", robot.SN, string(data), len(robot.notifyChanMap))
+	logger.Debug("send robot msg:", robot.SN, string(data), len(robot.notifyChanMap))
 	robot.chanMutex.Lock()
 	defer robot.chanMutex.Unlock()
 	for id, c := range robot.notifyChanMap {
-		logrus.Debugln("send robot msg to web", id)
+		logger.Debug("send robot msg to web", id)
 		go util.SafeSend(c, data)
 	}
 }

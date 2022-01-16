@@ -15,7 +15,7 @@ Lumberjack是一个Go包，用于将日志写入滚动文件。
 zap 不支持文件归档，如果要支持文件按大小或者时间归档，需要使用lumberjack，lumberjack也是zap官方推荐的。
 */
 var logger *zap.SugaredLogger
-func InitLog1(level string, filePath string) {
+func InitLog(level string, filePath string) {
 	hook := lumberjack.Logger{
 		Filename:   filePath, // 日志文件路径
 		MaxSize:    1,      // 每个日志文件保存的最大尺寸 单位：M

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"go_server/conf"
 	"go_server/middleware/jwt"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
@@ -31,6 +32,9 @@ func InitRouter() *gin.Engine {
 
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	//将访问路由到swagger的HTML页面
+	r.GET("/version", func(context *gin.Context) {
+		context.JSON(http.StatusOK,conf.AppVersion)
+	})
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
 	r.POST("/auth", api.Auth)                                            // token鉴权
 	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))           //下载导出的excel

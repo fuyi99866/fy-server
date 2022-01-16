@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/sirupsen/logrus"
+	"go_server/pkg/logger"
 )
 
 func GetAllUser() ([]*User, error) {
@@ -37,7 +37,7 @@ func UpdateUser(user UserRegister) ( err error) {
 func CheckUser(username, password string) (bool, error) {
 	var user User
 	err := db.Select("id").Where(&User{Username: username, Password: password}).First(&user).Error
-	logrus.Debugln("CheckUser", user.ID)
+	logger.Debug("CheckUser", user.ID)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
