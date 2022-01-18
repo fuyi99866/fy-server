@@ -1,9 +1,0 @@
-{"level":"info","time":"2022-01-11 19:48:49.000","linenum":"D:/fy-server/go_server/main.go:51","msg":"初始化日志","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:50.968","linenum":"D:/fy-server/go_server/models/casbin.go:100","msg":"casbin_rule 表初始数据成功!","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:50.969","linenum":"D:/fy-server/go_server/models/casbin.go:78","msg":"recover <nil>","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:50.980","linenum":"D:/fy-server/go_server/service/service.go:17","msg":"robot service start ...","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:50.980","linenum":"D:/fy-server/go_server/service/robot_service/service.go:187","msg":"connect to mqtt","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:50.998","linenum":"D:/fy-server/go_server/service/robot_service/service.go:217","msg":"Connect to  MQTT succeed","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:51.004","linenum":"D:/fy-server/go_server/service/robot_service/service.go:110","msg":"addRobot end  TEST CAI001UBT10000016","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:51.387","linenum":"D:/fy-server/go_server/main.go:78","msg":"start server","serviceName":"go_server"}
-{"level":"info","time":"2022-01-11 19:48:51.387","linenum":"D:/fy-server/go_server/main.go:86","msg":"-----服务启动,可以打开  http://localhost:8081/swagger/index.html 查看详细接口------","serviceName":"go_server"}
