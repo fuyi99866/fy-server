@@ -81,7 +81,47 @@ docer -p hostPort:containerPort # 映射本机的指定端口到容器的指定�
 ```
 
 #### 使用docker-compose部署go项目
-* 编写docker-compose文件
+* 1、编写docker-compose文件
+```text
+version: '3'
+services:
+  go_server:
+    build: .
+    ports:
+    - "8082:8082"
+  redis:
+    image: redis
+  mqtt:
+    image: emqx/emqx
+```
+* 2、启动项目
+```text
+docker-compose up
+或者
+docker-compose up -d #后台运行
+```
+* 3、常用指令
+##### 查看服务
+```text
+docker-compose ps
+```
+##### 启动、停止服务
+```text
+docker-compose start [name]
+docker-compose stop [name]
+```
+##### 删除服务
+```text
+docker-compose rm [name]
+```
+##### 查看具体服务的日志
+```text
+docker-compose logs -f [name]
+```
+##### 可以进入容器内部
+```text
+docker-compose exec [name] shell
+```
 
 ##### 参考资料
 [使用docker部署一个go应用](https://www.cnblogs.com/ricklz/p/12860434.html)
