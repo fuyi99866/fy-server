@@ -25,7 +25,7 @@ func TestAll(t *testing.T) {
 	//解析配置文件
 	flag.Parse()
 	setting.Init(*config) //根据配置文件初始化配置
-	logger.InitLog1(setting.AppSetting.LogLever, "./logs/go_server.log") //初始化日志库 ,使用zap库
+	logger.InitLog(setting.AppSetting.LogLever, "./logs") //初始化日志库 ,使用zap库
 	//初始化数据库
 	Init()
 	gredis.InitRedis()

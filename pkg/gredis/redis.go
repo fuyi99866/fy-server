@@ -29,21 +29,26 @@ func InitRedis() error {
 		Dial: func() (conn redis.Conn, err error) {
 			c, err := redis.Dial("tcp", setting.RedisSetting.Host)
 			if err != nil {
+				logger.Debug("redis connect failed: ",err)
 				return nil, err
 			}
 			if setting.RedisSetting.Password != "" {
 				if _, err := c.Do("AUTH", setting.RedisSetting.Password); err != nil {
 					c.Close()
+					logger.Debug("redis connect failed: ",err)
 					return nil, err
 				}
 			}
+			logger.Debug("redis connect failed: ",err)
 			return c, err
 		},
 		TestOnBorrow: func(c redis.Conn, t time.Time) error {
 			_, err := c.Do("PING")
+			logger.Debug("redis connect failed: ",err)
 			return err
 		},
 	}
+	logger.Debug("redis connect success")
 	return nil
 }
 
