@@ -163,6 +163,26 @@ definitions:
       username:
         type: string
     type: object
+  websocket.MsgPackage:
+    properties:
+      data:
+        type: string
+      robotSN:
+        type: string
+      type:
+        type: string
+    type: object
+  websocket.SubscribeRequest:
+    properties:
+      robotSn:
+        type: string
+      topic:
+        description: default：Notify
+        type: string
+      unsubscribe:
+        description: true：取消订阅
+        type: boolean
+    type: object
 info:
   contact: {}
   description: Go 学习综合demo
@@ -422,6 +442,37 @@ paths:
       summary: 更新角色信息
       tags:
       - 角色
+  /channel:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: TOKEN
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/websocket.SubscribeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/websocket.MsgPackage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Websocket接口, 支持订阅机器人状态、任务状态
+      tags:
+      - websocket
   /cmd/set:
     post:
       consumes:
@@ -548,6 +599,30 @@ paths:
       summary: 增加访问权限
       tags:
       - 访问权限
+  /profile:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 机器人SN
+        in: query
+        name: sn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 获取机器人连接服务器需要的信息
+      tags:
+      - 连接
   /retrieveOrder:
     post:
       consumes:
@@ -995,17 +1070,6 @@ paths:
       summary: 更新用户信息
       tags:
       - 用户
-  /ws:
-    get:
-      consumes:
-      - application/json
-      - application/json
-      produces:
-      - application/json
-      - application/json
-      summary: Websocket接口, 支持订阅机器人状态、任务状态、任务倒计时信息
-      tags:
-      - websocket
 securityDefinitions:
   ApiKeyAuth:
     in: header

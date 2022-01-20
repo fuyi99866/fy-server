@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 	"go_server/cron"
 	"go_server/docs"
@@ -12,6 +13,7 @@ import (
 	"go_server/pkg/setting"
 	"go_server/routers"
 	"go_server/service"
+	"syscall"
 )
 
 /**
@@ -59,6 +61,7 @@ func main() {
 	//TODO 启动MQTT服务
 	go service.Start()
 
+	//endLessStart()
 	initServer()
 
 	//开始定时任务
@@ -68,22 +71,42 @@ func main() {
 
 //TODO 热更新 下载第三方库报错，还没解决
 func endLessStart()  {
-/*	endless.DefaultReadTimeOut = setting.ReadTimeout
-	endless.DefaultWriteTimeOut = setting.WriteTimeout
-	endless.DefaultMaxHeaderBytes = 1 << 20
-	endPoint := fmt.Sprintf(":%d", setting.HTTPPort)*/
-/*	server := endless.NewServer(":8081", routers.InitRouter())
+	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
+	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
+	//endless.DefaultMaxHeaderBytes = 1 << 20
+	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
+	server := endless.NewServer(endPoint, routers.InitRouter())
 	server.BeforeBegin = func(add string) {
 		logger.Info("Actual pid is %d", syscall.Getpid())
-	}*/
+	}
 }
 
 //初始化服务
 func initServer() {
 	//注册路由
 	app := routers.InitRouter()
-	initHTTPServer(app)
+	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
+	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
+	endless.DefaultMaxHeaderBytes = 1 << 20
+	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
 
+	server := endless.NewServer(endPoint, app)
+	server.BeforeBegin = func(add string) {
+		logger.Info("Actual pid is ", syscall.Getpid())
+	}
+
+/*	if setting.Swag != nil {
+		docs.SwaggerInfo.Host = setting.Swag.Host
+		docs.SwaggerInfo.BasePath = setting.ServerSetting.BasePath
+		scheme := "http"
+		if setting.ServerSetting.HTTPS {
+			scheme = "https"
+		}
+		logger.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
+	}*/
+
+	//server.ListenAndServe()
+	initHTTPServer(app)
 }
 
 // InitHTTPServer 初始化http服务
@@ -100,6 +123,5 @@ func initHTTPServer(app *gin.Engine) {
 	}
 
 	app.Run(":8081")
-
 }
 
