@@ -69,7 +69,7 @@ func (client *WsClient) RemoveMsgQueue(msgID string) {
 		robot_service.S.UnSubNotify(m.RobotSN,m.MessageID)
 		delete(client.subMap, msgID)
 	} else {
-		logger.Errorf("RemoveMsgQueue error, has no", msgID)
+		logger.Error("RemoveMsgQueue error, has no", msgID)
 	}
 }
 
@@ -103,7 +103,7 @@ func (client *WsClient) DispatchMessage() {
 			return
 		case dataStr, ok := <-client.wsMsgChan:
 			if !ok {
-				logger.Errorf("DispatchMessage error ,channel is not ok!", dataStr, ok)
+				logger.Error("DispatchMessage error ,channel is not ok!", dataStr, ok)
 				continue
 			}
 			err := client.ws.WriteMessage(websocket.TextMessage, dataStr.([]byte))
@@ -114,7 +114,7 @@ func (client *WsClient) DispatchMessage() {
 			}
 		case dataJson, ok := <-client.wsJsonChan:
 			if !ok {
-				logger.Errorf("DispatchMessage error ,channel is not ok!", dataJson, ok)
+				logger.Error("DispatchMessage error ,channel is not ok!", dataJson, ok)
 				continue
 			}
 			err := client.ws.WriteJSON(dataJson)

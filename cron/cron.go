@@ -122,7 +122,7 @@ func Start() {
 	// 实现接口的方式添加定时任务
 	task := &testTask{}
 	if err := crontab.AddByID("1", "* * * * *", task); err != nil {
-		logger.Infof("error to add crontab task:%s  ",err)
+		logger.Info("error to add crontab task:%s  ",err)
 		os.Exit(-1)
 	}
 
@@ -131,7 +131,7 @@ func Start() {
 		logger.Info("hello world")
 	}
 	if err := crontab.AddByFunc("2", "* * * * *", taskFunc); err != nil {
-		logger.Infof("error to add crontab task:%s  ",err)
+		logger.Info("error to add crontab task:%s  ",err)
 		os.Exit(-1)
 	}
 	crontab.Start()

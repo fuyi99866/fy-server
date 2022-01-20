@@ -49,6 +49,7 @@ func main() {
 
 	//初始化日志系统
 	logger.InitLog(setting.AppSetting.LogLever, "./logs/log.txt") //初始化日志库 ,使用zap库
+	//logger.LogInit()
 
 	//初始化数据库
 	models.Init()
@@ -63,6 +64,18 @@ func main() {
 	//开始定时任务
 	go cron.Start()
 
+}
+
+//TODO 热更新 下载第三方库报错，还没解决
+func endLessStart()  {
+/*	endless.DefaultReadTimeOut = setting.ReadTimeout
+	endless.DefaultWriteTimeOut = setting.WriteTimeout
+	endless.DefaultMaxHeaderBytes = 1 << 20
+	endPoint := fmt.Sprintf(":%d", setting.HTTPPort)*/
+/*	server := endless.NewServer(":8081", routers.InitRouter())
+	server.BeforeBegin = func(add string) {
+		logger.Info("Actual pid is %d", syscall.Getpid())
+	}*/
 }
 
 //初始化服务
