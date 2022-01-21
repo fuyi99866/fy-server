@@ -91,8 +91,12 @@ services:
     - "8082:8082"
   redis:
     image: redis
-  mqtt:
+  emqx:
     image: emqx/emqx
+    ports:
+    - 18083:18083
+    - 1883:1883
+    - 8883:8883
 ```
 * 2、启动项目
 ```text

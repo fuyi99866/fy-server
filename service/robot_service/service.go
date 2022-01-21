@@ -209,7 +209,7 @@ func (s *robotService) connectMqtt() {
 	go util.RetryCancelWithContext(ctx, func() error {
 		err := s.mq.Connect()
 		if err != nil {
-			logger.Info("reconnect to mqtt")
+			logger.Info("reconnect to mqtt：",err)
 			s.connecting = true
 		} else {
 			s.connecting = false
