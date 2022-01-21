@@ -69,3 +69,13 @@ Tls = true
 冼建勇 9-23 10:54:51
 [文件：2021-09.zip]
 ```
+
+##### 生产环境深圳节点MQTT配置文件
+```
+Scheme = ssl
+Addr = adis.ubtrobot.com
+Port = 18888
+RobotUser = adis
+RobotPassword = c72d988fe3f10ed394a7888b9645bb9f
+Tls = true
+```
