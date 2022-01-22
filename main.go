@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/fvbock/endless"
+	"go_server/conf"
 	"go_server/cron"
 	"go_server/docs"
 	"go_server/models"
@@ -82,6 +83,7 @@ func initServer() {
 
 	server := endless.NewServer(endPoint, app)
 	server.BeforeBegin = func(add string) {
+		conf.Pid = syscall.Getpid()
 		logger.Info("Actual pid is ", syscall.Getpid())
 	}
 

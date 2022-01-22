@@ -35,6 +35,9 @@ func InitRouter() *gin.Engine {
 	r.GET("/version", func(context *gin.Context) {
 		context.JSON(http.StatusOK,conf.AppVersion)
 	})
+	r.GET("/pid", func(context *gin.Context) {
+		context.JSON(http.StatusOK,conf.Pid)
+	})
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
 	r.POST("/auth", api.Auth)                                            // token鉴权
 	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))           //下载导出的excel
