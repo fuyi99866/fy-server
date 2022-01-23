@@ -78,6 +78,13 @@ type MQTT struct {
 
 var Mqtt = &MQTT{}
 
+type ROCKETMQ struct {
+	Addr string
+	GroupName string
+	Enable bool
+}
+var RocketMq = &ROCKETMQ{}
+
 var cfg *ini.File
 var RunMode string
 
@@ -93,6 +100,7 @@ func Init(config string) {
 	mapTo("redis", RedisSetting)
 	mapTo("server", ServerSetting)
 	mapTo("mqtt", Mqtt)
+	mapTo("rocketmq",RocketMq)
 }
 
 func mapTo(section string, v interface{}) {

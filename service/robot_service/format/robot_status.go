@@ -1,6 +1,7 @@
 package format
+
 const (
-	RobotOnlineStateNotifyTitle   = "notify_robot_online_state"   //通知前端机器人上下线状态
+	RobotOnlineStateNotifyTitle = "notify_robot_online_state" //通知前端机器人上下线状态
 )
 
 type WebSocketResponseNotifyOnline struct {

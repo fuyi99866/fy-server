@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+MAINTAINER yi.fu
 
 WORKDIR /go_server
 COPY ./go_server /go_server/go_server
