@@ -17,33 +17,49 @@ docker pull nginx
 ```
 ##### 启动Nginx服务
 ```cassandraql
-sudo docker run --name nginx-test -p 8083:80 -d nginx
+sudo docker run --name nginx -p 8083:80 -d nginx
 ```
-##### 常用指令
-* nginx：启动Nginx
-* nginx -s stop：立即停止Nginx服务
-* nginx -s reload:重新加载配置文件
-* nginx -s quit:平滑停止Nginx服务
-* nginx -t:测试配置文件是否正确
-* nginx -v：显示Nginx版本信息
-* nginx -V：显示 Nginx 版本信息、编译器和配置参数的信息
-##### 涉及配置
-1、proxy_pass:配置反向代理路径。如果proxy_pass的url最后为/，则表示绝对路径。否则（不含变量下）表示相对路径，所有路径都会被代理过去
-2、upstream:配置负载均衡，upstream默认是轮询的方式进行负载，另外还支持四种模式：
-* weight：权重，指定轮询的概率，weight与访问概率成正比
-* ip_hash:按照访问IP的hash结果值分配
-* fair：按后端服务器响应时间进行分配，响应时间越短优先级越高
-* url_hash：按照访问URL的hash结果分配
-##### 部署
-##### 在这里需要对 nginx.conf 进行配置，如果你不知道对应的配置文件是哪个，可执行 nginx -t 看一下
-##### 配置hosts
-由于需要用本机作为演示，因此先把映射配上去，打开 /etc/hosts，增加内容：
+##### 修改docker容器中的nginx的配置文件
+* 进入容器
 ```cassandraql
-127.0.0.1       api.blog.com
+docker exec -it nginx bash
 ```
-##### 配置 nginx.conf
-打开 nginx 的配置文件 nginx.conf（我的是 /usr/local/etc/nginx/nginx.conf），我们做了如下事情：
-增加 server 片段的内容，设置 server_name 为 api.blog.com 并且监听 8081 端口，将所有路径转发到 http://127.0.0.1:8000/ 下
+* 进入配置文件目录
+```cassandraql
+cd /etc/nginx/
+```
+* 安装vim
+```cassandraql
+apt-get  update
+apt-get install vim
+```
+* 打开配置文件
+```cassandraql
+vim conf.d/default.conf
+```
+* 修改配置文件
+```cassandraql
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+            proxy_pass http://1.117.171.11:8081/swagger/index.html;
+        }
+    }
+```
+* 关闭nginx,再次启动
+```cassandraql
+docker stop nginx
+docker start nginx
+```
+##### 或者使用挂载配置文件的方式装有docker宿主机上面的nginx.conf配置文件映射到启动的nginx容器里面，这需要你首先准备好nginx.con配置文件
+```cassandraql
+mkdir nginx
+docker cp nginx-t:/etc/nginx/nginx.conf /home/ubuntu/nginx/
+docker cp nginx-t:/etc/nginx/conf.d /home/ubuntu/nginx/
+```
+##### 修改配置文件conf.d/default.conf
 ```cassandraql
 worker_processes  1;
 
@@ -60,31 +76,51 @@ http {
     keepalive_timeout  65;
 
     server {
-        listen       8081;
-        server_name  api.blog.com;
+        listen       80;
+        server_name  localhost;
 
         location / {
-            proxy_pass http://127.0.0.1:8000/;
+            proxy_pass http://1.117.171.11:8081/index.html;
         }
     }
 }
 ```
-##### 验证
-启动服务
-##### 重启 nginx
+##### 然后启动nginx
+##### 命令：
 ```cassandraql
-nginx -t
+docker run --name nginx -p 80:80 -v /home/ubuntu/nginx/nginx.conf:/etc/nginx/nginx.conf -v /home/ubuntu/nginx/log:/var/log/nginx -v /home/ubuntu/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf -d nginx
 ```
-##### 访问接口
-```cassandraql
-http://api.blog.com:8081/auth?username=admin&password=123456
-```
+##### 解释下上面的命令：
+--name  给你启动的容器起个名字，以后可以使用这个名字启动或者停止容器
+
+-p 映射端口，将docker宿主机的80端口和容器的80端口进行绑定
+
+-v 挂载文件用的，第一个-v 表示将你本地的nginx.conf覆盖你要起启动的容器的nginx.conf文件，第二个表示将日志文件进行挂载，就是把nginx服务器的日志写到你docker宿主机的/home/docker-nginx/log/下面
+
+第三个-v 表示的和第一个-v意思一样的。
+
+-d 表示启动的是哪个镜像
+
+##### 常用指令
+* nginx：启动Nginx
+* nginx -s stop：立即停止Nginx服务
+* nginx -s reload:重新加载配置文件
+* nginx -s quit:平滑停止Nginx服务
+* nginx -t:测试配置文件是否正确
+* nginx -v：显示Nginx版本信息
+* nginx -V：显示 Nginx 版本信息、编译器和配置参数的信息
+##### 涉及配置
+1、proxy_pass:配置反向代理路径。如果proxy_pass的url最后为/，则表示绝对路径。否则（不含变量下）表示相对路径，所有路径都会被代理过去
+2、upstream:配置负载均衡，upstream默认是轮询的方式进行负载，另外还支持四种模式：
+* weight：权重，指定轮询的概率，weight与访问概率成正比
+* ip_hash:按照访问IP的hash结果值分配
+* fair：按后端服务器响应时间进行分配，响应时间越短优先级越高
+* url_hash：按照访问URL的hash结果分配
+
 
 #### 参考内容：
 [docker配合Nginx部署go应用](https://www.cnblogs.com/ricklz/p/12996174.html)
 
 [Golang Gin实践 连载十七 用 Nginx 部署 Go 应用](https://segmentfault.com/a/1190000016236253)
 
-[vue+go-gin+nginx实现后台管理系统](https://blog.csdn.net/hahachenchen789/article/details/105847926/)
-
-[Nginx反向代理+go后端服务](https://www.cnblogs.com/guichenglin/p/12760698.html)
+[docker上启动nginx并修改nginx配置文件](https://www.cnblogs.com/hl15/p/13686515.html)

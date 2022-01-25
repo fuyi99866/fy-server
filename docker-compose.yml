@@ -13,3 +13,8 @@ services:
     - 18083:18083
     - 1883:1883
     - 8883:8883
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+    - 8083:80
