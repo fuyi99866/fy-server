@@ -20,12 +20,12 @@ type Result struct {
 
 
 func TestAll(t *testing.T) {
+	logger.InitLog(setting.AppSetting.LogLever, "./logs") //初始化日志库 ,使用zap库
 	//读取配置文件
 	config := flag.String("c", "D:/fy-server/go_server/conf/app.ini", "config file path")
 	//解析配置文件
 	flag.Parse()
 	setting.Init(*config) //根据配置文件初始化配置
-	logger.InitLog(setting.AppSetting.LogLever, "./logs") //初始化日志库 ,使用zap库
 	//初始化数据库
 	Init()
 	gredis.InitRedis()

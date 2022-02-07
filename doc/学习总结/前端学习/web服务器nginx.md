@@ -124,3 +124,5 @@ docker run --name nginx -p 80:80 -v /home/ubuntu/nginx/nginx.conf:/etc/nginx/ngi
 [Golang Gin实践 连载十七 用 Nginx 部署 Go 应用](https://segmentfault.com/a/1190000016236253)
 
 [docker上启动nginx并修改nginx配置文件](https://www.cnblogs.com/hl15/p/13686515.html)
+
+[nginx实现前后端分离](https://blog.csdn.net/mybook201314/article/details/88743861)

@@ -36,8 +36,15 @@ func NewMq(opts ...Option) *MQ {
 
 //创建生产者和消费者
 func (m *MQ) Connect() error {
-	m.createProducer()
-	m.createConsumer()
+	err := m.createProducer()
+	if err != nil {
+		return err
+	}
+
+	err = m.createConsumer()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -89,10 +96,11 @@ func (m *MQ) Subscribe(topic, tag string, f ReceiveCallBack) {
 }
 
 //创建生产者
-func (m *MQ) createProducer() {
+func (m *MQ) createProducer() error {
 	addr, err := primitive.NewNamesrvAddr(m.opts.addr)
 	if err != nil {
 		logger.Error("createProducer NewNamesrvAddr failed :%v\n", err.Error())
+		return err
 	}
 	p, err := rocketmq.NewProducer(
 		producer.WithGroupName(m.opts.groupName),
@@ -101,15 +109,18 @@ func (m *MQ) createProducer() {
 	)
 	if err != nil {
 		logger.Error("createProducer NewProducer failed :%v\n", err.Error())
+		return err
 	}
 	if err = p.Start(); err != nil {
 		logger.Error("createProducer Start failed :%v\n", err.Error())
+		return err
 	}
 	m.producer = p
+	return nil
 }
 
 //创建消费者
-func (m *MQ) createConsumer() {
+func (m *MQ) createConsumer() error {
 	//消息主动推送给消费者
 	c, err := rocketmq.NewPushConsumer(
 		consumer.WithInstance(m.opts.consumerInstance), //必须设置，否则广播模式会重复消费
@@ -120,10 +131,13 @@ func (m *MQ) createConsumer() {
 	)
 	if err != nil {
 		logger.Error("createConsumer NewPushConsumer failed :%v\n", err.Error())
+		return err
 	}
 	err = c.Start()
 	if err != nil {
 		logger.Error("createConsumer Start failed :%v\n", err.Error())
+		return err
 	}
 	m.consumer = c
+	return nil
 }
