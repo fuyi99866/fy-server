@@ -38,3 +38,18 @@ http://10.10.17.15:9090/v1/profile
 ```text
 wss://adis.ubtrobot.com/v1/adis/channel?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6NDgsInBhc3N3b3JkIjoiMjVkNTVhZDI4M2FhNDAwYWY0NjRjNzZkNzEzYzA3YWQiLCJjb21wYW55aWQiOiJURVNUIiwiZXhwIjoxNjM3MDYzNzIzLCJpc3MiOiJodHRwczovL2FkaXMtc2VydmVyLyJ9.k__hP12DP9nf_0i70DpDJOpXaMCUK5PE455GM868idw
 ```
+
+##### 查看adis预发布环境的日志
+```text
+cd /data/ubt/adis
+tail -f -n 100 nohup.out
+或者
+cd /var/log/adis
+tail -f -n 100 adis2022020911.log
+```
+
+##### 查看adis生产环境（深圳节点）的日志
+```text
+cd /data/ubt/adis/logs
+tail -f -n 100 adis2022020911.log
+```

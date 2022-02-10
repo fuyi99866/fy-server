@@ -6,3 +6,7 @@ https://prerelease.ubtrobot.com/rcmp/index.html#/user/login
 ```
 https://rcmp.ubtrobot.com/#/user/login
 ```
+##### RCMP开发环境登录界面
+```text
+https://test79.ubtrobot.com/webproject/rcmp/index.html#/user/login
+```
