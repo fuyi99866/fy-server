@@ -1,7 +1,6 @@
 package adis_server
 
 import (
-	"github.com/sirupsen/logrus"
 	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"time"
@@ -44,7 +43,7 @@ func (a *adisService) Start() error {
 
 	//订阅MQ消息
 	a.Subscribe("mq_request", func(topic, msgid string, body []byte) {
-		logrus.Debugln("rocketmq message coming:", topic, msgid, string(body))
+		logger.Info("rocketmq message coming:", topic, " ",msgid, " ",string(body))
 	})
 
 	time.AfterFunc(1000, func() {
@@ -55,6 +54,32 @@ func (a *adisService) Start() error {
 	return nil
 }
 
+func TestStart()  {
+	//初始化队列，创建生产者和消费者
+	logger.Info("setting.RocketMq.Addr: ", setting.RocketMq.Addr)
+	logger.Info("setting.RocketMq.GroupName: ", setting.RocketMq.GroupName)
+	mq := NewMq(WithAddr(setting.RocketMq.Addr),
+		WithGroupName(setting.RocketMq.GroupName),
+		WithRetry(2),
+	)
+	err := mq.Connect()
+	if err != nil {
+		logger.Info("MQ 生产者和消费者创建失败")
+		return
+	}
+	logger.Info("mq connect success")
+
+	//TODO 订阅消息和发送消息还需要改一下
+	mq.Subscribe("mq_request", "cn", func(topic, msgid string, body []byte) {
+		logger.Info("topic = ", topic)
+		logger.Info("msgid = ", msgid)
+		logger.Info("body = ", string(body))
+	})
+
+	msg := "hello mq"
+	mq.Send("mq_request", []byte(msg), "cn")
+}
+
 //结束服务
 func (a *adisService) Stop() error {
 	a.mq.DisConnect()
@@ -63,7 +88,7 @@ func (a *adisService) Stop() error {
 
 //发送消息
 func (a *adisService) Send(topic string, msg []byte) {
-	logger.Info("adisService Send :", topic, string(msg))
+	logger.Info("adisService Send :", topic, " ",string(msg))
 	a.mq.Send(topic, msg, "cn")
 }
 

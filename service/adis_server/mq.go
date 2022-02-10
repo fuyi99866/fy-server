@@ -64,13 +64,13 @@ func (m *MQ) Send(topic string, msg []byte, tag string) {
 	//发送异步消息
 	err := m.producer.SendAsync(context.Background(), func(ctx context.Context, result *primitive.SendResult, err error) {
 		if err != nil {
-			logger.Error("send rcmp message :%v\n", err)
+			logger.Error("send rcmp message : ", err)
 		} else {
-			logger.Info("send rcmp message success. result=%s\n", result.String())
+			logger.Info("send rcmp message success. result= ", result.String())
 		}
 	}, primitive.NewMessage(topic, msg).WithTag(tag))
 	if err != nil {
-		logger.Error("send adis message :%v\n", err)
+		logger.Error("send adis message : ", err)
 	}
 }
 
@@ -85,13 +85,13 @@ func (m *MQ) Subscribe(topic, tag string, f ReceiveCallBack) {
 	err := m.consumer.Subscribe(topic, selector, func(ctx context.Context, ext ...*primitive.MessageExt) (result consumer.ConsumeResult, err error) {
 		for _, v := range ext {
 			t := v.GetTags()
-			logger.Info("adis Subscribe callback tag: %v\n", t)
+			logger.Info("adis Subscribe callback tag: ", t)
 			go f(v.Topic, v.MsgId, v.Body) //没懂?
 		}
 		return consumer.ConsumeSuccess, nil
 	})
 	if err != nil {
-		logger.Error("Subscribe adis message :%v\n", err)
+		logger.Error("Subscribe adis message : ", err)
 	}
 }
 
@@ -99,7 +99,7 @@ func (m *MQ) Subscribe(topic, tag string, f ReceiveCallBack) {
 func (m *MQ) createProducer() error {
 	addr, err := primitive.NewNamesrvAddr(m.opts.addr)
 	if err != nil {
-		logger.Error("createProducer NewNamesrvAddr failed :%v\n", err.Error())
+		logger.Error("createProducer NewNamesrvAddr failed : ", err.Error())
 		return err
 	}
 	p, err := rocketmq.NewProducer(
@@ -108,11 +108,11 @@ func (m *MQ) createProducer() error {
 		producer.WithRetry(m.opts.retry),
 	)
 	if err != nil {
-		logger.Error("createProducer NewProducer failed :%v\n", err.Error())
+		logger.Error("createProducer NewProducer failed : ", err.Error())
 		return err
 	}
 	if err = p.Start(); err != nil {
-		logger.Error("createProducer Start failed :%v\n", err.Error())
+		logger.Error("createProducer Start failed : ", err.Error())
 		return err
 	}
 	m.producer = p
@@ -130,12 +130,12 @@ func (m *MQ) createConsumer() error {
 		consumer.WithConsumerModel(consumer.Clustering),                //消费模式(集群消费:消费完,同组的其他人不能再读取/广播消费：所有人都能读)
 	)
 	if err != nil {
-		logger.Error("createConsumer NewPushConsumer failed :%v\n", err.Error())
+		logger.Error("createConsumer NewPushConsumer failed : ", err.Error())
 		return err
 	}
 	err = c.Start()
 	if err != nil {
-		logger.Error("createConsumer Start failed :%v\n", err.Error())
+		logger.Error("createConsumer Start failed : ", err.Error())
 		return err
 	}
 	m.consumer = c

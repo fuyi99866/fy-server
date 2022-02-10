@@ -17,7 +17,8 @@ type Service interface {
 func Start() error {
 	logger.Info("robot service start ...")
 	robot_service.S.Start()
-	adis_server.A.Start()
+	//adis_server.A.Start()
+	adis_server.TestStart()
 	return nil
 }
 
