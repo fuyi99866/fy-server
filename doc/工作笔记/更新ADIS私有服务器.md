@@ -79,3 +79,12 @@ RobotUser = adis
 RobotPassword = c72d988fe3f10ed394a7888b9645bb9f
 Tls = true
 ```
+##### 生产环境新加坡节点MQTT配置文件
+```
+Scheme = ssl
+Addr = adis-sg.ubtrobot.com
+Port = 16666
+RobotUser = adis
+RobotPassword = c72d988fe3f10ed394a7888b9645bb9f
+Tls = true
+```
