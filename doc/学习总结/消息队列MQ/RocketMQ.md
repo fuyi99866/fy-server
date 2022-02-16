@@ -55,3 +55,5 @@
 [rocketmq查看命令](https://www.cnblogs.com/gmq-sh/p/6232633.html)
 
 [rocketmq创建topic](https://www.cnblogs.com/zjfjava/p/13891640.html)
+
+[docker部署rocketmq](https://www.cnblogs.com/Leo_wl/p/11796697.html)
