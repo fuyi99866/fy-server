@@ -52,3 +52,13 @@ Adis公司内网
 http://10.10.17.15:9090/v1/profile
 https://prerelease.ubtrobot.com/v1/rcmp-api/tool/getDomain
 ```
+
+##### 机器人离线升级流程
+##### 获取升级包
+```text
+\\10.10.18.20\PublicShare\UVBotROM\导航版V1.3\ROS\Adibot-A1-Core-R-1.0.124
+```
+##### 升级地址
+```text
+https://10.5.5.1:6060/upgrade.html
+```

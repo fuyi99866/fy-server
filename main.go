@@ -47,7 +47,7 @@ func main() {
 	//读取配置文件
 	config := flag.String("c", "./conf/app.ini", "config file path")
 	//解析配置文件
-	flag.Parse()
+	flag.Parse()//把用户传递的命令行参数解析为对应的变量值
 	setting.Init(*config) //根据配置文件初始化配置
 
 	//初始化日志系统
