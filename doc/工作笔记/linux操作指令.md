@@ -53,3 +53,11 @@ tail -f -n 100 adis2022020911.log
 cd /data/ubt/adis/logs
 tail -f -n 100 adis2022020911.log
 ```
+
+##### 查看adis生产环境（北美节点）的日志
+```text
+登录地址: adhduefuxw-public.bastionhost.aliyuncs.com
+登录端口: 60022
+登录用户: yi.fu
+adis-aws-01   34.209.207.158:22
+```

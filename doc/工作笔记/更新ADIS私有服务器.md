@@ -2,7 +2,7 @@
 ####### 密码: adis123
 ```text
 ssh adis.ubtrobot.com
-cd ADISS-Server/
+cd ADIS/ADISS-Server/
 git pull
 go build
 sudo systemctl stop adis     
@@ -83,6 +83,16 @@ Tls = true
 ```
 Scheme = ssl
 Addr = adis-sg.ubtrobot.com
+Port = 16666
+RobotUser = adis
+RobotPassword = c72d988fe3f10ed394a7888b9645bb9f
+Tls = true
+```
+
+##### 生产环境北美节点MQTT配置文件
+```text
+Scheme = ssl
+Addr = adis-na.ubtrobot.com
 Port = 16666
 RobotUser = adis
 RobotPassword = c72d988fe3f10ed394a7888b9645bb9f

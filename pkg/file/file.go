@@ -1,11 +1,16 @@
 package file
 
 import (
+	"bufio"
+	"errors"
+	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"mime/multipart"
 	"os"
 	"path"
+	"strconv"
 )
 
 //获取文件大小
@@ -81,10 +86,57 @@ func MustOpen(fileName, filePath string) (*os.File, error) {
 	if err != nil {
 		return nil, fmt.Errorf("file.IsNotExistMkDir src: %s, err: %v", src, err)
 	}
-	f,err:=Open(src+fileName,os.O_APPEND|os.O_CREATE|os.O_RDWR,0644)
-	if err!=nil {
+	f, err := Open(src+fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
+	if err != nil {
 		return nil, fmt.Errorf("Fail to OpenFile :%v", err)
 	}
 
-	return f,nil
+	return f, nil
+}
+
+var infile *string = flag.String("i", "unsorted.dat", "File contains values for sorting")
+var outfile *string = flag.String("o", "sorted.dat", "File to receive sorted values")
+
+//读取文件中的数据
+func ReadValues(infile string) (values []int, err error) {
+	file, err := os.Open(infile)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	br := bufio.NewReader(file)
+	values = make([]int, 0)
+	for {
+		line, isPrefix, err1 := br.ReadLine()
+		if err1 != nil {
+			if err1 != io.EOF {
+				return nil, err
+			}
+			break
+		}
+		if isPrefix {
+			return nil, errors.New("too long")
+		}
+		str := string(line) //转换字符数组为字符串
+		value, err1 := strconv.Atoi(str)
+		if err1 != nil {
+			return nil, err
+		}
+		values = append(values, value)
+	}
+	return
+}
+
+//将数字写入到文件
+func WriteValues(values []int, outfile string) error {
+	file, err := os.Create(outfile)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	for _, value := range values {
+		str := strconv.Itoa(value)
+		file.WriteString(str + "\n")
+	}
+	return nil
 }
