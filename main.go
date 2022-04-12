@@ -97,7 +97,12 @@ func initServer() {
 		logger.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
 	}
 
-	server.ListenAndServe()
+	if setting.ServerSetting.HTTPS {
+		//支持https
+		server.ListenAndServeTLS("","")
+	}else {
+		server.ListenAndServe()
+	}
 }
 
 
