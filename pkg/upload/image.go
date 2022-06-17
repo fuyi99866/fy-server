@@ -2,8 +2,8 @@ package upload
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/file"
-	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/pkg/util"
 	"mime/multipart"
@@ -44,11 +44,11 @@ func CheckImageExt(fileName string) bool {
 func CheckImageSize(f multipart.File) bool {
 	size, err := file.GetSize(f)
 	if err != nil {
-		logger.Error(err)
+		logrus.Error(err)
 		return false
 	}
 	//不能超过配置文件里面的设置
-	logger.Info("size = ",size)
+	logrus.Info("size = ",size)
 	return size <= setting.AppSetting.ImageMaxSize
 }
 

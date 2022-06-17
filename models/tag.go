@@ -24,9 +24,9 @@ type ExportTagForm struct {
 	State     int
 }
 
-func GetTags(pageNum int, pageSize int, maps interface{}) ([]Tag, error) {
+func GetTags( maps interface{}) ([]Tag, error) {
 	var tags []Tag
-	err := db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags).Error
+	err := db.Where(maps).Find(&tags).Error
 	if err != nil {
 		return nil, err
 	}

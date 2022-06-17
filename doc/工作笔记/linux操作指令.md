@@ -50,7 +50,7 @@ tail -f -n 100 adis2022020911.log
 
 ##### 查看adis生产环境（深圳节点）的日志
 ```text
-cd /data/ubt/adis/logs
+cd /data/ubt/adis/logs/
 tail -f -n 100 adis2022020911.log
 ```
 
@@ -60,4 +60,9 @@ tail -f -n 100 adis2022020911.log
 登录端口: 60022
 登录用户: yi.fu
 adis-aws-01   34.209.207.158:22
+```
+
+##### 查看正在后台运行的adis-server
+```text
+ps -ef | grep adis-server
 ```

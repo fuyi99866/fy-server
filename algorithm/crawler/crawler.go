@@ -1,7 +1,7 @@
 package crawler
 
 import (
-	"go_server/pkg/logger"
+	"go_server/pkg/logrus"
 	"io/ioutil"
 	"net/http"
 )
@@ -13,18 +13,18 @@ import (
 func Init() {
 	resp, err := http.Get("http://www.zhenai.com/zhenghun")
 	if err != nil {
-		logger.Error(err)
+		logrus.Error(err)
 		return
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		logger.Error(err)
+		logrus.Error(err)
 		return
 	}
 	all, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Error(err)
+		logrus.Error(err)
 		return
 	}
-	logger.Info("获取网页：", all)
+	logrus.Info("获取网页：", all)
 }

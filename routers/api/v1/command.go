@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
-	"go_server/pkg/logger"
 	"net/http"
 )
 
@@ -27,10 +27,10 @@ func SetRobot(c *gin.Context) {
 		return
 	}
 	//TODO 给机器人发送指令 "start" ,"stop","pause","resume"
-	logger.Info("给机器人发送指令 'start' ,'stop','pause','resume'")
+	logrus.Info("给机器人发送指令 'start' ,'stop','pause','resume'")
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logger.Info("send cmd failed: ", err)
+		logrus.Info("send cmd failed: ", err)
 		return
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)

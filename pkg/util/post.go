@@ -3,7 +3,7 @@ package util
 import (
 	"bytes"
 	"github.com/eventials/go-tus"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -21,7 +21,7 @@ type Reader struct {
 func (r *Reader) Read(p []byte) (n int, err error) {
 	n, err = r.Reader.Read(p)
 	r.Current += int64(n)
-	logger.Info("progress = ", r.Current*100/r.Total)
+	logrus.Info("progress = ", r.Current*100/r.Total)
 	return
 }
 
@@ -49,25 +49,25 @@ func DownloadFileProgress(url, filename string) {
 	}
 
 	n, err := io.Copy(f, reader)
-	logger.Info("n ,err = ", n, err)
+	logrus.Info("n ,err = ", n, err)
 }
 
 //下载文件
 func HttpGet(url string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		logger.Info("HttpGet failed! ", err)
+		logrus.Info("HttpGet failed! ", err)
 		return
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Info("ReadAll failed! ", err)
+		logrus.Info("ReadAll failed! ", err)
 		return
 	}
 
-	logger.Info("get response :", string(body))
+	logrus.Info("get response :", string(body))
 
 }
 
@@ -82,21 +82,21 @@ func UploadByBreakPoint(filepath, uri string) (string, error) {
 	// create the tus client.
 	client, err := tus.NewClient(uri, nil) //"http://10.10.17.15:8087/group1/big/upload/"
 	if err != nil {
-		logger.Error("创建客户端失败")
+		logrus.Error("创建客户端失败")
 		return "", err
 	}
 
 	// create an upload from a file.
 	upload, err := tus.NewUploadFromFile(f)
 	if err != nil {
-		logger.Error("上传失败")
+		logrus.Error("上传失败")
 		return "", err
 	}
 
 	//输出进度条
 	go func() {
 		for upload.Progress() < 100 {
-			logger.Info("upload.Progress() = ", upload.Progress()) //文件大小
+			logrus.Info("upload.Progress() = ", upload.Progress()) //文件大小
 			time.Sleep(time.Duration(time.Millisecond * 500))
 		}
 	}()
@@ -104,20 +104,20 @@ func UploadByBreakPoint(filepath, uri string) (string, error) {
 	// create the uploader.
 	uploader, err := client.CreateUpload(upload)
 	if err != nil {
-		logger.Error("获取进度失败")
+		logrus.Error("获取进度失败")
 		return "", err
 	}
 
 	// start the uploading process.
 	err = uploader.Upload()
 	if err != nil {
-		logger.Error("Upload failed")
+		logrus.Error("Upload failed")
 		return "", err
 	}
 
 	if upload.Progress() == 100 {
-		logger.Info("upload.Progress() = ", upload.Progress()) //文件大小
-		logger.Info("文件上传成功 ")
+		logrus.Info("upload.Progress() = ", upload.Progress()) //文件大小
+		logrus.Info("文件上传成功 ")
 	}
 
 	//上传完成后，再通过秒传接口，获取文件信息
@@ -128,26 +128,26 @@ func UploadByBreakPoint(filepath, uri string) (string, error) {
 
 //秒传文件
 func HttpGetBySecond(uri string) ([]byte, error) {
-	logger.Info("uri = ", uri)
+	logrus.Info("uri = ", uri)
 	md5 := string([]byte(uri)[len(uri)-32 : len(uri)])
-	logger.Info("md5 = ", md5)
+	logrus.Info("md5 = ", md5)
 	ur := "http://10.10.17.15:8087/group1/upload?md5=" + md5 + "&output=json"
-	logger.Info("ur = ", ur)
+	logrus.Info("ur = ", ur)
 
 	resp, err := http.Get(ur)
 	defer resp.Body.Close()
 	if err != nil {
-		logger.Info("HttpGet failed! ", err)
+		logrus.Info("HttpGet failed! ", err)
 		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Info("ReadAll failed! ", err)
+		logrus.Info("ReadAll failed! ", err)
 		return nil, err
 	}
 
-	logger.Info("get response :", string(body))
+	logrus.Info("get response :", string(body))
 	return body, nil
 }
 
@@ -160,7 +160,7 @@ func HttpPost(filepath, uri string) ([]byte, error) {
 	}
 	defer file.Close()
 
-	logger.Info("file = ", file.Name())
+	logrus.Info("file = ", file.Name())
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -185,14 +185,14 @@ func HttpPost(filepath, uri string) ([]byte, error) {
 	//Do方法发送请求
 	resp, err := client.Do(req)
 	if err != nil {
-		logger.Error("发送POST请求失败: ", err)
+		logrus.Error("发送POST请求失败: ", err)
 		return nil, err
 	}
 
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Error("ReadAll failed: ", err)
+		logrus.Error("ReadAll failed: ", err)
 		return nil, err
 	}
 

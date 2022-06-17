@@ -2,7 +2,7 @@ package util
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/setting"
 	"time"
 )
@@ -31,7 +31,7 @@ func GenerateToken(username, password string) (string, error) {
 
 	//指明生成算法，生成token
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	logger.Info("GenerateToken ")
+	logrus.Info("GenerateToken ")
 	token, err := tokenClaims.SignedString(JwtSecret)
 
 	return token, err

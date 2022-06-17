@@ -4,11 +4,11 @@ import (
 	"github.com/astaxie/beego/validation"
 	"github.com/boombuler/barcode/qr"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"github.com/unknwon/com"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
-	"go_server/pkg/logger"
 	"go_server/pkg/qrcode"
 	"go_server/pkg/setting"
 	"go_server/pkg/util"
@@ -242,7 +242,7 @@ func EditArticle(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			logger.Info("err.key: %s, err.message: %s", err.Key, err.Message)
+			logrus.Info("err.key: %s, err.message: %s", err.Key, err.Message)
 		}
 	}
 
@@ -270,7 +270,7 @@ func DeleteArticle(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			logger.Info("err.key: %s, err.message: %s", err.Key, err.Message)
+			logrus.Info("err.key: %s, err.message: %s", err.Key, err.Message)
 		}
 	}
 }

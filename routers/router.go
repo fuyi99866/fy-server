@@ -5,11 +5,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go_server/conf"
+	"go_server/middleware"
 	"go_server/middleware/jwt"
-	"go_server/pkg/app"
-	"go_server/pkg/e"
 	"go_server/pkg/export"
-	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/pkg/upload"
 	"go_server/routers/api"
@@ -23,8 +21,12 @@ import (
 
 func InitRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
+	r.Use(middleware.Log2File())
+	r.Use(middleware.Cors())         //跨域请求
 	r.Use(gin.Recovery()) //崩溃恢复，直接返回500
+	if setting.ServerSetting.HTTPS {
+		r.Use(middleware.LoadTls())
+	}
 	gin.SetMode(setting.RunMode)
 
 	//2、绑定路由规则，执行的函数
@@ -33,81 +35,16 @@ func InitRouter() *gin.Engine {
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	//将访问路由到swagger的HTML页面
 	r.GET("/version", func(context *gin.Context) {
-		context.JSON(http.StatusOK,conf.AppVersion)
+		context.JSON(http.StatusOK, conf.AppVersion)
 	})
 	r.GET("/pid", func(context *gin.Context) {
-		context.JSON(http.StatusOK,conf.Pid)
+		context.JSON(http.StatusOK, conf.Pid)
 	})
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // API 注释
 	r.POST("/auth", api.Auth)                                            // token鉴权
 	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))           //下载导出的excel
 	r.POST("/upload_img", api.UploadImage)                               // 上传图片
 	r.POST("/upload_file", api.UploadFile)
-
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/request/create/1.0", func(context *gin.Context) {
-		buf := make([]byte, 1024)
-		n, _ := context.Request.Body.Read(buf)
-		logger.Info(string(buf[0:n]))
-
-		appG := app.Gin{C: context}
-		data := make(map[string]interface{})
-		data["taskKey"] = "123"
-		data["pointId"] = "2"
-		data["vendor"] = "ubtech"
-		appG.ResponseTest(http.StatusOK, data, e.SUCCESS)
-
-	})
-
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/depository/notify/1.0", func(context *gin.Context) {
-		buf := make([]byte, 1024)
-		n, _ := context.Request.Body.Read(buf)
-		logger.Info(string(buf[0:n]))
-		appG := app.Gin{C: context}
-		data := make(map[string]interface{})
-		data["pointId"] = "A2-3F-1K"
-		appG.ResponseTest(http.StatusOK, data, e.SUCCESS)
-
-	})
-
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/disinfect/robot/notify/1.0", func(context *gin.Context) {
-		buf := make([]byte, 1024)
-		n, _ := context.Request.Body.Read(buf)
-		logger.Info(string(buf[0:n]))
-		appG := app.Gin{C: context}
-		appG.ResponseTest(http.StatusOK, nil, e.SUCCESS)
-
-	})
-
-	r.POST("/ifaas-hotel-robot-platform/api/hotel/tech/robot/status/report/1.0", func(context *gin.Context) {
-		buf := make([]byte, 1024)
-		n, _ := context.Request.Body.Read(buf)
-		logger.Info(string(buf[0:n]))
-		appG := app.Gin{C: context}
-		appG.ResponseTest(http.StatusOK, nil, e.SUCCESS)
-
-	})
-
-	r.POST("/ifaas-authority/oauth/token", func(context *gin.Context) {
-		buf := make([]byte, 1024)
-		n, _ := context.Request.Body.Read(buf)
-		logger.Info(string(buf[0:n]))
-		//appG := app.Gin{C: context}
-		data := make(map[string]interface{})
-		data["access_token"] = "GJbqRK_cWlLTkhzWfKM/dXnwX58BQ=="
-		data["token_type"] = "bearer"
-		data["expires_in"] = 8639
-		data["scope"] = "read write"
-
-		context.JSON(http.StatusOK, gin.H{
-			"respCode":     10000000,
-			"respMessage":  "操作成功！",
-			"access_token": "GJbqRK_cWlLTkhzWfKM/dXnwX58BQ==",
-			"token_type":   "bearer",
-			"expires_in":   8639,
-			"scope":        "read write",
-		})
-
-	})
 
 	//访问静态前端文件
 	r.Static("static", "dist/static")

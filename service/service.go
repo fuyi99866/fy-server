@@ -1,8 +1,7 @@
 package service
 
 import (
-	"go_server/pkg/logger"
-	"go_server/service/adis_server"
+	"github.com/sirupsen/logrus"
 	"go_server/service/robot_service"
 )
 
@@ -15,10 +14,10 @@ type Service interface {
 }
 
 func Start() error {
-	logger.Info("robot service start ...")
-	robot_service.S.Start()
+	logrus.Info("robot service start ...")
+	//robot_service.S.Start()
 	//adis_server.A.Start()
-	adis_server.TestStart()
+	//adis_server.TestStart()
 	return nil
 }
 

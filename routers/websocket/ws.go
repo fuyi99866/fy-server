@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -40,7 +40,7 @@ func init() {
 }
 
 func Quit() {
-	logger.Info("socket quit")
+	logrus.Info("socket quit")
 	wsManager.ctx.Done()
 }
 
@@ -58,7 +58,7 @@ func NotifySocket(c *gin.Context) {
 	defer func() {
 		//捕获抛出的panic
 		if err := recover(); err != nil {
-			logger.Info(err)
+			logrus.Info(err)
 		}
 	}()
 

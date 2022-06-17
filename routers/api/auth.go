@@ -3,10 +3,10 @@ package api
 import (
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
-	"go_server/pkg/logger"
 	"go_server/pkg/setting"
 	"go_server/pkg/util"
 	"go_server/service/robot_service"
@@ -51,11 +51,11 @@ func Auth(c *gin.Context) {
 	var reqInfo models.UserLogin
 	if err := c.ShouldBindJSON(&reqInfo); err != nil {
 		body, _ := c.GetRawData()
-		logger.Info("Auth request: ", string(body))
+		logrus.Info("Auth request: ", string(body))
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
 		return
 	}
-	logger.Info("Auth: ", reqInfo.Username, reqInfo.Password)
+	logrus.Info("Auth: ", reqInfo.Username, reqInfo.Password)
 
 	//有效性验证
 	valid := validation.Validation{}
@@ -101,7 +101,7 @@ func GetConnectProfile(c *gin.Context) {
 	appG := app.Gin{C: c}
 	sn := c.Query("sn")
 	//获取机器人的企业号
-	logger.Info("sn: ", sn)
+	logrus.Info("sn: ", sn)
 	robot, err := models.GetRobotInfoBySn(sn)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, err)

@@ -4,12 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"github.com/fvbock/endless"
+	"github.com/sirupsen/logrus"
 	"go_server/conf"
 	"go_server/cron"
 	"go_server/docs"
 	"go_server/models"
 	"go_server/pkg/gredis"
-	"go_server/pkg/logger"
+	"go_server/pkg/log"
 	"go_server/pkg/setting"
 	"go_server/routers"
 	"go_server/service"
@@ -27,7 +28,7 @@ import (
 2、服务器接口框架gin
 3、MQTT
 4、HTTP和websocket
-5、日志打印logger
+5、日志打印logrus
 6、路由、校验Token jwt
 7、生成标准的在线文档swagger
 8、casbin控制访问权限
@@ -51,12 +52,12 @@ func main() {
 	setting.Init(*config) //根据配置文件初始化配置
 
 	//初始化日志系统
-	logger.InitLog(setting.AppSetting.LogLever, "./logs/log.txt") //初始化日志库 ,使用zap库
-	//logger.LogInit()
+	log.Init()
 
 	//初始化数据库
 	models.Init()
 	models.Casbin_Init()
+
 	gredis.InitRedis()
 
 	//TODO 启动MQTT服务
@@ -84,7 +85,7 @@ func initServer() {
 	server := endless.NewServer(endPoint, app)
 	server.BeforeBegin = func(add string) {
 		conf.Pid = syscall.Getpid()
-		logger.Info("Actual pid is ", syscall.Getpid())
+		logrus.Info("Actual pid is ", syscall.Getpid())
 	}
 
 	if setting.Swag != nil {
@@ -94,7 +95,7 @@ func initServer() {
 		if setting.ServerSetting.HTTPS {
 			scheme = "https"
 		}
-		logger.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
+		logrus.Info(fmt.Sprintf("-----服务启动,可以打开  %s://%s%s/swagger/index.html 查看详细接口------", scheme, setting.Swag.Host, setting.ServerSetting.BasePath, ))
 	}
 
 	if setting.ServerSetting.HTTPS {

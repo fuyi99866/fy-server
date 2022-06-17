@@ -3,7 +3,7 @@ package gredis
 import (
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/setting"
 	"time"
 )
@@ -20,6 +20,7 @@ var RedisConn *redis.Pool //连接池
 
 //连接池
 func InitRedis() error {
+	logrus.Info("redis start...")
 	RedisConn = &redis.Pool{
 		MaxIdle:         setting.RedisSetting.MaxIdle,
 		MaxActive:       setting.RedisSetting.MaxActive,
@@ -29,26 +30,26 @@ func InitRedis() error {
 		Dial: func() (conn redis.Conn, err error) {
 			c, err := redis.Dial("tcp", setting.RedisSetting.Host)
 			if err != nil {
-				logger.Debug("redis connect failed: ",err)
+				logrus.Info("redis connect failed: ",err)
 				return nil, err
 			}
 			if setting.RedisSetting.Password != "" {
 				if _, err := c.Do("AUTH", setting.RedisSetting.Password); err != nil {
 					c.Close()
-					logger.Debug("redis connect failed: ",err)
+					logrus.Info("redis connect failed: ",err)
 					return nil, err
 				}
 			}
-			logger.Debug("redis connect failed: ",err)
+			logrus.Info("redis connect failed: ",err)
 			return c, err
 		},
 		TestOnBorrow: func(c redis.Conn, t time.Time) error {
 			_, err := c.Do("PING")
-			logger.Debug("redis connect failed: ",err)
+			logrus.Info("redis connect failed: ",err)
 			return err
 		},
 	}
-	logger.Debug("redis connect success")
+	logrus.Info("redis connect success")
 	return nil
 }
 
@@ -124,13 +125,13 @@ func LikeDeletes(key string) error {
 func TestRedis() {
 	_, err := Set("etf", 100, int(10*time.Second))
 	if err != nil {
-		logger.Error("redis set err ", err)
+		logrus.Error("redis set err ", err)
 		return
 	}
 	r, err := Get("etf")
 	if err != nil {
-		logger.Error("redis get err ", err)
+		logrus.Error("redis get err ", err)
 		return
 	}
-	logger.Info("etf == ", string(r))
+	logrus.Info("etf == ", string(r))
 }

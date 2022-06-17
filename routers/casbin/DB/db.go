@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/setting"
 )
 
@@ -19,12 +19,12 @@ func MysqlTool() *gorm.DB {
 			setting.DatabaseSetting.Host,
 			setting.DatabaseSetting.Name)
 	} else if setting.DatabaseSetting.Type == "sqlite3" {
-		logger.Info("dataType = ", setting.DatabaseSetting.Type)
+		logrus.Info("dataType = ", setting.DatabaseSetting.Type)
 		dataPath = "data/test.db"
 	}
 	db, err := gorm.Open(setting.DatabaseSetting.Type, dataPath)
 	if err != nil {
-		logger.Fatal("无法连接数据库... err: %/v", err)
+		logrus.Fatal("无法连接数据库... err: %/v", err)
 	}
 	return db
 }

@@ -2,8 +2,8 @@ package article_service
 
 import (
 	"github.com/golang/freetype"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/file"
-	"go_server/pkg/logger"
 	"go_server/pkg/qrcode"
 	"go_server/pkg/setting"
 	"image"
@@ -96,11 +96,11 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	logger.Info("1111111111111  ",a.CheckMergeImage(path))
+	logrus.Info("1111111111111  ",a.CheckMergeImage(path))
 	if !a.CheckMergeImage(path) {
 		mergedF, err := a.OpenMergeImage(path)
 		if err != nil {
-			logger.Info("mergedF  ",err)
+			logrus.Info("mergedF  ",err)
 			return "", "", err
 		}
 		defer mergedF.Close()
@@ -114,24 +114,24 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 
 		qrF, err := file.MustOpen(fileName, path)
 		if err != nil {
-			logger.Info("qrF  ",err)
+			logrus.Info("qrF  ",err)
 			return "", "", err
 		}
 		defer qrF.Close()
-		logger.Info("bgF  ",bgF)
+		logrus.Info("bgF  ",bgF)
 		bgImage, err := jpeg.Decode(bgF)
 		if err != nil {
-			logger.Info("bgImage  ",err)
+			logrus.Info("bgImage  ",err)
 			return "", "", err
 		}
-		logger.Info("bgImage = ", bgImage)
+		logrus.Info("bgImage = ", bgImage)
 
 		qrImage, err := jpeg.Decode(qrF)
 		if err != nil {
-			logger.Info("qrImage  ",err)
+			logrus.Info("qrImage  ",err)
 			return "", "", err
 		}
-		logger.Info("qrImage = ", qrImage)
+		logrus.Info("qrImage = ", qrImage)
 
 		jpg := image.NewRGBA(image.Rect(
 			a.Rect.X0,
@@ -139,7 +139,7 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 			a.Rect.X1,
 			a.Rect.Y1,
 		))
-		logger.Info("jpg = ", jpg)
+		logrus.Info("jpg = ", jpg)
 
 		draw.Draw(jpg,jpg.Bounds(),bgImage,bgImage.Bounds().Min,draw.Over)
 		draw.Draw(jpg,jpg.Bounds(),qrImage,qrImage.Bounds().Min.Sub(image.Pt(a.Pt.X,a.Pt.Y)),draw.Over)

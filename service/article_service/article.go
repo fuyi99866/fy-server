@@ -2,9 +2,9 @@ package article_service
 
 import (
 	"encoding/json"
+	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/gredis"
-	"go_server/pkg/logger"
 	"go_server/service/cache_service"
 )
 
@@ -57,7 +57,7 @@ func (a *Article) Get() (*models.Article, error) {
 	if gredis.Exists(key) { //如果在redis缓存中可以查到
 		data, err := gredis.Get(key)
 		if err != nil {
-			logger.Error(err)
+			logrus.Error(err)
 		} else {
 			json.Unmarshal(data, &cacheArticle)
 			return cacheArticle, nil
@@ -87,7 +87,7 @@ func (a *Article) GetAll() ([]*models.Article, error) {
 	if gredis.Exists(key) {
 		data, err := gredis.Get(key)
 		if err != nil {
-			logger.Error(err)
+			logrus.Error(err)
 		} else {
 			json.Unmarshal(data, &cacheArticles)
 			return cacheArticles, nil

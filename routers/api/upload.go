@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
-	"go_server/pkg/logger"
 	"go_server/pkg/upload"
 	"net/http"
 	"path/filepath"
@@ -27,7 +27,7 @@ func UploadImage(c *gin.Context) {
 	data := make(map[string]string)
 	file, image, err := c.Request.FormFile("file") //获取上传的图片，返回提供表单键的第一个文件
 	if err != nil {
-		logger.Error(err)
+		logrus.Error(err)
 		appG.Response(http.StatusBadRequest, e.ERROR, err)
 		return
 	}
@@ -40,19 +40,19 @@ func UploadImage(c *gin.Context) {
 		fullPath := upload.GetImageFullPath()
 		savePath := upload.GetImagePath()
 		src := fullPath + imageName
-		logger.Info("file = ", file)
-		logger.Info("image = ", image)
-		logger.Info("imageName = ", imageName, upload.CheckImageExt(imageName))
+		logrus.Info("file = ", file)
+		logrus.Info("image = ", image)
+		logrus.Info("imageName = ", imageName, upload.CheckImageExt(imageName))
 		if !upload.CheckImageExt(imageName) || !upload.CheckImageSize(file) { //检查图片的大小和后缀
 			appG.Response(http.StatusBadRequest, e.ERROR_UPLOAD_CHECK_IMAGE_FORMAT, nil)
 			return
 		} else {
 			err := upload.CheckImage(fullPath) //检查上传图片所需（权限、文件夹）
 			if err != nil {
-				logger.Error(err)
+				logrus.Error(err)
 				appG.Response(http.StatusBadRequest, e.ERROR_UPLOAD_CHECK_IMAGE_FAIL, nil)
 			} else if err := c.SaveUploadedFile(image, src); err != nil { //保存图片
-				logger.Error(err)
+				logrus.Error(err)
 				appG.Response(http.StatusBadRequest, e.ERROR_UPLOAD_SAVE_IMAGE_FAIL, nil)
 			} else {
 				data["image_url"] = upload.GetImageFullUrl(imageName)
@@ -78,12 +78,12 @@ func UploadFile(c *gin.Context) {
 	// 单文件
 	file, err := c.FormFile("file") //解析提交的表单
 	if err != nil || file == nil {
-		logger.Info("UploadFill", err)
+		logrus.Info("UploadFill", err)
 		c.String(http.StatusBadRequest, "")
 		return
 	}
-	logger.Info("file:", file)
-	logger.Info("UploadFile:", file.Filename)
+	logrus.Info("file:", file)
+	logrus.Info("UploadFile:", file.Filename)
 
 	//设置文件存储的地址
 	//fullPath := setting.AppSetting.RuntimeRootPath + "upload/images/"
@@ -93,7 +93,7 @@ func UploadFile(c *gin.Context) {
 	c.SaveUploadedFile(file, filename)
 
 	url := "http://127.0.0.1:8081"+"/upload/images/"+file.Filename
-	logger.Info("Url   ", url)
+	logrus.Info("Url   ", url)
 	data["url"] = url
 	appG.Response(http.StatusOK, e.SUCCESS, data)
 }

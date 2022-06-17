@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 )
 
 //机器人自身状态
@@ -247,7 +247,7 @@ func EditRobotPoint(data RobotRoomTech) error {
 		return err
 	}
 
-	logger.Info("exist = ", exist)
+	logrus.Info("exist = ", exist)
 	if !exist {
 		err = db.Model(&RobotRoomTech{}).Create(&data).Error
 		return err
@@ -260,7 +260,7 @@ func EditRobotPoint(data RobotRoomTech) error {
 func GetRobotPoint(buildNo, floorNo string) (*RobotRoomTech, error) {
 	var point RobotRoomTech
 	err := db.Where("building_no = ? AND floor_no = ? ", buildNo, floorNo).First(&point).Error
-	logger.Info("GetRobotPoint err ", err)
+	logrus.Info("GetRobotPoint err ", err)
 	if err != nil {
 		return nil, err
 	}

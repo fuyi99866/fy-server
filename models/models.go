@@ -5,7 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 	"go_server/pkg/setting"
 	"time"
 )
@@ -92,12 +92,12 @@ func Init() {
 			setting.DatabaseSetting.Host,
 			setting.DatabaseSetting.Name)
 	} else if setting.DatabaseSetting.Type == "sqlite3" {
-		logger.Info("dataType = ", setting.DatabaseSetting.Type)
+		logrus.Info("dataType = ", setting.DatabaseSetting.Type)
 		dataPath = "data/test.db"
 	}
 	db, err = gorm.Open(setting.DatabaseSetting.Type, dataPath)
 	if err != nil {
-		logger.Fatal("无法连接数据库... err: %/v", err)
+		logrus.Fatal("无法连接数据库... err: %/v", err)
 	}
 
 	//指定表的前缀，修改默认的表名
@@ -110,9 +110,9 @@ func Init() {
 	db.DB().SetMaxIdleConns(10)  //设置最大闲置连接数
 
 	//使用自定义的回调函数替换自带的回调函数
-	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+/*	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
 	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
+	db.Callback().Delete().Replace("gorm:delete", deleteCallback)*/
 
 	migration()
 

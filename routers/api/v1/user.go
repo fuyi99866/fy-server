@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"go_server/models"
 	"go_server/pkg/app"
 	"go_server/pkg/e"
-	"go_server/pkg/logger"
 	"go_server/pkg/util"
 	"net/http"
 	"strings"
@@ -47,12 +47,12 @@ func GetUsers(c *gin.Context) {
 // @Router /user  [POST]
 // @Security ApiKeyAuth
 func AddUser(c *gin.Context) {
-	logger.Info("AddUser")
+	logrus.Info("AddUser")
 	appG := app.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logger.Info("AddUser param error")
+		logrus.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -66,7 +66,7 @@ func AddUser(c *gin.Context) {
 	_, _err := models.AddUser(menu)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logger.Error("AddUser error")
+		logrus.Error("AddUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)
@@ -83,12 +83,12 @@ func AddUser(c *gin.Context) {
 // @Router /user/update  [POST]
 // @Security ApiKeyAuth
 func UpdateUser(c *gin.Context) {
-	logger.Info("UpdateUser")
+	logrus.Info("UpdateUser")
 	appG := app.Gin{C: c}
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logger.Info("AddUser param error")
+		logrus.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -96,7 +96,7 @@ func UpdateUser(c *gin.Context) {
 	_err := models.UpdateUser(reqInfo)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logger.Info("UpdateUser error")
+		logrus.Info("UpdateUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)
@@ -143,7 +143,7 @@ func DeleteUser(c *gin.Context) {
 	var reqInfo models.UserRegister
 	err := c.ShouldBindJSON(&reqInfo)
 	if err != nil {
-		logger.Info("AddUser param error")
+		logrus.Info("AddUser param error")
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, err.Error())
 		return
 	}
@@ -151,7 +151,7 @@ func DeleteUser(c *gin.Context) {
 	_err := models.DeleteUser(reqInfo)
 	if _err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
-		logger.Error("DeleteUser error")
+		logrus.Error("DeleteUser error")
 		return
 	} else {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)

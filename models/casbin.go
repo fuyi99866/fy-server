@@ -3,7 +3,7 @@ package models
 import (
 	gormadapter "github.com/casbin/gorm-adapter"
 	"github.com/jinzhu/gorm"
-	"go_server/pkg/logger"
+	"github.com/sirupsen/logrus"
 )
 
 var Casbin = new(casbin)
@@ -69,35 +69,35 @@ var casbinrule_custom = []gormadapter.CasbinRule{
 func Casbin_Init() error {
 	err := db.AutoMigrate(gormadapter.CasbinRule{}).Error
 	if err != nil {
-		logger.Info("err = ", err)
+		logrus.Info("err = ", err)
 		return err
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		defer func() { //处理崩溃
 			err := recover()
-			logger.Info("recover ", err)
+			logrus.Info("recover ", err)
 		}()
 
 		if tx.Find(&[]gormadapter.CasbinRule{}).RowsAffected == 154 {
-			logger.Error("casbin_rule 表的初始数据已存在!")
+			logrus.Error("casbin_rule 表的初始数据已存在!")
 			return nil
 		}
 
 		for _, v := range casbinrule {
 			if err := tx.Create(&v).Error; err != nil { //遇到错误时回滚事务
-				logger.Error("create err", err)
+				logrus.Error("create err", err)
 				return err
 			}
 		}
 
 		for _, v := range casbinrule_custom {
 			if err := tx.Create(&v).Error; err != nil {
-				logger.Error("create casbinrule_custom err", err)
+				logrus.Error("create casbinrule_custom err", err)
 				return err
 			}
 		}
 
-		logger.Info("casbin_rule 表初始数据成功!")
+		logrus.Info("casbin_rule 表初始数据成功!")
 		return nil
 	})
 }

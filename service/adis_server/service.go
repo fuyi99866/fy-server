@@ -1,7 +1,7 @@
 package adis_server
 
 import (
-	"go_server/pkg/logger"
+	"go_server/pkg/logrus"
 	"go_server/pkg/setting"
 	"time"
 )
@@ -36,14 +36,14 @@ func (a *adisService) Start() error {
 	)
 	err := a.mq.Connect()
 	if err != nil {
-		logger.Info("mq connect failed: ", err)
+		logrus.Info("mq connect failed: ", err)
 		return err
 	}
-	logger.Info("mq connect success")
+	logrus.Info("mq connect success")
 
 	//订阅MQ消息
 	a.Subscribe("mq_request", func(topic, msgid string, body []byte) {
-		logger.Info("rocketmq message coming:", topic, " ",msgid, " ",string(body))
+		logrus.Info("rocketmq message coming:", topic, " ",msgid, " ",string(body))
 	})
 
 	time.AfterFunc(1000, func() {
@@ -56,24 +56,24 @@ func (a *adisService) Start() error {
 
 func TestStart()  {
 	//初始化队列，创建生产者和消费者
-	logger.Info("setting.RocketMq.Addr: ", setting.RocketMq.Addr)
-	logger.Info("setting.RocketMq.GroupName: ", setting.RocketMq.GroupName)
+	logrus.Info("setting.RocketMq.Addr: ", setting.RocketMq.Addr)
+	logrus.Info("setting.RocketMq.GroupName: ", setting.RocketMq.GroupName)
 	mq := NewMq(WithAddr(setting.RocketMq.Addr),
 		WithGroupName(setting.RocketMq.GroupName),
 		WithRetry(2),
 	)
 	err := mq.Connect()
 	if err != nil {
-		logger.Info("MQ 生产者和消费者创建失败")
+		logrus.Info("MQ 生产者和消费者创建失败")
 		return
 	}
-	logger.Info("mq connect success")
+	logrus.Info("mq connect success")
 
 	//TODO 订阅消息和发送消息还需要改一下
 	mq.Subscribe("mq_request", "cn", func(topic, msgid string, body []byte) {
-		logger.Info("topic = ", topic)
-		logger.Info("msgid = ", msgid)
-		logger.Info("body = ", string(body))
+		logrus.Info("topic = ", topic)
+		logrus.Info("msgid = ", msgid)
+		logrus.Info("body = ", string(body))
 	})
 
 	msg := "hello mq"
@@ -88,12 +88,12 @@ func (a *adisService) Stop() error {
 
 //发送消息
 func (a *adisService) Send(topic string, msg []byte) {
-	logger.Info("adisService Send :", topic, " ",string(msg))
+	logrus.Info("adisService Send :", topic, " ",string(msg))
 	a.mq.Send(topic, msg, "cn")
 }
 
 //订阅消息
 func (a *adisService) Subscribe(topic string, f ReceiveCallBack) {
-	logger.Info("adisService Subscribe topic :", topic)
+	logrus.Info("adisService Subscribe topic :", topic)
 	a.mq.Subscribe(topic, "cn", f)
 }

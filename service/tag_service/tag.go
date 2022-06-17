@@ -3,12 +3,12 @@ package tag_service
 import (
 	"encoding/json"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/sirupsen/logrus"
 	"github.com/tealeg/xlsx"
 	"go_server/models"
 	"go_server/pkg/export"
 	"go_server/pkg/file"
 	"go_server/pkg/gredis"
-	"go_server/pkg/logger"
 	"go_server/service/cache_service"
 	"io"
 	"strconv"
@@ -31,6 +31,7 @@ func (t *Tag) ExistByID() (bool, error) {
 //导出
 func (t *Tag) Export() (string, error) {
 	tags, err := t.GetAll()
+	logrus.Info("get all tags: ", tags)
 	if err != nil {
 		return "", err
 	}
@@ -83,14 +84,14 @@ func (t *Tag) Import(r io.Reader) error {
 	if err != nil {
 		return err
 	}
-	rows:=xlsx.GetRows("标签信息")
-	for irow,row:=range rows{
-		if irow >0 {
+	rows := xlsx.GetRows("标签信息")
+	for irow, row := range rows {
+		if irow > 0 {
 			var data []string
-			for _,cell:=range row{
-				data = append(data,cell)
+			for _, cell := range row {
+				data = append(data, cell)
 			}
-			models.AddTag(data[1],1,data[2])
+			models.AddTag(data[1], 1, data[2])
 		}
 	}
 	return nil
@@ -101,21 +102,22 @@ func (t *Tag) GetAll() ([]models.Tag, error) {
 		tags, cacheTags []models.Tag
 	)
 	cache := cache_service.Tag{
-		State:    t.State,
-		PageNum:  t.PageSize,
-		PageSize: t.PageSize,
+		State: t.State,
+		Name:  t.Name,
 	}
+
 	key := cache.GetTagsKey()
+	logrus.Info("key = ", key)
 	if gredis.Exists(key) {
 		data, err := gredis.Get(key)
 		if err != nil {
-			logger.Error(err)
+			logrus.Error(err)
 		} else {
 			json.Unmarshal(data, &cacheTags)
 			return cacheTags, nil
 		}
 	}
-	tags, err := models.GetTags(t.PageNum, t.PageSize, t.getMap())
+	tags, err := models.GetTags(t.getMap())
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +127,6 @@ func (t *Tag) GetAll() ([]models.Tag, error) {
 
 func (t *Tag) getMap() interface{} {
 	maps := make(map[string]interface{})
-	maps["deleted_at"] = 0
 	if t.Name != "" {
 		maps["name"] = t.Name
 	}
