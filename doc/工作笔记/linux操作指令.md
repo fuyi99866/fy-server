@@ -60,6 +60,8 @@ tail -f -n 100 adis2022020911.log
 登录端口: 60022
 登录用户: yi.fu
 adis-aws-01   34.209.207.158:22
+cd /data/adis/logs/
+tail -f -n 100 adis2022020911.log
 ```
 
 ##### 查看正在后台运行的adis-server
