@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 )
 
-//TODO 图片上传接口，需要实现
-
 // @Summary   上传图片
 // @Tags   上传下载
 // @Accept multipart/form-data
@@ -97,3 +95,4 @@ func UploadFile(c *gin.Context) {
 	data["url"] = url
 	appG.Response(http.StatusOK, e.SUCCESS, data)
 }
+

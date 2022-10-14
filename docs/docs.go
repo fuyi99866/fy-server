@@ -574,6 +574,133 @@ var doc = `{
                 }
             }
         },
+        "/menu": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "查询所有菜单",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/app.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.MenuResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "添加菜单",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MenuAdd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "删除菜单",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "菜单名",
+                        "name": "menuname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/policy": {
             "get": {
                 "security": [
@@ -1410,6 +1537,50 @@ var doc = `{
                 }
             }
         },
+        "/user/set_auth": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "设置用户权限",
+                "parameters": [
+                    {
+                        "description": "id:用户ID, auth_id:角色ID",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SetUserAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ \"code\": 200, \"data\": {}, \"msg\": \"ok\" }",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user/update": {
             "post": {
                 "security": [
@@ -1549,6 +1720,60 @@ var doc = `{
                 }
             }
         },
+        "models.MenuAdd": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "description": "菜单组件",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "菜单名",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "菜单路径",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "菜单状态",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "菜单接口",
+                    "type": "string"
+                }
+            }
+        },
+        "models.MenuResult": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "description": "菜单组件",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "菜单id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "菜单名",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "菜单路径",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "菜单状态",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "菜单接口",
+                    "type": "string"
+                }
+            }
+        },
         "models.OrderIdListInfo": {
             "type": "object",
             "properties": {
@@ -1639,6 +1864,17 @@ var doc = `{
             "properties": {
                 "type": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.SetUserAuth": {
+            "type": "object",
+            "properties": {
+                "auth_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
                 }
             }
         },

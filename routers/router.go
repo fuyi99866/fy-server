@@ -61,12 +61,12 @@ func InitRouter() *gin.Engine {
 		group1.GET("/alive", api.TokenAlive)
 		user := group1.Group("user")
 		{
-			user.GET("/:name", v1.GetApiParam)
 			user.GET("", v1.GetUsers)
 			user.POST("", v1.AddUser)
 			user.DELETE("delete", v1.DeleteUser)
 			user.POST("update", v1.UpdateUser)
 			user.GET("get", v1.GetOneUser)
+			user.POST("set_auth", v1.SetUserAuthority)
 		}
 
 		policy := group1.Group("policy")

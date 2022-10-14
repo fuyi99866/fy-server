@@ -5,6 +5,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type SetUserAuth struct {
+	ID        string `json:"id"`
+	AuthorityId string `json:"auth_id"`
+}
+
 func GetAllUser() ([]*User, error) {
 	var user []*User
 	err := db.Find(&user).Error
@@ -25,7 +30,7 @@ func AddUser(data map[string]interface{}) (id uint, err error) {
 	return user.ID, nil
 }
 
-func UpdateUser(user UserRegister) ( err error) {
+func UpdateUser(user UserRegister) (err error) {
 
 	if err := db.Model(&user).Update(UserRegister{user.Username, user.Password, user.CompanyID, user.NickName}).Error; err != nil {
 		return err
@@ -55,11 +60,22 @@ func DeleteUser(user UserRegister) error {
 	return err
 }
 
-func GetOneUser(username string) (*User,error) {
+func GetOneUser(username string) (*User, error) {
 	var user *User
-	err:= db.Where("username = ?", username).First(&user).Error
+	err := db.Where("username = ?", username).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
+}
+
+//@author: yi.fu
+//@function: SetUserAuthority
+//@description: 设置一个用户的权限
+//@param: id int, authorityId string
+//@return: err error
+func SetUserAuthority(id int, authorityId string) (err error) {
+	var user *User
+	err = db.Model(&user).Where("id = ?", id).Update(map[string]string{"authority_id":authorityId}).Error
+	return err
 }

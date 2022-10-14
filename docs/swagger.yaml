@@ -61,6 +61,45 @@ definitions:
       state:
         type: integer
     type: object
+  models.MenuAdd:
+    properties:
+      component:
+        description: 菜单组件
+        type: string
+      name:
+        description: 菜单名
+        type: string
+      path:
+        description: 菜单路径
+        type: string
+      status:
+        description: 菜单状态
+        type: integer
+      url:
+        description: 菜单接口
+        type: string
+    type: object
+  models.MenuResult:
+    properties:
+      component:
+        description: 菜单组件
+        type: string
+      id:
+        description: 菜单id
+        type: string
+      name:
+        description: 菜单名
+        type: string
+      path:
+        description: 菜单路径
+        type: string
+      status:
+        description: 菜单状态
+        type: integer
+      url:
+        description: 菜单接口
+        type: string
+    type: object
   models.OrderIdListInfo:
     properties:
       orderIdList:
@@ -124,6 +163,13 @@ definitions:
     properties:
       type:
         type: integer
+    type: object
+  models.SetUserAuth:
+    properties:
+      auth_id:
+        type: string
+      id:
+        type: string
     type: object
   models.TaskIDInfo:
     properties:
@@ -527,6 +573,82 @@ paths:
       summary: 下发订单
       tags:
       - 科技化云平台
+  /menu:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 菜单名
+        in: query
+        name: menuname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除菜单
+      tags:
+      - 菜单
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/app.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.MenuResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询所有菜单
+      tags:
+      - 菜单
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.MenuAdd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 添加菜单
+      tags:
+      - 菜单
   /policy:
     delete:
       consumes:
@@ -1041,6 +1163,33 @@ paths:
       security:
       - ApiKeyAuthc: []
       summary: 获取单一用户
+      tags:
+      - 用户
+  /user/set_auth:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id:用户ID, auth_id:角色ID
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.SetUserAuth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{ "code": 200, "data": {}, "msg": "ok" }'
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 设置用户权限
       tags:
       - 用户
   /user/update:

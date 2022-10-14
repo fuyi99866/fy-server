@@ -8,13 +8,12 @@ import (
 	"go_server/pkg/e"
 	"go_server/pkg/util"
 	"net/http"
-	"strings"
+	"strconv"
 )
 
 /**
 对用户数据进行增删查改操作
 */
-
 
 // @Summary   获取所有用户
 // @Tags   用户
@@ -115,7 +114,7 @@ func GetOneUser(c *gin.Context) {
 	appG := app.Gin{C: c}
 	Authorization := c.GetHeader("Authorization")
 	claims, err := util.ParseToken(Authorization)
-	if err!=nil{
+	if err != nil {
 		appG.Response(http.StatusForbidden, e.ACCESS_DENIED, nil)
 		return
 	}
@@ -127,7 +126,6 @@ func GetOneUser(c *gin.Context) {
 	}
 	appG.Response(http.StatusOK, e.SUCCESS, user)
 }
-
 
 // @Summary   刪除用户
 // @Tags   用户
@@ -158,12 +156,28 @@ func DeleteUser(c *gin.Context) {
 	}
 }
 
-//Param方法来获取API参数
-func GetApiParam(context *gin.Context) {
-	name := context.Param("name")
-	action := context.Param("action")
-	//截取
-	action = strings.Trim(action, "/")
+// @Summary 设置用户权限
+// @Tags 用户
+// @Accept json
+// @Produce  json
+// @Param   body  body   models.SetUserAuth   true "id:用户ID, auth_id:角色ID"
+// @Success 200 {string} json "{ "code": 200, "data": {}, "msg": "ok" }"
+// @Failure 400 {object} app.Response
+// @Router /user/set_auth [post]
+// @Security ApiKeyAuth
+func SetUserAuthority(c *gin.Context) {
+	appG := app.Gin{C: c}
+	var sua models.SetUserAuth
+	_ = c.ShouldBindJSON(&sua)
+	if UserVerifyErr := util.Verify(sua, util.SetUserAuthorityVerify); UserVerifyErr != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR, UserVerifyErr.Error())
+		return
+	}
+	id, _ := strconv.Atoi(sua.ID)
+	if err := models.SetUserAuthority(id, sua.AuthorityId); err != nil {
 
-	context.String(http.StatusOK, name+" is "+action)
+		appG.Response(http.StatusInternalServerError, e.ERROR, err.Error())
+	} else {
+		appG.Response(http.StatusOK, e.SUCCESS, nil)
+	}
 }

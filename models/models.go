@@ -50,10 +50,11 @@ type Authority struct {
 
 type User struct {
 	gorm.Model
-	Username  string  `json:"username" gorm:"column:username; index:usr_name;not null"` //唯一索引
-	Password  string  `json:"password, omitempty" gorm:"column:password;" `
-	NickName  string  `json:"nickname" gorm:"column:nickname;" `
-	CompanyID string  `json:"company_id" gorm:"column:company_id;"`
+	Username    string `json:"username" gorm:"column:username; index:usr_name;not null"` //唯一索引
+	Password    string `json:"password, omitempty" gorm:"column:password;" `
+	NickName    string `json:"nickname" gorm:"column:nickname;" `
+	CompanyID   string `json:"company_id" gorm:"column:company_id;"`
+	AuthorityID string `json:"authority_id"`
 }
 
 type UserRegister struct {
@@ -101,18 +102,18 @@ func Init() {
 	}
 
 	//指定表的前缀，修改默认的表名
-/*		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return conf.DatabaseSetting.TablePrefix+defaultTableName
-	}*/
+	/*		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+			return conf.DatabaseSetting.TablePrefix+defaultTableName
+		}*/
 	//禁用表名复数
 	db.SingularTable(true)       //设置全局表名禁用复数
 	db.DB().SetMaxOpenConns(100) //设置最大连接数
 	db.DB().SetMaxIdleConns(10)  //设置最大闲置连接数
 
 	//使用自定义的回调函数替换自带的回调函数
-/*	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
-	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete", deleteCallback)*/
+	/*	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+		db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+		db.Callback().Delete().Replace("gorm:delete", deleteCallback)*/
 
 	migration()
 
@@ -136,7 +137,8 @@ func migration() {
 		AutoMigrate(&Article{}).
 		AutoMigrate(&RobotTaskTech{}).
 		AutoMigrate(&RobotStatusTech{}).
-		AutoMigrate(&RobotRoomTech{})
+		AutoMigrate(&RobotRoomTech{}).
+		AutoMigrate(&Menu{})
 }
 
 // updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
@@ -180,13 +182,13 @@ func deleteCallback(scope *gorm.Scope) {
 		if !scope.Search.Unscoped && hasDeleteOnField {
 			scope.Raw(fmt.Sprintf(
 				"UPDATE %v SET %v=%v%v%v",
-				scope.QuotedTableName(),//返回引用的表名，这个方法 GORM 会根据自身逻辑对表名进行一些处理
+				scope.QuotedTableName(), //返回引用的表名，这个方法 GORM 会根据自身逻辑对表名进行一些处理
 				scope.Quote(deleteOnField.DBName),
 				scope.AddToVars(time.Now().Unix()),
-				addExtraSpaceIfExist(scope.CombinedConditionSql()),// scope.CombinedConditionSql():返回组合好的条件SQL
+				addExtraSpaceIfExist(scope.CombinedConditionSql()), // scope.CombinedConditionSql():返回组合好的条件SQL
 				addExtraSpaceIfExist(extraOption),
-				)).Exec()
-		}else {
+			)).Exec()
+		} else {
 			scope.Raw(fmt.Sprintf(
 				"DELETE FROM %v%v%v",
 				scope.QuotedTableName(),
@@ -198,9 +200,8 @@ func deleteCallback(scope *gorm.Scope) {
 }
 
 func addExtraSpaceIfExist(str string) string {
-	if str!=""{
-		return " "+str
+	if str != "" {
+		return " " + str
 	}
 	return ""
 }
-
